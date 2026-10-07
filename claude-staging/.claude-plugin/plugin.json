@@ -1,0 +1,12 @@
+{
+  "name": "matricula-ed-superior-staging",
+  "version": "0.1.0",
+  "description": "Quién estudia qué en la educación superior chilena, dónde, con qué perfil y en qué termina: matrícula, selectividad, equidad y trayectorias, con cada cifra trazable a su fuente.",
+  "author": {
+    "name": "MindTheContext"
+  },
+  "repository": "https://github.com/mindthecontext/saber-matricula-ed-superior",
+  "keywords": [],
+  "homepage": "https://github.com/mindthecontext/saber-matricula-ed-superior",
+  "mcpServers": "./.mcp.json"
+}
