@@ -657,6 +657,8 @@ def cifras_html(b: dict) -> str:
     def valor(x):
         if x.get("unit") == "ratio":
             return f"{x['value']:.2f}".replace(".", ",")
+        if x.get("unit") == "score":
+            return _fmt_unidad(x["value"], "years")
         return _fmt_unidad(x["value"], "pct" if x.get("unit") == "pct" else "count")
     celdas = "".join(f'<div class="cifra"><span class="v">{e(valor(x))}</span><span class="l">{e(x["label"])}</span></div>'
                      for x in b.get("items") or [])

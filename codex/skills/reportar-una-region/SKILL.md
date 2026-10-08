@@ -1,6 +1,6 @@
 ---
 name: reportar-una-region
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», y 3, «El mercado»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», y 4, «De qué origen vienen»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -150,6 +150,20 @@ publica. Un reporte no mejora con párrafos de relleno.
 - **Una región con dos mercados** (la nota lo dice cuando corresponde): no la describas con un solo
   centro, y no compares sedes de una ciudad con las de la otra como competidoras.
 
+### Cómo leer la sección 4, «De qué origen vienen»
+
+- **Es una asociación, no un mecanismo.** El colegio de egreso se asocia con el puntaje y con la
+  migración, pero estos datos no dicen por qué. No escribas que el colegio «causa» o «explica» la
+  diferencia; si quieres proponer una razón, va en `compatible`.
+- **«Particular pagado» es una categoría administrativa**, no un nivel de ingreso. No escribas «los
+  estudiantes de mayores ingresos» ni «los más ricos».
+- **El porcentaje y las personas responden preguntas distintas.** El porcentaje dice cómo es el aula; las
+  personas, dónde está esa población. Si el orden cambia entre las dos figuras, ése es el hallazgo; cópialo
+  de los `groups` de cada una. Las personas son una estimación: no las presentes como un conteo exacto.
+- **Prioritario y primera generación no se suman**: un mismo estudiante suele ser las dos cosas. Y
+  primera generación se mide sobre menos estudiantes (el `n` es menor).
+- **La caja de puntaje por tipo de colegio cubre sólo a quienes rindieron la PAES**, como en la sección 2.
+
 ## 3 · Compón
 
     python3 <carpeta de la skill graficar-la-matricula>/assets/construir_figura.py --entrada reporte.json --salida reporte.html
@@ -171,6 +185,6 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 - **Si no puedes**, entrega el archivo.
 
 En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué no todavía. Hoy cubre la portada y
-las secciones 1 a 3; el origen escolar, el acceso y el financiamiento, las preferencias y los
-desenlaces, los planos y la síntesis llegarán como secciones nuevas. No los
+las secciones 1 a 4; el acceso y el financiamiento, las preferencias y los desenlaces, los planos y la
+síntesis llegarán como secciones nuevas. No los
 completes con otras herramientas dentro del reporte.

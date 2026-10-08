@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.13.0 · 2026-10-08
+
+El reporte regional suma su cuarta sección, «De qué origen vienen»: cuántos puntos de PAES separan a quienes egresaron de colegio particular pagado del resto, cuántas veces más se van a la Metropolitana, y por sede cuántos vienen de colegio pagado —en porcentaje y en personas, que ordenan distinto—, cuántos fueron prioritarios y cuántos son primera generación en la universidad. Las comparaciones con el país se calculan del dato en vez de escribirse: la brecha de puntaje va hoy de 68 a 157,5 puntos según la región, y no «nunca baja de 85» como decía el reporte anterior. Dice que es una asociación y no un mecanismo, y que «particular pagado» es una categoría administrativa, no un nivel de ingreso.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.12.0 · 2026-10-08
 
 El reporte regional suma su tercera sección, «El mercado»: cuántos egresados de la región se quedan a estudiar en ella, adónde se van los demás, de dónde llegan los que vienen, a qué universidades de la capital se va cada tramo de la migración y de dónde es el alumnado de cada sede. Abre con un bloque de cifras —la retención, los entrantes contra los egresados que siguen a la universidad y el balance entre ambos, con su conclusión— que escribe el servicio y no el asistente. Dice cómo se cuentan las cifras y qué queda fuera, y en una región con dos mercados (Los Lagos) lo advierte. Las cifras son las del reporte regional que existía antes.
