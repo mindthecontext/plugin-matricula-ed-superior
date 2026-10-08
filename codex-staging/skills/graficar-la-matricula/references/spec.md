@@ -53,8 +53,9 @@ inconsistente:
 **Lo que la receta decide sola**, sin que se pueda configurar desde el spec:
 - La base del eje es cero.
 - La línea se corta en un hueco y no pasa por un valor inconsistente.
-- Hasta cinco series van en un panel, distinguidas por color, trazo y forma. Con más, va un panel por
-  sede con el mismo eje.
+- Hasta cinco series van en un panel, distinguidas por color, trazo y forma, con leyenda. Con más, van
+  también en un solo panel, con el nombre de cada sede al final de su línea; si son más de quince, se
+  rotulan las quince de mayor matrícula y el pie dice cuántas quedan sin nombre.
 - Los bordes de cobertura («con registro desde 2008») se anotan solos al pie.
 
 

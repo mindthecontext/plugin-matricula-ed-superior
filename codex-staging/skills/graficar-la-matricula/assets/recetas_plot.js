@@ -22,6 +22,13 @@ const SIMBOLOS = ["circle", "square", "triangle", "diamond", "cross"];
 const TRAZOS = [null, "6 3", "2 3", "8 3 2 3", "1 2"];
 // Más series que colores no caben en un solo panel sin volverse un ovillo: se parten en paneles.
 const MAX_EN_UN_PANEL = COLORES.length;
+// MUCHAS SEDES (MAT-29): un solo panel, el nombre al final de cada línea. Siete colores aptos para
+// daltonismo (Okabe-Ito sin el amarillo, que no se lee sobre crema) por cinco símbolos: combinaciones
+// únicas hasta 35 sedes. Con tantas líneas lo que identifica es el NOMBRE; el color y el símbolo ayudan.
+const COLORES_MUCHAS = ["#0072B2", "#E69F00", "#009E73", "#D55E00", "#CC79A7", "#56B4E9", "#56779b"];
+// Cuántas sedes llevan nombre. FIJO, no según el ancho: el pie (Python) dice cuántas quedan sin nombre y
+// tiene que decir lo mismo que el dibujo. 15 nombres a 14 px caben en el alto útil más chico (≈260 px).
+const MAX_ROTULOS = 15;
 
 // Un valor es INCONSISTENTE con su serie si multiplica por este factor —o divide— a sus dos
 // vecinos con dato. Es juicio, y está aquí y no en el spec a propósito: quien arma el spec no
@@ -353,20 +360,52 @@ function matriculaSeries(spec, Plot, ancho) {
     });
   }
 
-  // Más de cinco series: un panel por sede, con el MISMO eje, para que las alturas se comparen.
+  // MÁS DE CINCO SERIES: UN SOLO PANEL (MAT-29). Hasta la 0.10 iba un panel por sede, y así no se veía
+  // cómo se comparan: el reporte local publicado lo resolvía con el nombre al final de cada línea.
+  // A diferencia de ese gráfico, las líneas son RECTAS: una curva suavizada inventa forma entre años.
+  const color = nombre => COLORES_MUCHAS[nombres.indexOf(nombre) % COLORES_MUCHAS.length];
+  const simbolo = nombre => SIMBOLOS[nombres.indexOf(nombre) % SIMBOLOS.length];
+  // El final de cada línea: su último año con dato firme (un valor inconsistente no cuenta).
+  const fin = activas.map(s => {
+    const firmes = conDato.filter(d => d.serie === s.label && !esSalto(d));
+    const ult = firmes[firmes.length - 1];
+    return ult ? { serie: s.label, year: ult.year, value: ult.value } : null;
+  }).filter(Boolean);
+  const rotuladas = new Set(fin.slice().sort((a, b) => b.value - a.value).slice(0, MAX_ROTULOS).map(f => f.serie));
+  const alto = angosto ? 340 : 380;
+  const util = alto - 30 - 26;
+  const ymax = Math.max(...conDato.map(d => d.value));
+  const gap = (ymax * 1.05) * 14 / util;
+  // LOS NOMBRES SE APILAN SIN ENCIMARSE, de abajo hacia arriba y conservando el orden vertical: así la
+  // asociación no depende del color. Si un nombre queda lejos de su línea, un conector fino lo une.
+  let base = 0;
+  const rotulos = fin.filter(f => rotuladas.has(f.serie)).sort((a, b) => a.value - b.value)
+    .map(f => { const ym = Math.max(f.value, base); base = ym + gap; return { ...f, ym }; });
+  const largo = Math.max(...rotulos.map(r => r.serie.length), 8);
+  const margen = Math.min(angosto ? Math.round(ancho * 0.42) : 260, Math.round(largo * 5.6) + 14);
+  const maxCh = Math.floor((margen - 14) / 5.6);
+  const corta = t => (t.length <= maxCh ? t : t.slice(0, Math.ceil((maxCh - 1) * 0.5)) + "…" + t.slice(-Math.floor((maxCh - 1) * 0.5)));
+  // Un símbolo cada cuatro años sobre cada línea: la línea sola distingue por color, y eso no basta.
+  const conSimbolo = conDato.filter(d => (d.year - desde) % 4 === 2 && !esSalto(d));
   return Plot.plot({
     ...comunes,
-    width: ancho, height: activas.length * (angosto ? 92 : 104) + 30,
-    marginLeft: 52, marginRight: 16, marginTop: 10, marginBottom: 30,
-    fy: { label: null, domain: nombres, axis: null },
+    width: ancho, height: alto, marginLeft: 52, marginRight: margen, marginTop: 26, marginBottom: 30,
     marks: [
-      Plot.frame({ stroke: tono("--regla") }),
-      Plot.text(nombres, { fy: d => d, text: d => d, frameAnchor: "top-left", dx: 6, dy: 6,
-                           fontSize: 10.5, fill: tono("--texto") }),
-      Plot.line(linea, { x: "year", y: "value", fy: "serie", stroke: COLORES[0], strokeWidth: 2 }),
-      Plot.dot(conDato, { x: "year", y: "value", fy: "serie", fill: COLORES[0], r: 2.4,
+      Plot.ruleY([0], { stroke: tono("--fig-regla") }),
+      ...activas.map(s => Plot.line(linea.filter(d => d.serie === s.label), {
+        x: "year", y: "value", stroke: color(s.label), strokeWidth: 1.9 })),
+      ...activas.map(s => Plot.dot(conSimbolo.filter(d => d.serie === s.label), {
+        x: "year", y: "value", stroke: color(s.label), symbol: () => simbolo(s.label), r: 3.4, strokeWidth: 1.6,
+        fill: tono("--superficie") })),
+      // Puntos invisibles con su cifra: al pasar el cursor por cualquier año, la sede y el valor.
+      Plot.dot(conDato, { x: "year", y: "value", r: 4, fill: "transparent",
                           title: d => `${d.serie} · ${d.year}: ${d.value.toLocaleString("es-CL")}` }),
-      ...salto(marcados, { fy: "serie" }),
+      Plot.link(rotulos.filter(r => Math.abs(r.ym - r.value) > gap / 2), {
+        x1: "year", y1: "value", x2: "year", y2: "ym", stroke: tono("--texto-tenue"), strokeWidth: 0.7 }),
+      Plot.text(rotulos, { x: "year", y: "ym", text: r => corta(r.serie), dx: 8, textAnchor: "start",
+                           fontSize: angosto ? 9 : 10, fill: r => color(r.serie),
+                           stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" }),
+      ...salto(marcados),
     ],
   });
 }
@@ -592,4 +631,4 @@ function escalable(nodo) {
   return nodo;
 }
 
-if (typeof module !== "undefined") module.exports = { validar, exigencias, crecimiento, barrasVisibles, FACTOR_DE_SALTO, MAX_EN_UN_PANEL };
+if (typeof module !== "undefined") module.exports = { validar, exigencias, crecimiento, barrasVisibles, FACTOR_DE_SALTO, MAX_EN_UN_PANEL, MAX_ROTULOS };

@@ -29,6 +29,9 @@ from pathlib import Path
 ASSETS = Path(__file__).resolve().parent
 FACTOR_DE_SALTO = 3
 MAX_EN_UN_PANEL = 5
+# Con más de MAX_EN_UN_PANEL sedes va un solo panel con el nombre al final de cada línea (MAT-29), y se
+# rotulan a lo más estas: las de mayor matrícula. Igual que MAX_ROTULOS en la receta (la prueba lo exige).
+MAX_ROTULOS = 15
 # Lo que el lector no tiene por qué entender: nombres de reglas, documentos y piezas internas.
 JERGA = re.compile(r"regla R[0-9]|del pack|artefacto|ADR-")
 
@@ -465,7 +468,14 @@ def notas_html(spec: dict) -> str:
     if spec.get("form") == "matricula_region":
         return notas_region(spec)
     items = []
+    # El pie anota sólo lo que se dibuja: los huecos de una sede en retirada se declaran en el spec (la
+    # receta lo exige), pero esa sede no se dibuja y su nota sólo alarga el pie. Si TODAS están en
+    # retirada, se dibujan todas y se anotan todas.
+    todas = spec.get("series") or []
+    dibujadas = {s.get("label") for s in todas if not s.get("retreating")} or {s.get("label") for s in todas}
     for a in spec.get("annotations") or []:
+        if a.get("series") not in dibujadas:
+            continue
         if a.get("kind") == "inconsistent":
             items.append(f'<li><span class="marca">{e(a.get("series"))}, {e(a.get("year"))}:</span> {e(a.get("note"))}</li>')
         elif a.get("kind") == "gap":
@@ -476,6 +486,10 @@ def notas_html(spec: dict) -> str:
         if b["series"] in activas:
             tramo = f"desde {b['from']}" if b["to"] == max(spec["x"]) else f"de {b['from']} a {b['to']}"
             items.append(f"<li>{e(b['series'])}: con registro {e(tramo)}.</li>")
+    if len(activas) > MAX_ROTULOS:
+        items.append(f"<li>Se rotulan las {MAX_ROTULOS} sedes de mayor matrícula al final de la serie; las otras "
+                     f"{len(activas) - MAX_ROTULOS} siguen dibujadas, sin nombre: al pasar el cursor por un punto "
+                     "se ve de qué sede es.</li>")
     retiradas = [s for s in spec.get("series") or [] if s.get("retreating")]
     if retiradas:
         nombres = []
@@ -746,7 +760,7 @@ def main() -> int:
         return 0
     activas = [s for s in spec["series"] if not s.get("retreating")]
     print(f"series dibujadas: {len(activas)} de {len(spec['series'])} · "
-          f"{'un panel' if len(activas) <= MAX_EN_UN_PANEL else 'un panel por serie'} · "
+          f"un panel{'' if len(activas) <= MAX_EN_UN_PANEL else ' con el nombre al final de cada línea'} · "
           f"anotaciones: {len(spec.get('annotations') or [])}")
     return 0
 

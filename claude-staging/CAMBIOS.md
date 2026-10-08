@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.11.0 · 2026-10-08
+
+La evolución de la matrícula de muchas sedes se lee ahora en un solo gráfico: todas las sedes en el mismo eje, con el nombre de cada una al final de su línea, en vez de un panel por sede que impedía compararlas. Las líneas son rectas —no se suavizan entre años— y siguen cortándose donde falta un año. En una región con más de quince sedes se nombran las quince más grandes y el pie dice cuántas quedan sin nombre.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.10.2 · 2026-10-08
 
 Una figura en que todas las sedes valen cero ya no deja una caja vacía con un pie que habla de una línea que no se dibuja: dice en una línea que no hay barras y cuál es el valor del país.

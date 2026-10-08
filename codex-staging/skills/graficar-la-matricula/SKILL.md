@@ -16,7 +16,7 @@ Hay **dos formas**, y responden preguntas distintas:
 
 | La pregunta | La herramienta | La figura |
 |---|---|---|
-| cómo evolucionaron **unas sedes**, o compararlas entre sí | `figura_matricula(region, instituciones=None)` | una línea por sede (o un panel por sede, si son más de cinco) |
+| cómo evolucionaron **unas sedes**, o compararlas entre sí | `figura_matricula(region, instituciones=None)` | una línea por sede, en un solo panel; con más de cinco, el nombre de cada sede va al final de su línea |
 | cómo evolucionó **la región entera** | `figura_matricula_region(region)` | el total, y una banda con lo que aportaban las sedes en retirada |
 
 `figura_matricula` sin `instituciones` trae todas las sedes de la región; con ellas, sólo esas
