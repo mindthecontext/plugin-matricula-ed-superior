@@ -245,6 +245,7 @@ function validarBarras(spec, errores) {
     if (!vacio && (typeof b.value !== "number" || b.value < 0)) errores.push(`«${b.label}»: el valor tiene que ser un número no negativo o null`);
     else if (!vacio && spec.unit === "pct" && b.value > 100) errores.push(`«${b.label}»: un porcentaje no puede pasar de 100`);
     if (b.n !== null && b.n !== undefined && (!Number.isInteger(b.n) || b.n < 0)) errores.push(`«${b.label}»: «n» tiene que ser un entero no negativo`);
+    if (b.detail !== null && b.detail !== undefined && typeof b.detail !== "string") errores.push(`«${b.label}»: «detail» tiene que ser un texto o null`);
   }
   const ref = spec.reference;
   if (ref !== null && ref !== undefined) {
@@ -465,10 +466,16 @@ function barrasSedes(spec, Plot, ancho) {
   const fmt = formatoUnidad(spec.unit);
   const angosto = ancho < 520;
   const ref = spec.reference;
+  // El detalle de una barra (las personas, o el % de colegio pagado de una universidad) va en gris al
+  // final de la fila, alineado: el valor de la barra sigue siendo lo que se compara (MAT-20).
+  const conDetalle = filas.some(f => f.detail);
+  // El detalle va FUERA del área de las barras, en su propio margen: dentro, chocaba con el valor de la
+  // barra más larga («15,2%pagado 54,4%»).
   const tope = Math.max(...filas.map(f => f.value), ref ? ref.value : 0, 0) * 1.18 || 1;
+  const margenDerecho = conDetalle ? (angosto ? 92 : 112) : 50;
   const margen = Math.min(angosto ? 150 : 210, Math.round(ancho * 0.42));
   return Plot.plot({
-    width: ancho, height: 40 + Math.max(filas.length, 1) * (angosto ? 26 : 28), marginLeft: margen, marginRight: 50,
+    width: ancho, height: 40 + Math.max(filas.length, 1) * (angosto ? 26 : 28), marginLeft: margen, marginRight: margenDerecho,
     marginTop: ref ? 22 : 8, marginBottom: 24,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
     x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: fmt },
@@ -479,6 +486,8 @@ function barrasSedes(spec, Plot, ancho) {
       Plot.text(filas, { x: "value", y: "label", text: f => fmt(f.value), dx: 5, textAnchor: "start", fontSize: angosto ? 9.5 : 10.5,
                          fill: tono("--texto"), stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" }),
       Plot.ruleX([0], { stroke: tono("--fig-regla") }),
+      ...(conDetalle ? [Plot.text(filas.filter(f => f.detail), { x: tope, y: "label", text: "detail", textAnchor: "start", dx: 10,
+                                                                  fontSize: angosto ? 8.5 : 9.5, fill: tono("--texto-tenue") })] : []),
       // EL VALOR NACIONAL ES LA REFERENCIA, no la mediana entre sedes (como en el reporte local).
       ...(ref ? [Plot.ruleX([ref.value], { stroke: COLORES[1], strokeWidth: 1.6, strokeDasharray: "4 3" }),
                  Plot.text([ref], { x: "value", text: r => `${r.label} ${fmt(r.value)}`, frameAnchor: "top", dy: -14,

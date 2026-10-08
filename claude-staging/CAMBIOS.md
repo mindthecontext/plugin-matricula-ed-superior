@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.12.0 · 2026-10-08
+
+El reporte regional suma su tercera sección, «El mercado»: cuántos egresados de la región se quedan a estudiar en ella, adónde se van los demás, de dónde llegan los que vienen, a qué universidades de la capital se va cada tramo de la migración y de dónde es el alumnado de cada sede. Abre con un bloque de cifras —la retención, los entrantes contra los egresados que siguen a la universidad y el balance entre ambos, con su conclusión— que escribe el servicio y no el asistente. Dice cómo se cuentan las cifras y qué queda fuera, y en una región con dos mercados (Los Lagos) lo advierte. Las cifras son las del reporte regional que existía antes.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.11.0 · 2026-10-08
 
 La evolución de la matrícula de muchas sedes se lee ahora en un solo gráfico: todas las sedes en el mismo eje, con el nombre de cada una al final de su línea, en vez de un panel por sede que impedía compararlas. Las líneas son rectas —no se suavizan entre años— y siguen cortándose donde falta un año. En una región con más de quince sedes se nombran las quince más grandes y el pie dice cuántas quedan sin nombre.

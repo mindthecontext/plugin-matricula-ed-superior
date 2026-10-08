@@ -264,6 +264,8 @@ def validar_barras(spec: dict, errores: list[str]) -> list[str]:
         n = b.get("n")
         if n is not None and (not isinstance(n, int) or isinstance(n, bool) or n < 0):
             errores.append(f"«{label}»: «n» tiene que ser un entero no negativo")
+        if b.get("detail") is not None and not isinstance(b.get("detail"), str):
+            errores.append(f"«{label}»: «detail» tiene que ser un texto o null")
     ref = spec.get("reference")
     if ref is not None:
         if not str(ref.get("label") or "").strip() or not _numero(ref.get("value")) or ref["value"] < 0:
@@ -349,10 +351,10 @@ def _pct(v) -> str:
 def tabla(spec: dict) -> str:
     """La tabla que se entrega cuando la figura no se dibuja: los mismos datos, sin interpolar."""
     if spec.get("form") == "barras_sedes":
-        filas = ["| Sede | Valor | n |", "|---|---:|---:|"]
+        filas = ["| Fila | Valor | n | Detalle |", "|---|---:|---:|---|"]
         for b in spec.get("bars") or []:
             v = "sin dato" if b.get("value") is None else _fmt_unidad(b["value"], spec.get("unit"))
-            filas.append(f"| {b.get('label')} | {v} | {'' if b.get('n') is None else b['n']} |")
+            filas.append(f"| {b.get('label')} | {v} | {'' if b.get('n') is None else b['n']} | {b.get('detail') or ''} |")
         return "\n".join(filas)
     if spec.get("form") == "rangos_sedes":
         bajo, alto = ("p10", "p90") if spec.get("whiskers") == "p10_p90" else ("Mínimo", "Máximo")
@@ -538,6 +540,9 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
                 or k == "growth" or (es_pct and k in ("total", "active"))
             if k == "blocks" and isinstance(v, list):
                 for bl in v:
+                    if bl.get("kind") in ("facts", "note"):
+                        # Las cifras y las notas que escribe el servicio también respaldan (MAT-20).
+                        numeros_del_spec({k: x for k, x in bl.items() if k != "kind"}, acc, pct)
                     if bl.get("kind") == "figure":
                         numeros_del_spec(bl.get("figure"), acc, pct)
                         # Los órdenes y los cambios que el servicio calculó junto a la figura (MAT-27):
@@ -602,7 +607,7 @@ def validar_reporte(spec: dict) -> list[str]:
                 errores.append(f"«{b.get('id')}» trae sedes en retirada en el cuerpo: {', '.join(dentro)}")
     todos, porcentajes = numeros_del_spec({k: v for k, v in spec.items() if k != "sections"})
     for sec in spec.get("sections") or []:
-        t, p_ = numeros_del_spec({"blocks": [b for b in sec.get("blocks") or [] if b.get("kind") == "figure"]})
+        t, p_ = numeros_del_spec({"blocks": [b for b in sec.get("blocks") or [] if b.get("kind") in ("figure", "facts", "note")]})
         todos |= t
         porcentajes |= p_
     for sec, b in lecturas(spec):
@@ -647,6 +652,19 @@ def figura_html(id_: str, spec: dict, dibujables: dict, avisos: list) -> str:
             f'<p class="src">Fuente: {fuente}.</p></figure>')
 
 
+def cifras_html(b: dict) -> str:
+    """Un bloque de cifras del servicio (MAT-20): el marco de una sección, con su conclusión calculada."""
+    def valor(x):
+        if x.get("unit") == "ratio":
+            return f"{x['value']:.2f}".replace(".", ",")
+        return _fmt_unidad(x["value"], "pct" if x.get("unit") == "pct" else "count")
+    celdas = "".join(f'<div class="cifra"><span class="v">{e(valor(x))}</span><span class="l">{e(x["label"])}</span></div>'
+                     for x in b.get("items") or [])
+    titulo = f'<p class="ft">{e(b["title"])}</p>' if b.get("title") else ""
+    conclusion = f'<p class="conclusion">{e(b["conclusion"])}</p>' if b.get("conclusion") else ""
+    return f'<div class="cifras">{titulo}<div class="rejilla">{celdas}</div>{conclusion}</div>'
+
+
 def componer_reporte(spec: dict, avisos: list) -> str:
     c = spec.get("cover") or {}
     # La ciudad va una vez: si el nombre ya la trae (una institución con dos sedes), no se repite.
@@ -669,6 +687,10 @@ def componer_reporte(spec: dict, avisos: list) -> str:
         for b in sec.get("blocks") or []:
             if b.get("kind") == "figure":
                 partes.append(figura_html(b.get("id"), b.get("figure") or {}, dibujables, avisos))
+            elif b.get("kind") == "facts":
+                partes.append(cifras_html(b))
+            elif b.get("kind") == "note":
+                partes.append('<div class="nota-seccion">' + _parrafos(b.get("text") or "") + "</div>")
             elif b.get("kind") == "reading" and (b.get("text") or b.get("compatible")):
                 partes.append('<div class="lectura">' + _parrafos(b.get("text") or ""))
                 if b.get("compatible"):

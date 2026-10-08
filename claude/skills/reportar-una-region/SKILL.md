@@ -1,5 +1,5 @@
 ---
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada, la sección 1, «Quiénes son», y la sección 2, «Con qué llegan»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», y 3, «El mercado»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -128,6 +128,27 @@ publica. Un reporte no mejora con párrafos de relleno.
 - **El 10% superior es otra vara:** mide el rendimiento relativo al propio colegio, no el puntaje. No
   la sumes ni la compares directamente con la PAES.
 
+### Cómo leer la sección 3, «El mercado»
+
+- **El bloque de cifras lo escribe el servicio**, con su conclusión. Puedes citar sus cifras en tu
+  lectura, pero no reescribas la conclusión con otras palabras más fuertes.
+- **Es retención universitaria, no acceso.** Cuenta a quienes entraron directo del colegio a una
+  universidad. Quien fue a un CFT o un IP, o no siguió estudiando, no está: no escribas «el X% de los
+  jóvenes de la región se queda».
+- **El balance compara tamaños, no producción.** Dice si las universidades de la región reciben más o
+  menos estudiantes de los que la región manda a la universidad. No escribas que la región «forma más
+  gente de la que produce»: los entrantes incluyen a quienes vienen de otras regiones.
+- **«Adónde se van» y «de dónde vienen» tienen bases distintas.** Los primeros son % de los egresados
+  de la región; los segundos, % de quienes entran acá. No los restes ni los compares como si fueran la
+  misma cuenta.
+- **En las universidades de la capital, el % de colegio pagado describe a quién se va a cada una**, no
+  ordena a las universidades. Úsalo para decir que la migración tiene dos tramos, no que una
+  universidad es «más elitista».
+- **«Cuánto alumnado es de la región» describe la composición de cada sede**, no cuántos se quedan:
+  una región puede mandar parte de sus egresados afuera y tener sedes casi enteramente locales.
+- **Una región con dos mercados** (la nota lo dice cuando corresponde): no la describas con un solo
+  centro, y no compares sedes de una ciudad con las de la otra como competidoras.
+
 ## 3 · Compón
 
     python3 <carpeta de la skill graficar-la-matricula>/assets/construir_figura.py --entrada reporte.json --salida reporte.html
@@ -149,6 +170,6 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 - **Si no puedes**, entrega el archivo.
 
 En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué no todavía. Hoy cubre la portada y
-las secciones 1 y 2; el mercado y la movilidad, el origen escolar, el acceso y el financiamiento, las
-preferencias y los desenlaces, los planos y la síntesis llegarán como secciones nuevas. No los
+las secciones 1 a 3; el origen escolar, el acceso y el financiamiento, las preferencias y los
+desenlaces, los planos y la síntesis llegarán como secciones nuevas. No los
 completes con otras herramientas dentro del reporte.

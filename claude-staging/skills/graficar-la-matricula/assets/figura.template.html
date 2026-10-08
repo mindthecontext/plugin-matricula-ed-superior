@@ -69,6 +69,15 @@ section figure{margin:14px 0}
 .lectura{max-width:68ch;margin:0 0 18px}
 .lectura p{margin:0 0 10px}
 .lectura .compatible{font-size:.92rem;color:var(--texto-suave);border-left:2px solid var(--regla);padding-left:10px}
+/* Las cifras del servicio (MAT-20): el marco de una sección, antes de sus figuras. */
+.cifras{background:var(--superficie);border:1px solid var(--regla);padding:16px 18px;margin:14px 0}
+.cifras .rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 18px}
+.cifras .cifra{display:flex;flex-direction:column;gap:2px}
+.cifras .v{font:600 1.45rem/1.1 var(--serif);color:var(--texto)}
+.cifras .l{font-size:.82rem;line-height:1.35;color:var(--texto-suave)}
+.cifras .conclusion{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--regla);font-size:.92rem}
+.nota-seccion{font-size:.88rem;color:var(--texto-suave);max-width:68ch;margin:0 0 14px}
+.nota-seccion p{margin:0 0 8px}
 .tw{overflow-x:auto}.tw table{border-collapse:collapse;width:100%;font-size:.86rem}.tw th,.tw td{padding:6px 10px;border-bottom:1px solid var(--regla);text-align:left}
 footer{margin-top:22px;border-top:1px solid var(--regla);padding-top:10px}
 @media (max-width:520px){figure{padding:14px 12px 12px}.ft{font-size:1.08rem}.portada .sedes{columns:1}.portada h1{font-size:1.45rem}}
