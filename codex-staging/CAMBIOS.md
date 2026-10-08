@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.5.0 · 2026-10-08
+
+Las figuras de matrícula las arma ahora el servicio: la nueva herramienta `figura_matricula` entrega la serie de las sedes de una región —o de las instituciones que se pidan— lista para dibujar, con los años sin registro y los valores que no calzan ya declarados, las sedes en retirada marcadas y los nombres de las instituciones escritos como se escriben. Quien pregunta recibe la misma figura que antes, pero ya no depende de que el asistente copie bien diecinueve cifras por sede.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `figura_matricula`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`
+- Datos: `2026-10-07-lab`
+
 ## v0.4.0 · 2026-10-08
 
 La evolución de una región, ahora entregada por el servicio: `panorama_region` trae la serie de matrícula regional desde 2007, con todas las sedes y sin las que están en retirada, y el crecimiento de cada una (en La Araucanía, 2019→2025: +11,8% con todas, +14,5% sin las en retirada). Un año en que a una sede le falta el registro no se suma en silencio: si lo que falta pesa, queda sin total; si no, se suma y se dice. Cada sede trae su serie, así que la figura de una región se arma con una sola consulta. «En retirada» pasa a significar lo que dice el registro —una sede que ya casi no recibe estudiantes nuevos— y no «una sede chica», que ahora es un aviso aparte; cambia la marca en tres regiones (Arica, Metropolitana y Los Lagos). Las respuestas declaran sus ventanas, la matrícula trae su propia fuente y ninguna respuesta lleva ya vocabulario interno.

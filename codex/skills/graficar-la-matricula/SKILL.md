@@ -6,38 +6,46 @@ description: Dibuja cómo evolucionó la matrícula de una o varias sedes univer
 # Graficar la matrícula
 
 Una serie de diecinueve años se lee mejor dibujada que contada. Esta skill produce **una figura**: la
-matrícula total de pregrado de una o varias sedes universitarias, año a año. Tú armas el **spec**
-—los datos y el encuadre—; la receta dibuja. **Nunca escribas HTML ni código de gráfico.**
+matrícula total de pregrado de una o varias sedes universitarias, año a año. El servicio entrega el
+**spec** con los datos; tú decides el encuadre; la receta dibuja. **Nunca escribas HTML ni código de
+gráfico, y nunca armes el spec a mano.**
 
-## 1 · Trae los datos de las herramientas, en esta sesión
+## 1 · Pide el spec al servicio
 
-- **Varias sedes de una región:** `panorama_region(region)`, **una sola llamada**. Cada sede trae su
-  `serie_matricula {x, matricula}` y, si está en retirada, `"en_retirada": true`.
-- **Una sede:** `ficha_sede(institucion, region)` trae lo mismo para esa sede.
-- **La procedencia:** el bloque **`procedencia_matricula`** de la misma respuesta, no `procedencia`,
-  que es la de toda la puerta e incluye fuentes que no intervienen en la matrícula. Lo copias tal cual.
+    figura_matricula(region, instituciones=None)
 
-Ninguna cifra del spec ni de tu texto sale de otra parte. Si una herramienta no responde, no hay figura.
+Sin `instituciones`, trae todas las sedes universitarias de la región; con ellas, sólo esas (`["UFRO",
+"católica de temuco"]`). Devuelve `spec` **listo para la receta**: las cifras, un punto por año, los
+huecos y los valores inconsistentes ya declarados, las sedes en retirada marcadas y la procedencia
+propia de la matrícula.
 
-## 2 · Arma el spec
+- **Guarda `spec` tal cual** en un archivo JSON.
+- **Puedes cambiar `title` y `subtitle`** para que digan lo que la pregunta pide (por ejemplo, «Tres
+  sedes que crecen en Temuco»). Respeta sus roles, abajo.
+- **No toques `series`, `annotations`, `notices` ni `provenance`.** Si algo no te parece bien, dilo en
+  el texto; no lo corrijas en el spec.
 
-El formato completo, con un ejemplo, está en `references/spec.md`. Lo esencial:
+Si la herramienta responde con `error`, dilo: no armes el spec a mano.
+
+## 2 · El encuadre: los roles de los textos
+
+El formato completo está en `references/spec.md`. El servicio ya trae un título y un subtítulo
+correctos; si los cambias, respeta sus roles:
 
 - **`title`** nombra la vista, no el hallazgo: «La matrícula de las sedes universitarias de La
-  Araucanía», no «La UFRO lidera». **`subtitle`** dice unidad, universo y ventana: «matrícula total de
-  pregrado por sede, universidades, 2007–2025».
-- **`provenance`** es el bloque de la herramienta. **No escribas `source`**: la fuente se estampa sola,
-  y si la escribes, la figura se niega.
-- **Un punto por año de `x`**, con `"value": null` donde no hay dato. **No omitas el año**: si falta,
-  la línea uniría el hueco y la figura se niega.
-- **`label`** con el nombre como se escribe, no en mayúsculas: «U. de la Frontera», no
-  «UNIVERSIDAD DE LA FRONTERA».
-- Las sedes con `"en_retirada": true` van con `"retreating": true`: no se dibujan, se nombran al
-  pie. Una sede con `nota` de muestra chica **no** está en retirada: se dibuja.
+  Araucanía», no «La UFRO lidera».
+- **`subtitle`** dice unidad, universo y ventana: «matrícula total de pregrado por sede, universidades,
+  2007–2025».
+- **No agregues `source`**: la fuente se estampa sola desde `provenance`, y si la escribes, la figura
+  se niega.
 
-## 3 · Declara lo que la serie no dice sola
+Las sedes en retirada vienen con `"retreating": true`: no se dibujan y se nombran al pie. Si pides sólo
+sedes en retirada, se dibujan y la marca va en `notices`.
 
-La receta **deriva** de los datos lo que hay que declarar, y se niega si falta:
+## 3 · Lo que la serie no dice sola ya viene declarado
+
+El servicio lo anota con las mismas reglas con que la receta lo exige, así que normalmente no tienes
+que hacer nada. Para que sepas qué es:
 
 - **Un hueco** —un `null` entre el primer y el último dato de una serie— exige una anotación
   `kind: "gap"` con su nota: por ejemplo, «sin registro en la fuente».
@@ -45,16 +53,16 @@ La receta **deriva** de los datos lo que hay que declarar, y se niega si falta:
   `kind: "inconsistent"`: por ejemplo, «el registro es inconsistente en este tramo». Se dibuja suelto y
   rodeado, sin unirlo a la línea. **No lo borres ni lo corrijas**: se declara.
 
-No necesitas buscarlos a mano: compón, y si la receta se niega, te dice exactamente cuáles faltan.
+Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelve a pedirlo.
 
 ## 4 · Compón
 
     python3 <carpeta de esta skill>/assets/construir_figura.py --entrada figura.json --salida figura.html
 
 - **Si responde con el nombre del archivo**, la figura está lista.
-- **Si se niega (código 2)**, dice por qué e imprime **una tabla con los mismos datos**. Corrige el
-  spec si el motivo es tuyo, como una anotación que falta. Si no se puede, **entrega esa tabla** y di
-  por qué no hay gráfico. No la reemplaces por un dibujo hecho de otra forma.
+- **Si se niega (código 2)**, dice por qué e imprime **una tabla con los mismos datos**. Si tocaste el
+  spec, vuelve a pedirlo y cambia sólo el encuadre. Si no, **entrega esa tabla** y di por qué no hay
+  gráfico. No la reemplaces por un dibujo hecho de otra forma.
 
 ## 5 · Entrega
 

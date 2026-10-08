@@ -1,5 +1,8 @@
 # El spec de `matricula_series`
 
+**Lo emite el servicio:** `figura_matricula(region, instituciones)` devuelve este objeto en `spec`. Lo
+guardas tal cual; sólo `title` y `subtitle` son tuyos. Esta página existe para que sepas qué contiene.
+
 Claves en inglés y textos en español. Ejemplo con dos sedes, una de ellas con un hueco y un valor
 inconsistente:
 
