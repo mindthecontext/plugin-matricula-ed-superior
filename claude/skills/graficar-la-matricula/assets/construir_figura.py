@@ -266,8 +266,54 @@ def validar_barras(spec: dict, errores: list[str]) -> list[str]:
     return errores
 
 
+EXTREMOS = ("p10_p90", "min_max")
+
+
+def validar_rangos(spec: dict, errores: list[str]) -> list[str]:
+    """`rangos_sedes`: una distribución por fila. Una fila no robusta no trae caja (MAT-19)."""
+    if spec.get("unit") != "score":
+        errores.append("«unit» tiene que ser score")
+    if spec.get("whiskers") not in EXTREMOS:
+        errores.append(f"«whiskers» tiene que ser una de {', '.join(EXTREMOS)}")
+    filas = spec.get("rows") or []
+    if not filas:
+        errores.append("no hay filas")
+    nombres, fuera = set(), set(spec.get("excluded") or [])
+    for f in filas:
+        label = f.get("label")
+        if not str(label or "").strip():
+            errores.append("una fila no trae «label»")
+        if label in nombres:
+            errores.append(f"la fila «{label}» está repetida")
+        nombres.add(label)
+        if label in fuera:
+            errores.append(f"«{label}» está en retirada y no puede aparecer en el cuerpo")
+        n = f.get("n")
+        if not isinstance(n, int) or isinstance(n, bool) or n < 0:
+            errores.append(f"«{label}»: «n» tiene que ser un entero no negativo")
+        if not isinstance(f.get("robust"), bool):
+            errores.append(f"«{label}»: «robust» tiene que ser true o false")
+        if not all(_numero(f.get(k)) for k in ("low", "mid", "high")):
+            errores.append(f"«{label}»: «low», «mid» y «high» tienen que ser números")
+            continue
+        caja = f.get("q1") is not None and f.get("q3") is not None
+        if f.get("robust") is False and caja:
+            errores.append(f"«{label}»: una fila no robusta no lleva caja («q1» y «q3» van null)")
+        if f.get("robust") is True and not (caja and _numero(f["q1"]) and _numero(f["q3"])):
+            errores.append(f"«{label}»: una fila robusta trae «q1» y «q3»")
+        orden = ([f["low"], f["q1"], f["mid"], f["q3"], f["high"]] if caja and _numero(f["q1"]) and _numero(f["q3"])
+                 else [f["low"], f["mid"], f["high"]])
+        if any(v < orden[i - 1] for i, v in enumerate(orden) if i):
+            errores.append(f"«{label}»: los valores no están en orden (extremo bajo ≤ caja ≤ centro ≤ caja ≤ extremo alto)")
+    ref = spec.get("reference")
+    if ref is not None:
+        if not str(ref.get("label") or "").strip() or not _numero(ref.get("value")):
+            errores.append("«reference» tiene que traer «label» y un «value» numérico, o ser null")
+    return errores
+
+
 VALIDADORES = {"matricula_series": validar_series, "matricula_region": validar_region,
-               "barras_sedes": validar_barras}
+               "barras_sedes": validar_barras, "rangos_sedes": validar_rangos}
 
 
 def barras_visibles(spec: dict) -> tuple[list, int]:
@@ -302,6 +348,14 @@ def tabla(spec: dict) -> str:
         for b in spec.get("bars") or []:
             v = "sin dato" if b.get("value") is None else _fmt_unidad(b["value"], spec.get("unit"))
             filas.append(f"| {b.get('label')} | {v} | {'' if b.get('n') is None else b['n']} |")
+        return "\n".join(filas)
+    if spec.get("form") == "rangos_sedes":
+        bajo, alto = ("p10", "p90") if spec.get("whiskers") == "p10_p90" else ("Mínimo", "Máximo")
+        filas = [f"| Sede | {bajo} | p25 | Mediana | p75 | {alto} | n |", "|---|---:|---:|---:|---:|---:|---:|"]
+        for f in spec.get("rows") or []:
+            c = [_fmt_unidad(f.get(k), "years") if f.get(k) is not None else "—" for k in ("low", "q1", "mid", "q3", "high")]
+            eti = f"{f.get('label')} — {f['detail']}" if f.get("detail") else f.get("label")
+            filas.append(f"| {eti} | " + " | ".join(c) + f" | {f.get('n')} |")
         return "\n".join(filas)
     if spec.get("form") == "matricula_region":
         filas = ["| Año | Todas las sedes | Sin las sedes en retirada |", "|---|---:|---:|"]
@@ -373,10 +427,34 @@ def notas_barras(spec: dict) -> str:
     return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
 
 
+def notas_rangos(spec: dict) -> str:
+    items = []
+    if spec.get("whiskers") == "p10_p90":
+        items.append("<li>La caja va del percentil 25 al 75, la marca gruesa es la mediana y los extremos llegan "
+                     "al percentil 10 y al 90.</li>")
+    else:
+        items.append("<li>La línea va del mínimo al máximo; la caja, cuando está, va del percentil 25 al 75, y la "
+                     "marca gruesa es la mediana.</li>")
+    sueltas = [f for f in spec.get("rows") or [] if f.get("robust") is False]
+    if sueltas:
+        items.append("<li>Las filas marcadas con «~» tienen pocos puntajes y van sin caja: unos percentiles sobre "
+                     "tan poca gente fingirían una distribución que el dato no sostiene.</li>")
+    ref = spec.get("reference")
+    if ref:
+        items.append(f"<li>La línea punteada es la mediana {e(ref['label'])} "
+                     f"({e(_fmt_unidad(ref['value'], 'years'))}), calculada sobre todos los estudiantes del país "
+                     "que rindieron, no como promedio de las sedes.</li>")
+    for aviso in spec.get("notices") or []:
+        items.append(f"<li>{e(aviso)}</li>")
+    return f'<div class="notas"><ul>{"".join(items)}</ul></div>'
+
+
 def notas_html(spec: dict) -> str:
     """Lo que el lector tiene que saber para no leer mal la figura, derivado de los datos."""
     if spec.get("form") == "barras_sedes":
         return notas_barras(spec)
+    if spec.get("form") == "rangos_sedes":
+        return notas_rangos(spec)
     if spec.get("form") == "matricula_region":
         return notas_region(spec)
     items = []

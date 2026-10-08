@@ -1,6 +1,6 @@
 ---
 name: reportar-una-region
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y la sección 1, «Quiénes son»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada, la sección 1, «Quiénes son», y la sección 2, «Con qué llegan»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -39,6 +39,17 @@ serie dice con palabras:
 | `rank_longest_run` | La racha más larga de cada sede, ordenadas: «el crecimiento más sostenido» sale de aquí. |
 
 Un valor que no calza con sus vecinos no cuenta en nada de esto, y un año sin dato corta los tramos.
+
+Las figuras de rangos de la sección 2 (la PAES por sede y la carrera que estira la cola) traen su
+**`groups`**:
+
+| Clave | Qué es |
+|---|---|
+| `rank_mid` | Las filas de mayor a menor mediana. En la carrera tope, cada una con su carrera (`detail`). |
+| `rank_box_width` | De la caja más ancha a la más angosta: una sede angosta recibe un alumnado parejo en puntaje. |
+| `rank_upper_tail` | Cuánto se despega el extremo alto de la caja: la cola larga. |
+| `above_reference`, `at_reference`, `below_reference` | Las sedes con mediana sobre, en y bajo la mediana nacional. |
+| `not_robust` | Las filas con menos de 30 puntajes: van sin caja y no sostienen lecturas fuertes. |
 
 **No toques la portada ni las figuras.** Tu trabajo son los bloques `reading`.
 
@@ -100,6 +111,24 @@ publica. Un reporte no mejora con párrafos de relleno.
 8. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426.
 9. **Sin jerga de la casa.** Nada de «pack», «artefacto», nombres de reglas ni códigos de criterio.
 
+### Cómo leer la sección 2, «Con qué llegan»
+
+- **La PAES describe sólo a quienes la rindieron**, y entraron entre 2023 y 2025. No es el alumnado
+  completo de la sede: escribe «quienes rindieron la PAES», no «los estudiantes de la sede». Antes de
+  2023 se rendía la PTU, que es otra escala: no la mezcles.
+- **El ancho cuenta tanto como el centro.** Dos sedes con la misma mediana pueden tener cajas muy
+  distintas. Si hablas de la más pareja o la más dispersa, cópiala de `rank_box_width`.
+- **Una cola larga arriba suele ser una carrera, no la sede.** Si el extremo alto de una sede se despega
+  (`rank_upper_tail`), mira la figura siguiente antes de leerlo como un rasgo de la institución: el
+  candidato natural es Medicina.
+- **Medicina tiene un mercado de admisión propio**, más parecido al de Medicina en otra región que al
+  del resto de su institución. Cuando la carrera tope es Medicina, no la uses para decir que la sede es
+  selectiva: dice qué carreras dicta, no a quién admite.
+- **Una fila con «~» (`not_robust`)** tiene menos de 30 puntajes: nómbrala si hace falta, pero sin
+  construir el relato sobre ella.
+- **El 10% superior es otra vara:** mide el rendimiento relativo al propio colegio, no el puntaje. No
+  la sumes ni la compares directamente con la PAES.
+
 ## 3 · Compón
 
     python3 <carpeta de la skill graficar-la-matricula>/assets/construir_figura.py --entrada reporte.json --salida reporte.html
@@ -118,6 +147,6 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 - **Si no puedes**, entrega el archivo.
 
 En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué no todavía. Hoy cubre la portada y
-la sección 1; selectividad, el mercado y la movilidad, el origen escolar, el acceso y el financiamiento,
-las preferencias y los desenlaces, los planos y la síntesis llegarán como secciones nuevas. No los
+las secciones 1 y 2; el mercado y la movilidad, el origen escolar, el acceso y el financiamiento, las
+preferencias y los desenlaces, los planos y la síntesis llegarán como secciones nuevas. No los
 completes con otras herramientas dentro del reporte.

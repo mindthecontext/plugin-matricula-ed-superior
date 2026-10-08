@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.10.0 · 2026-10-08
+
+El reporte regional suma su segunda sección, «Con qué llegan», con tres figuras: el puntaje PAES de quienes entraron a cada sede —no el promedio, sino la distribución completa, contra la mediana del país—, la carrera de mayor puntaje en cada sede, que suele ser Medicina y explica por qué el extremo alto se despega, y cuántos venían entre el 10% superior de su colegio. La PAES se declara como lo que es: cubre a quienes la rindieron y entraron desde 2023, no al alumnado completo. Las cifras son las mismas del reporte regional que existía antes, y los órdenes que una lectura cita —la mediana más alta, la caja más angosta— vienen calculados.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.9.0 · 2026-10-08
 
 Las lecturas de la serie de matrícula, también calculadas. Junto a la figura «Cómo han cambiado», el servicio entrega ahora lo que una lectura dice con palabras: cuánto cambió cada sede —en número y en porcentaje, en todo su período y entre 2019 y 2025—, su máximo y su mínimo, su mayor alza y su mayor caída, los años en que subió o bajó todos los años, y quién cambió más. El asistente lo copia en vez de deducirlo: «la que más creció» dice si es en número o en porcentaje, y «sin pausa» sólo se escribe si fue así año a año. Un registro que no calza no cuenta como máximo ni como salto, y una sede que partió de muy pocos estudiantes no aparece como la que más creció en porcentaje.

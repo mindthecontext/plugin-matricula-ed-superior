@@ -245,7 +245,52 @@ function validarBarras(spec, errores) {
   return errores;
 }
 
-const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion, barras_sedes: validarBarras };
+const EXTREMOS = ["p10_p90", "min_max"];
+
+/**
+ * `rangos_sedes`: una fila por sede (o por la carrera de una sede), con su distribución: extremos,
+ * caja del p25 al p75 y centro. `whiskers` declara qué marcan los extremos, porque no es lo mismo un
+ * p10–p90 que un mínimo–máximo.
+ *
+ * UNA FILA NO ROBUSTA NO TRAE CAJA: con pocos puntajes, unos percentiles fingirían una distribución que
+ * el dato no sostiene (el reporte local). Si la trae, la receta se niega.
+ */
+function validarRangos(spec, errores) {
+  if (spec.unit !== "score") errores.push("«unit» tiene que ser score");
+  if (!EXTREMOS.includes(spec.whiskers)) errores.push(`«whiskers» tiene que ser una de ${EXTREMOS.join(", ")}`);
+  const filas = spec.rows || [];
+  if (!filas.length) errores.push("no hay filas");
+  const nombres = new Set();
+  const fuera = new Set(spec.excluded || []);
+  const num = v => typeof v === "number" && Number.isFinite(v);
+  for (const f of filas) {
+    if (!String(f.label || "").trim()) errores.push("una fila no trae «label»");
+    if (nombres.has(f.label)) errores.push(`la fila «${f.label}» está repetida`);
+    nombres.add(f.label);
+    if (fuera.has(f.label)) errores.push(`«${f.label}» está en retirada y no puede aparecer en el cuerpo`);
+    if (!Number.isInteger(f.n) || f.n < 0) errores.push(`«${f.label}»: «n» tiene que ser un entero no negativo`);
+    if (typeof f.robust !== "boolean") errores.push(`«${f.label}»: «robust» tiene que ser true o false`);
+    if (![f.low, f.mid, f.high].every(num)) {
+      errores.push(`«${f.label}»: «low», «mid» y «high» tienen que ser números`);
+      continue;
+    }
+    const caja = [f.q1, f.q3].every(v => v !== null && v !== undefined);
+    if (f.robust === false && caja) errores.push(`«${f.label}»: una fila no robusta no lleva caja («q1» y «q3» van null)`);
+    if (f.robust === true && !(caja && [f.q1, f.q3].every(num))) errores.push(`«${f.label}»: una fila robusta trae «q1» y «q3»`);
+    const orden = caja && [f.q1, f.q3].every(num) ? [f.low, f.q1, f.mid, f.q3, f.high] : [f.low, f.mid, f.high];
+    if (orden.some((v, i) => i > 0 && v < orden[i - 1])) errores.push(`«${f.label}»: los valores no están en orden (extremo bajo ≤ caja ≤ centro ≤ caja ≤ extremo alto)`);
+  }
+  const ref = spec.reference;
+  if (ref !== null && ref !== undefined) {
+    if (!String(ref.label || "").trim() || !num(ref.value)) {
+      errores.push("«reference» tiene que traer «label» y un «value» numérico, o ser null");
+    }
+  }
+  return errores;
+}
+
+const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion, barras_sedes: validarBarras,
+                      rangos_sedes: validarRangos };
 
 // ── el dibujo ───────────────────────────────────────────────────────────────────────────────────
 const tono = nombre => getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
@@ -398,10 +443,77 @@ function barrasSedes(spec, Plot, ancho) {
   });
 }
 
+/** Las filas de `rangos_sedes`, de mayor a menor centro, con su rótulo: la sede y, si la hay, la carrera. */
+function filasRangos(spec) {
+  return (spec.rows || []).map(f => ({ ...f, eti: f.detail ? `${f.label} — ${f.detail}` : f.label }))
+    .sort((a, b) => b.mid - a.mid);
+}
+
+function rangosSedes(spec, Plot, ancho) {
+  const filas = filasRangos(spec);
+  const angosto = ancho < 520;
+  const ref = spec.reference;
+  // UN DECIMAL, NO ENTERO: el dato es 674,5 y la lectura lo cita de la figura. Mostrado como «675», el
+  // guardia de cifras lo rechazaría, porque no acepta el redondeo a entero de un valor con decimales.
+  const fmt = v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
+  const halo = { stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" };
+  const largo = Math.max(...filas.map(f => f.eti.length));
+  const margen = Math.min(angosto ? Math.round(ancho * 0.52) : 300, Math.round(largo * 5.6) + 14);
+  const maxCh = Math.floor((margen - 14) / 5.6);
+  // Lo que no cabe se acorta AL MEDIO: el final distingue («ingeniería civil en obras civiles»). Y LA
+  // INSTITUCIÓN SE CONSERVA, que es la identidad de la fila: se acorta la carrera (el reporte local; en
+  // un teléfono, «Pontificia U.... medicina» ya no decía de qué institución era).
+  const medio = (t, n) => (t.length <= n ? t : t.slice(0, Math.ceil((n - 1) * 0.5)) + "…" + t.slice(-Math.floor((n - 1) * 0.5)));
+  const acorta = t => {
+    if (t.length <= maxCh) return t;
+    const i = t.indexOf(" — ");
+    if (i < 0) return medio(t, maxCh);
+    const inst = t.slice(0, i), carr = t.slice(i + 3);
+    // La carrera corta va entera («medicina»); una larga cede hasta un tercio. La institución, el resto.
+    const paraCarrera = Math.min(carr.length, Math.max(9, Math.floor(maxCh * 0.34)));
+    return medio(inst, maxCh - 3 - paraCarrera) + " — " + medio(carr, paraCarrera);
+  };
+  const robustas = filas.filter(f => f.robust);
+  const sueltas = filas.filter(f => !f.robust);
+  const bajo = Math.min(...filas.map(f => f.low), ref ? ref.value : Infinity);
+  const alto = Math.max(...filas.map(f => f.high), ref ? ref.value : -Infinity);
+  const color = COLORES[0];
+  return Plot.plot({
+    width: ancho, height: 44 + filas.length * (angosto ? 32 : 34), marginLeft: margen, marginRight: spec.whiskers === "min_max" ? 64 : 40,
+    marginTop: ref ? 24 : 10, marginBottom: 24,
+    style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
+    x: { label: null, domain: [bajo - 20, alto + 20], grid: true, ticks: angosto ? 3 : 6, tickFormat: fmt },
+    y: { label: null, domain: filas.map(f => f.eti), tickFormat: acorta },
+    marks: [
+      // DOS BIGOTES, NO UNA LÍNEA QUE CRUZA LA CAJA (el reporte local lo corrigió dos veces).
+      Plot.ruleY(robustas, { y: "eti", x1: "low", x2: "q1", stroke: color, strokeWidth: 1.5 }),
+      Plot.ruleY(robustas, { y: "eti", x1: "q3", x2: "high", stroke: color, strokeWidth: 1.5 }),
+      // Sin caja, la línea sí va completa.
+      Plot.ruleY(sueltas, { y: "eti", x1: "low", x2: "high", stroke: color, strokeWidth: 1.5, strokeOpacity: 0.6 }),
+      Plot.tickX(filas, { x: "low", y: "eti", stroke: color, strokeWidth: 1.5, insetTop: 11, insetBottom: 11 }),
+      Plot.tickX(filas, { x: "high", y: "eti", stroke: color, strokeWidth: 1.5, insetTop: 11, insetBottom: 11 }),
+      Plot.barX(robustas, { y: "eti", x1: "q1", x2: "q3", fill: color, fillOpacity: 0.22, stroke: color, strokeWidth: 1.3,
+                            insetTop: 10, insetBottom: 10 }),
+      // El centro sobresale de la caja: se distingue del borde sin otro color.
+      Plot.tickX(filas, { x: "mid", y: "eti", stroke: color, strokeWidth: 2.6, insetTop: 7, insetBottom: 7,
+                          title: f => `${f.eti}: ${fmt(f.mid)} (n=${f.n.toLocaleString("es-CL")})` }),
+      // Con halo: la mediana cae a menudo sobre la línea de la referencia.
+      Plot.text(filas, { x: "mid", y: "eti", text: f => fmt(f.mid), dy: -13, fontSize: 9, fill: tono("--texto-tenue"), ...halo }),
+      ...(spec.whiskers === "min_max"
+        ? [Plot.text(filas, { x: "high", y: "eti", dx: 8, textAnchor: "start", fontSize: 8.5, fill: tono("--texto-tenue"), ...halo,
+                              text: f => `n=${f.n.toLocaleString("es-CL")}${f.robust ? "" : " ~"}` })]
+        : []),
+      ...(ref ? [Plot.ruleX([ref.value], { stroke: COLORES[1], strokeWidth: 1.6, strokeDasharray: "4 3" }),
+                 Plot.text([ref], { x: "value", text: r => `${r.label} ${fmt(r.value)}`, frameAnchor: "top", dy: -16,
+                                    fontSize: 10, fill: tono("--marca-cuadro"), ...halo })] : []),
+    ],
+  });
+}
+
 /** La leyenda, en HTML: con muestra de color, trazo y forma, para que no dependa del color. */
 function leyenda(spec) {
   if (spec.form === "matricula_region") return leyendaRegion(spec);
-  if (spec.form === "barras_sedes") return null;
+  if (spec.form === "barras_sedes" || spec.form === "rangos_sedes") return null;
   const activas = (spec.series || []).filter(s => !s.retreating);
   if (activas.length < 2 || activas.length > MAX_EN_UN_PANEL) return null;
   const caja = document.createElement("div");
@@ -442,7 +554,8 @@ function leyendaRegion(spec) {
   return caja;
 }
 
-const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion, barras_sedes: barrasSedes };
+const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion, barras_sedes: barrasSedes,
+                 rangos_sedes: rangosSedes };
 
 /** Dibuja una figura en el ancho dado, o se niega. */
 function dibujar(spec, ancho = 720) {
