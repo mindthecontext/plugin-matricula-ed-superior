@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -67,12 +68,41 @@ def _num(v) -> str:
     return str(int(v)) if isinstance(v, float) and v.is_integer() else str(v)
 
 
+_FALTA = object()
+
+
+def js(v) -> str:
+    """Un valor como lo escribe JavaScript en un mensaje: los dos guardias tienen que decir lo mismo."""
+    if v is _FALTA:
+        return "undefined"
+    if v is None:
+        return "null"
+    if isinstance(v, bool):
+        return "true" if v else "false"
+    return _num(v) if isinstance(v, (int, float)) else str(v)
+
+
+def crecimiento(x: list, v: list, desde: int, hasta: int):
+    """Igual que en la receta: redondeo a un decimal con empates hacia arriba (Math.round), no al par."""
+    if desde not in x or hasta not in x:
+        return None
+    a, b = v[x.index(desde)], v[x.index(hasta)]
+    if a is None or b is None or not a:
+        return None
+    return math.floor(1000 * (b - a) / a + 0.5) / 10
+
+
 def validar(spec: dict) -> list[str]:
     """Los motivos por los que el spec NO se dibuja. Mismas reglas y mensajes que la receta."""
+    forma = spec.get("form", _FALTA) if isinstance(spec, dict) else _FALTA
+    if forma not in VALIDADORES:
+        return [f"la forma «{js(forma)}» no está implementada; hoy existen matricula_series y matricula_region"]
     errores: list[str] = []
-    if not isinstance(spec, dict) or spec.get("form") != "matricula_series":
-        forma = spec.get("form") if isinstance(spec, dict) else None
-        return [f"la forma «{'undefined' if forma is None else forma}» no está implementada; hoy existe matricula_series"]
+    encabezado(spec, errores)
+    return VALIDADORES[forma](spec, errores)
+
+
+def encabezado(spec: dict, errores: list[str]) -> None:
     for campo in ("title", "subtitle"):
         if not str(spec.get(campo) or "").strip():
             errores.append(f"falta «{campo}»")
@@ -84,6 +114,10 @@ def validar(spec: dict) -> list[str]:
     if not x or any(not isinstance(v, int) or isinstance(v, bool) or (i > 0 and v <= x[i - 1])
                     for i, v in enumerate(x)):
         errores.append("«x» tiene que ser una lista de años enteros, creciente y sin repetir")
+
+
+def validar_series(spec: dict, errores: list[str]) -> list[str]:
+    x = spec.get("x") or []
     series = spec.get("series") or []
     if not series:
         errores.append("no hay series")
@@ -127,8 +161,85 @@ def validar(spec: dict) -> list[str]:
     return errores
 
 
+def validar_region(spec: dict, errores: list[str]) -> list[str]:
+    """`matricula_region`: aritmética, años sin total declarados y crecimiento recalculado."""
+    x = spec.get("x") or []
+    total, activa = spec.get("total") or [], spec.get("active") or []
+    if len(total) != len(x) or len(activa) != len(x):
+        errores.append("«total» y «active» tienen que traer un valor por año de «x», con null donde no hay total")
+        return errores
+    for nombre, v in (("total", total), ("active", activa)):
+        for i, y in enumerate(v):
+            if y is not None and (not isinstance(y, (int, float)) or isinstance(y, bool) or y < 0):
+                errores.append(f"«{nombre}» {x[i]}: tiene que ser un número no negativo o null")
+    for i, a in enumerate(x):
+        if total[i] is not None and activa[i] is not None and activa[i] > total[i]:
+            errores.append(f"{a}: lo activo ({js(activa[i])}) supera al total ({js(total[i])}), y es una parte de él")
+    incompletos = spec.get("incomplete") or []
+
+    def declarado(serie, anio, trato):
+        return any(c.get("series") == serie and c.get("year") == anio and c.get("treatment") == trato
+                   for c in incompletos)
+    for nombre, v in (("total", total), ("active", activa)):
+        for i, y in enumerate(v):
+            if y is None and not declarado(nombre, x[i], "no_total"):
+                errores.append(f"año sin total sin declarar: «{nombre}» {x[i]}")
+    for c in incompletos:
+        serie = c.get("series")
+        v = total if serie == "total" else activa if serie == "active" else None
+        if v is None:
+            errores.append(f"un año incompleto nombra la serie «{js(c.get('series', _FALTA))}», que no existe")
+            continue
+        anio = c.get("year")
+        if anio not in x:
+            errores.append(f"un año incompleto nombra {js(c.get('year', _FALTA))}, que no está en «x»")
+        else:
+            y = v[x.index(anio)]
+            trato = c.get("treatment", _FALTA)
+            if trato == "no_total" and y is not None:
+                errores.append(f"«{serie}» {anio} se declara sin total y trae {js(y)}")
+            elif trato == "summed" and y is None:
+                errores.append(f"«{serie}» {anio} se declara sumado y no trae valor")
+            elif trato not in ("summed", "no_total"):
+                errores.append(f"«{serie}» {anio}: el tratamiento «{js(trato)}» no existe")
+        if not c.get("missing"):
+            errores.append(f"«{serie}» {js(c.get('year', _FALTA))}: un año incompleto tiene que decir qué sede falta")
+    g = spec.get("growth") or {}
+    periodo = g.get("period") or []
+    desde, hasta = (periodo + [None, None])[:2]
+    if desde not in x or hasta not in x:
+        errores.append("«growth.period» tiene que ser dos años de «x»")
+    else:
+        for nombre, v in (("total", total), ("active", activa)):
+            real = crecimiento(x, v, desde, hasta)
+            declarado_g = g.get(nombre)
+            if real != declarado_g:
+                errores.append(f"el crecimiento «{nombre}» declarado ({js(g.get(nombre, _FALTA))}) "
+                               f"no es el de las cifras ({js(real)})")
+    difieren = any(t is not None and a is not None and t != a for t, a in zip(total, activa))
+    if difieren and not spec.get("retreating_sites"):
+        errores.append("las dos curvas difieren y no se nombra ninguna sede en retirada")
+    return errores
+
+
+VALIDADORES = {"matricula_series": validar_series, "matricula_region": validar_region}
+
+
+def _miles(v) -> str:
+    return "sin total" if v is None else f"{v:,.0f}".replace(",", ".")
+
+
+def _pct(v) -> str:
+    return "no derivable" if v is None else (f"+{v}" if v > 0 else f"{v}").replace(".", ",") + "%"
+
+
 def tabla(spec: dict) -> str:
     """La tabla que se entrega cuando la figura no se dibuja: los mismos datos, sin interpolar."""
+    if spec.get("form") == "matricula_region":
+        filas = ["| Año | Todas las sedes | Sin las sedes en retirada |", "|---|---:|---:|"]
+        for a, t, v in zip(spec.get("x") or [], spec.get("total") or [], spec.get("active") or []):
+            filas.append(f"| {a} | {_miles(t)} | {_miles(v)} |")
+        return "\n".join(filas)
     series = spec.get("series") or []
     x = spec.get("x") or sorted({p.get("year") for s in series for p in s.get("points") or []})
     cab = "| Año | " + " | ".join(str(s.get("label")) for s in series) + " |"
@@ -147,8 +258,38 @@ def e(texto) -> str:
     return html.escape(str(texto if texto is not None else ""), quote=False)
 
 
+def notas_region(spec: dict) -> str:
+    """El pie de la serie regional: el crecimiento de lo que se dibuja y todo lo que no es firme."""
+    items = []
+    g = spec["growth"]
+    desde, hasta = g["period"]
+    items.append(f"<li>Crecimiento {desde}→{hasta}: <b>{e(_pct(g.get('total')))}</b> con todas las sedes; "
+                 f"<b>{e(_pct(g.get('active')))}</b> sin las sedes en retirada.</li>")
+    for c in spec.get("incomplete") or []:
+        if c.get("series") != "total":
+            continue
+        quienes = "; ".join(f"{m.get('site')} (cerca del {str(m.get('weight_pct')).replace('.', ',')}%)"
+                            for m in c.get("missing") or [])
+        if c.get("treatment") == "summed":
+            items.append(f'<li><span class="marca">{e(c["year"])}, sumado sin una sede:</span> falta {e(quienes)}. '
+                         "El punto va hueco.</li>")
+        else:
+            items.append(f'<li><span class="marca">{e(c["year"])}, sin total:</span> falta {e(quienes)}, y sumar '
+                         "sin ella mostraría una caída que no ocurrió.</li>")
+    for a in spec.get("annotations") or []:
+        if a.get("kind") == "inconsistent":
+            items.append(f'<li><span class="marca">{e(a.get("year"))}:</span> {e(a.get("note"))}</li>')
+    if spec.get("retreating_sites"):
+        items.append("<li>Sedes en retirada (la banda): " + e("; ".join(spec["retreating_sites"])) + ".</li>")
+    for aviso in spec.get("notices") or []:
+        items.append(f"<li>{e(aviso)}</li>")
+    return f'<div class="notas"><ul>{"".join(items)}</ul></div>'
+
+
 def notas_html(spec: dict) -> str:
     """Lo que el lector tiene que saber para no leer mal la figura, derivado de los datos."""
+    if spec.get("form") == "matricula_region":
+        return notas_region(spec)
     items = []
     for a in spec.get("annotations") or []:
         if a.get("kind") == "inconsistent":
@@ -218,8 +359,12 @@ def main() -> int:
               "Revisa título, subtítulo y notas.", file=sys.stderr)
         return 2
     a.salida.write_text(pagina, encoding="utf-8")
-    activas = [s for s in spec["series"] if not s.get("retreating")]
     print(a.salida)
+    if spec["form"] == "matricula_region":
+        print(f"serie regional · {len(spec['x'])} años · incompletos: {len(spec.get('incomplete') or [])} · "
+              f"sedes en retirada: {len(spec.get('retreating_sites') or [])}")
+        return 0
+    activas = [s for s in spec["series"] if not s.get("retreating")]
     print(f"series dibujadas: {len(activas)} de {len(spec['series'])} · "
           f"{'un panel' if len(activas) <= MAX_EN_UN_PANEL else 'un panel por serie'} · "
           f"anotaciones: {len(spec.get('annotations') or [])}")

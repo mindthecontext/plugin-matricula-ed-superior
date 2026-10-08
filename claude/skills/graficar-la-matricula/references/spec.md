@@ -56,3 +56,36 @@ inconsistente:
 - Hasta cinco series van en un panel, distinguidas por color, trazo y forma. Con más, va un panel por
   sede con el mismo eje.
 - Los bordes de cobertura («con registro desde 2008») se anotan solos al pie.
+
+
+# El spec de `matricula_region`
+
+**Lo emite el servicio:** `figura_matricula_region(region)` lo devuelve en `spec`. Sólo `title` y
+`subtitle` son tuyos.
+
+```json
+{
+  "form": "matricula_region",
+  "title": "La matrícula universitaria de La Araucanía",
+  "subtitle": "matrícula total de pregrado de la región, universidades, 2007–2025; con todas las sedes y sin las que están en retirada",
+  "provenance": { "fuente_original": "…", "universo": "…" },
+  "x": [2007, "…", 2025],
+  "total": [22271, "…", 36351],
+  "active": [22198, "…", 36299],
+  "growth": { "period": [2019, 2025], "total": 11.8, "active": 14.5 },
+  "incomplete": [
+    { "series": "total", "year": 2010, "treatment": "summed",
+      "missing": [{ "site": "Pontificia U. Católica de Chile", "weight_pct": 0.84 }] }
+  ],
+  "annotations": [{ "year": 2011, "kind": "inconsistent", "note": "el total incluye un valor inconsistente de …" }],
+  "retreating_sites": ["U. Tecnológica de Chile INACAP", "U. La República"],
+  "notices": []
+}
+```
+
+**Lo que la receta comprueba**, y por lo que se niega:
+- Lo activo nunca supera al total.
+- Todo `null` está declarado en `incomplete` con `treatment: "no_total"`.
+- Todo año incompleto dice qué sede falta.
+- **El crecimiento declarado es el de las cifras:** la receta lo recalcula.
+- Si las dos curvas difieren, se nombra al menos una sede en retirada.

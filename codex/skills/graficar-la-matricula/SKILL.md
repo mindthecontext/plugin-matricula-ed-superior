@@ -1,6 +1,6 @@
 ---
 name: graficar-la-matricula
-description: Dibuja cómo evolucionó la matrícula de una o varias sedes universitarias, 2007–2025 — «¿cómo ha evolucionado la matrícula de la UST en Temuco?», «grafícame la matrícula de las sedes de La Araucanía», «muéstrame la serie de esta universidad», «compara cómo crecieron estas sedes». Produce una figura que se publica como página, con los huecos y los valores inconsistentes declarados. NO dibuja carreras, regiones agregadas ni otros indicadores: hoy existe una sola forma.
+description: Dibuja cómo evolucionó la matrícula universitaria, 2007–2025, de una o varias sedes o de una región entera — «¿cómo ha evolucionado la matrícula de la UST en Temuco?», «grafícame la matrícula de las sedes de La Araucanía», «compara cómo crecieron estas sedes», «grafícame la matrícula de la región», «¿cuánto creció la región con y sin las sedes que cierran?». Produce una figura que se publica como página, con los huecos, los años incompletos y los valores inconsistentes declarados. NO dibuja carreras ni otros indicadores.
 ---
 
 # Graficar la matrícula
@@ -10,14 +10,19 @@ matrícula total de pregrado de una o varias sedes universitarias, año a año. 
 **spec** con los datos; tú decides el encuadre; la receta dibuja. **Nunca escribas HTML ni código de
 gráfico, y nunca armes el spec a mano.**
 
-## 1 · Pide el spec al servicio
+## 1 · Elige la forma y pide el spec al servicio
 
-    figura_matricula(region, instituciones=None)
+Hay **dos formas**, y responden preguntas distintas:
 
-Sin `instituciones`, trae todas las sedes universitarias de la región; con ellas, sólo esas (`["UFRO",
-"católica de temuco"]`). Devuelve `spec` **listo para la receta**: las cifras, un punto por año, los
-huecos y los valores inconsistentes ya declarados, las sedes en retirada marcadas y la procedencia
-propia de la matrícula.
+| La pregunta | La herramienta | La figura |
+|---|---|---|
+| cómo evolucionaron **unas sedes**, o compararlas entre sí | `figura_matricula(region, instituciones=None)` | una línea por sede (o un panel por sede, si son más de cinco) |
+| cómo evolucionó **la región entera** | `figura_matricula_region(region)` | el total, y una banda con lo que aportaban las sedes en retirada |
+
+`figura_matricula` sin `instituciones` trae todas las sedes de la región; con ellas, sólo esas
+(`["UFRO", "católica de temuco"]`). Las dos devuelven `spec` **listo para la receta**: las cifras, los
+huecos y los valores inconsistentes declarados, las sedes en retirada marcadas y la procedencia propia
+de la matrícula. La regional trae además el crecimiento, con todas las sedes y sin las en retirada.
 
 - **Guarda `spec` tal cual** en un archivo JSON.
 - **Puedes cambiar `title` y `subtitle`** para que digan lo que la pregunta pide (por ejemplo, «Tres
@@ -55,6 +60,17 @@ que hacer nada. Para que sepas qué es:
 
 Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelve a pedirlo.
 
+## 3b · Cómo se lee la figura de la región
+
+- **La línea sólida es el total**, con todas las sedes. **La línea discontinua es lo que queda sin las
+  sedes en retirada.** La banda entre las dos es lo que ellas aportaban: si se angosta, se fueron
+  achicando, y por eso el crecimiento sin ellas es mayor.
+- **Un punto hueco** es un año que se sumó sin una sede, porque lo que faltaba pesaba menos del 1%.
+  **Un año sin punto** es uno sin total: lo que faltaba pesaba más, y sumar mostraría una caída que no
+  ocurrió. El pie dice qué sede faltó y cuánto pesaba.
+- **El pie trae los dos crecimientos.** En tu texto di cuál usas y por qué: son dos preguntas, cuánto
+  cambió la región y cuánto creció el mercado que sigue compitiendo.
+
 ## 4 · Compón
 
     python3 <carpeta de esta skill>/assets/construir_figura.py --entrada figura.json --salida figura.html
@@ -77,7 +93,6 @@ En el texto que la acompaña:
 
 ## Lo que esta skill no hace
 
-Hoy existe **una forma**: la serie de matrícula por sede. No dibuja la serie de la región agregada
-—`panorama_region` la entrega en `matricula_region.serie`, con y sin las sedes en retirada, pero esa
-forma todavía no tiene receta: dila con sus cifras y sus avisos—, ni carreras, ni otros indicadores.
-Si te piden otro gráfico, dilo y responde con la tabla de las herramientas correspondientes.
+Existen **dos formas**: la serie por sede y la de la región entera. No dibuja carreras, ni
+universidades fuera de una región, ni otros indicadores (selectividad, gratuidad, flujos). Si te piden
+otro gráfico, dilo y responde con la tabla de las herramientas correspondientes.

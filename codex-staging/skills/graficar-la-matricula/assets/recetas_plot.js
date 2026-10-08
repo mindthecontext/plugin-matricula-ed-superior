@@ -1,5 +1,6 @@
-// Recetas de visualización del saber Matrícula de Educación Superior. Hoy hay una forma:
-// `matricula_series`, la serie de matrícula de una o varias sedes.
+// Recetas de visualización del saber Matrícula de Educación Superior. Hay dos formas:
+// `matricula_series`, la serie de matrícula de una o varias sedes, y `matricula_region`, la de una
+// región entera, con y sin las sedes en retirada.
 //
 // EL REPARTO. El agente produce un spec JSON con datos y encuadre; la receta dibuja. Las reglas
 // van pegadas a la receta y no se configuran desde el spec: que la línea se corte en un hueco, que
@@ -66,11 +67,17 @@ function exigencias(spec) {
  * las dos sobre los mismos specs.
  */
 function validar(spec) {
-  const errores = [];
-  if (!spec || spec.form !== "matricula_series") {
-    errores.push(`la forma «${spec && spec.form}» no está implementada; hoy existe matricula_series`);
-    return errores;
+  const forma = spec && spec.form;
+  if (!VALIDADORES[forma]) {
+    return [`la forma «${forma}» no está implementada; hoy existen matricula_series y matricula_region`];
   }
+  const errores = [];
+  encabezado(spec, errores);
+  return VALIDADORES[forma](spec, errores);
+}
+
+/** Lo que toda forma exige: los tres textos con sus roles, la procedencia y los años. */
+function encabezado(spec, errores) {
   for (const campo of ["title", "subtitle"]) {
     if (!String(spec[campo] || "").trim()) errores.push(`falta «${campo}»`);
   }
@@ -83,6 +90,10 @@ function validar(spec) {
   if (!x.length || x.some((v, i) => !Number.isInteger(v) || (i > 0 && v <= x[i - 1]))) {
     errores.push("«x» tiene que ser una lista de años enteros, creciente y sin repetir");
   }
+}
+
+function validarSeries(spec, errores) {
+  const x = spec.x || [];
   const series = spec.series || [];
   if (!series.length) errores.push("no hay series");
   const nombres = new Set();
@@ -126,6 +137,76 @@ function validar(spec) {
   }
   return errores;
 }
+
+/** El crecimiento entre dos años de una serie, redondeado a un decimal, o null si falta un extremo. */
+function crecimiento(x, v, desde, hasta) {
+  const a = v[x.indexOf(desde)], b = v[x.indexOf(hasta)];
+  if (a === null || a === undefined || b === null || b === undefined || !a) return null;
+  return Math.round(1000 * (b - a) / a) / 10;
+}
+
+/**
+ * `matricula_region`: el total de una región y lo que queda sin las sedes en retirada.
+ *
+ * LA RECETA COMPRUEBA LA ARITMÉTICA Y RECALCULA EL CRECIMIENTO. Lo activo no puede superar al total,
+ * y el crecimiento que dirá el pie tiene que ser el de las cifras que se dibujan: si el spec trae
+ * otro número, se niega. Así el pie no puede contar una historia distinta de la figura.
+ */
+function validarRegion(spec, errores) {
+  const x = spec.x || [];
+  const total = spec.total || [], activa = spec.active || [];
+  if (total.length !== x.length || activa.length !== x.length) {
+    errores.push("«total» y «active» tienen que traer un valor por año de «x», con null donde no hay total");
+    return errores;
+  }
+  const vacio = v => v === null || v === undefined;
+  for (const [nombre, v] of [["total", total], ["active", activa]]) {
+    v.forEach((y, i) => {
+      if (!vacio(y) && (typeof y !== "number" || y < 0)) errores.push(`«${nombre}» ${x[i]}: tiene que ser un número no negativo o null`);
+    });
+  }
+  x.forEach((a, i) => {
+    if (!vacio(total[i]) && !vacio(activa[i]) && activa[i] > total[i]) {
+      errores.push(`${a}: lo activo (${activa[i]}) supera al total (${total[i]}), y es una parte de él`);
+    }
+  });
+  const incompletos = spec.incomplete || [];
+  const declarado = (serie, anio, trato) => incompletos.some(c => c.series === serie && c.year === anio && c.treatment === trato);
+  for (const [nombre, v] of [["total", total], ["active", activa]]) {
+    v.forEach((y, i) => {
+      if (vacio(y) && !declarado(nombre, x[i], "no_total")) errores.push(`año sin total sin declarar: «${nombre}» ${x[i]}`);
+    });
+  }
+  for (const c of incompletos) {
+    const v = c.series === "total" ? total : c.series === "active" ? activa : null;
+    if (!v) { errores.push(`un año incompleto nombra la serie «${c.series}», que no existe`); continue; }
+    const y = v[x.indexOf(c.year)];
+    if (!x.includes(c.year)) errores.push(`un año incompleto nombra ${c.year}, que no está en «x»`);
+    else if (c.treatment === "no_total" && !vacio(y)) errores.push(`«${c.series}» ${c.year} se declara sin total y trae ${y}`);
+    else if (c.treatment === "summed" && vacio(y)) errores.push(`«${c.series}» ${c.year} se declara sumado y no trae valor`);
+    else if (!["summed", "no_total"].includes(c.treatment)) errores.push(`«${c.series}» ${c.year}: el tratamiento «${c.treatment}» no existe`);
+    if (!(c.missing || []).length) errores.push(`«${c.series}» ${c.year}: un año incompleto tiene que decir qué sede falta`);
+  }
+  const g = spec.growth || {};
+  const [desde, hasta] = g.period || [];
+  if (!x.includes(desde) || !x.includes(hasta)) {
+    errores.push("«growth.period» tiene que ser dos años de «x»");
+  } else {
+    for (const [nombre, v] of [["total", total], ["active", activa]]) {
+      const real = crecimiento(x, v, desde, hasta);
+      if (real !== (g[nombre] ?? null)) {
+        errores.push(`el crecimiento «${nombre}» declarado (${g[nombre]}) no es el de las cifras (${real})`);
+      }
+    }
+  }
+  const difieren = x.some((_, i) => !vacio(total[i]) && !vacio(activa[i]) && total[i] !== activa[i]);
+  if (difieren && !(spec.retreating_sites || []).length) {
+    errores.push("las dos curvas difieren y no se nombra ninguna sede en retirada");
+  }
+  return errores;
+}
+
+const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion };
 
 // ── el dibujo ───────────────────────────────────────────────────────────────────────────────────
 const tono = nombre => getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
@@ -203,8 +284,43 @@ function matriculaSeries(spec, Plot, ancho) {
   });
 }
 
+function matriculaRegion(spec, Plot, ancho) {
+  const x = spec.x;
+  const sumados = new Set((spec.incomplete || []).filter(c => c.series === "total" && c.treatment === "summed").map(c => c.year));
+  const filas = x.map((anio, i) => ({ year: anio, total: spec.total[i] ?? null, active: spec.active[i] ?? null }));
+  const angosto = ancho < 520;
+  const desde = x[0], hasta = x[x.length - 1];
+  const conTotal = filas.filter(f => f.total !== null);
+  const banda = filas.map(f => (f.total !== null && f.active !== null ? f : { ...f, total: null, active: null }));
+  const medio = banda.filter(f => f.total !== null && f.total > f.active)
+    .sort((a, b) => (b.total - b.active) - (a.total - a.active))[0];
+  return Plot.plot({
+    width: ancho, height: angosto ? 260 : 320, marginLeft: 56, marginRight: 16, marginTop: 20, marginBottom: 30,
+    style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
+    x: { label: null, domain: [desde, hasta], ticks: x.filter(a => (a - desde) % (angosto ? 6 : 3) === 0 || a === hasta),
+         tickFormat: v => String(v), inset: 8 },
+    y: { label: null, zero: true, grid: true, nice: true, tickFormat: v => Math.round(v).toLocaleString("es-CL") },
+    marks: [
+      Plot.ruleY([0], { stroke: tono("--fig-regla") }),
+      // LA BANDA ES LA MATRÍCULA DE LAS SEDES EN RETIRADA: entre lo activo y el total.
+      Plot.areaY(banda, { x: "year", y1: "active", y2: "total", fill: COLORES[1], fillOpacity: 0.42 }),
+      Plot.line(banda, { x: "year", y: "active", stroke: COLORES[0], strokeWidth: 1.3, strokeDasharray: "3 2" }),
+      Plot.line(filas, { x: "year", y: "total", stroke: COLORES[0], strokeWidth: 2.4 }),
+      // UN AÑO SUMADO SIN UNA SEDE VA HUECO: es una cifra, pero no una firme. El año sin total corta la línea.
+      Plot.dot(conTotal, { x: "year", y: "total", r: angosto ? 3 : 3.6, stroke: COLORES[0], strokeWidth: 1.6,
+                           fill: f => (sumados.has(f.year) ? tono("--superficie") : COLORES[0]),
+                           title: f => `${f.year}: ${f.total.toLocaleString("es-CL")}${sumados.has(f.year) ? " (sumado sin una sede)" : ""}` }),
+      ...(medio ? [Plot.text([medio], { x: "year", y: f => (f.total + f.active) / 2, text: () => "sedes en retirada",
+                                         dx: 8, textAnchor: "start", fontSize: angosto ? 9.5 : 10.5, fill: tono("--marca-cuadro"),
+                                         // Un halo del color del fondo, para que el rótulo se lea sobre las líneas.
+                                         stroke: tono("--superficie"), strokeWidth: 3.5, paintOrder: "stroke" })] : []),
+    ],
+  });
+}
+
 /** La leyenda, en HTML: con muestra de color, trazo y forma, para que no dependa del color. */
 function leyenda(spec) {
+  if (spec.form === "matricula_region") return leyendaRegion(spec);
   const activas = (spec.series || []).filter(s => !s.retreating);
   if (activas.length < 2 || activas.length > MAX_EN_UN_PANEL) return null;
   const caja = document.createElement("div");
@@ -225,7 +341,27 @@ function leyenda(spec) {
   return caja;
 }
 
-const FORMAS = { matricula_series: matriculaSeries };
+function leyendaRegion(spec) {
+  const caja = document.createElement("div");
+  caja.className = "leyenda";
+  const items = [
+    [`<line x1="0" y1="6" x2="36" y2="6" stroke="${COLORES[0]}" stroke-width="2.4"/><circle cx="18" cy="6" r="3.4" fill="${COLORES[0]}"/>`, "todas las sedes"],
+    [`<rect x="0" y="1" width="36" height="10" fill="${COLORES[1]}" fill-opacity="0.42"/>`, "sedes en retirada"],
+    [`<line x1="0" y1="6" x2="36" y2="6" stroke="${COLORES[0]}" stroke-width="1.3" stroke-dasharray="3 2"/>`, "sin las sedes en retirada"],
+  ];
+  if ((spec.incomplete || []).some(c => c.series === "total" && c.treatment === "summed")) {
+    items.push([`<circle cx="18" cy="6" r="3.4" fill="none" stroke="${COLORES[0]}" stroke-width="1.6"/>`, "año sumado sin una sede"]);
+  }
+  for (const [svg, texto] of items) {
+    const item = document.createElement("span");
+    item.innerHTML = `<svg width="36" height="12" aria-hidden="true">${svg}</svg>`;
+    item.append(document.createTextNode(texto));
+    caja.append(item);
+  }
+  return caja;
+}
+
+const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion };
 
 /** Dibuja una figura en el ancho dado, o se niega. */
 function dibujar(spec, ancho = 720) {
@@ -257,4 +393,4 @@ function escalable(nodo) {
   return nodo;
 }
 
-if (typeof module !== "undefined") module.exports = { validar, exigencias, FACTOR_DE_SALTO, MAX_EN_UN_PANEL };
+if (typeof module !== "undefined") module.exports = { validar, exigencias, crecimiento, FACTOR_DE_SALTO, MAX_EN_UN_PANEL };

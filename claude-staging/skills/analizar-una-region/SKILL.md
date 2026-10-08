@@ -23,6 +23,9 @@ matrícula de la región, y cuánto creció el mercado que sigue compitiendo. Si
 Y lee `avisos` antes de dar el número: un año puede venir sin total, o sumado sin una sede, y eso se
 dice.
 
+Si la pregunta se responde mejor con una figura, `figura_matricula_region` la entrega lista (skill
+graficar-la-matricula).
+
 **En retirada no es lo mismo que chica.** Una sede con `en_retirada` ya casi no recibe estudiantes
 nuevos y no entra en comparaciones. Una con `nota` de muestra chica sigue compitiendo: se compara,
 sin lecturas fuertes sobre ella.
