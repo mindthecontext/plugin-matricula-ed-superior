@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.9.0 · 2026-10-08
+
+Las lecturas de la serie de matrícula, también calculadas. Junto a la figura «Cómo han cambiado», el servicio entrega ahora lo que una lectura dice con palabras: cuánto cambió cada sede —en número y en porcentaje, en todo su período y entre 2019 y 2025—, su máximo y su mínimo, su mayor alza y su mayor caída, los años en que subió o bajó todos los años, y quién cambió más. El asistente lo copia en vez de deducirlo: «la que más creció» dice si es en número o en porcentaje, y «sin pausa» sólo se escribe si fue así año a año. Un registro que no calza no cuenta como máximo ni como salto, y una sede que partió de muy pocos estudiantes no aparece como la que más creció en porcentaje.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.8.0 · 2026-10-08
 
 Lecturas más confiables en el reporte regional. Junto a cada figura de barras, el servicio entrega ahora los órdenes y los grupos ya calculados —qué sedes reciben más, cuáles quedan sobre, en o bajo el valor del país, cuáles valen cero y cuáles tienen pocos estudiantes—, y el asistente los copia en vez de deducirlos. Era la forma en que una lectura podía decir algo falso con todas sus cifras correctas: «las tres sedes con más entrantes» nombraba una que no lo era. Además, cada sede se llama igual en todo el reporte; en las regiones con ciudades partidas, la serie y las barras la nombraban distinto.

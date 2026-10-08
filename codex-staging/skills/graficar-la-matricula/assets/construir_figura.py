@@ -441,6 +441,9 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
                 for bl in v:
                     if bl.get("kind") == "figure":
                         numeros_del_spec(bl.get("figure"), acc, pct)
+                        # Los órdenes y los cambios que el servicio calculó junto a la figura (MAT-27):
+                        # «creció 39,8%» o «su mayor alza, 632» salen de ahí y tienen respaldo.
+                        numeros_del_spec(bl.get("groups"), acc, pct)
             elif k == "growth" and isinstance(v, dict):
                 for gk, gv in v.items():
                     if gk != "period":

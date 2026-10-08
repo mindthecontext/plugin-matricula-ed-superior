@@ -25,6 +25,20 @@ Cada figura de barras trae a su lado **`groups`**, con los órdenes y los grupos
 | `zero`, `no_data` | Las sedes que valen 0 y las que no tienen dato. |
 | `small_sample` | Las sedes con muestra chica: sin lecturas fuertes sobre ellas. |
 
+La figura de la serie («Cómo han cambiado») trae también su **`groups`**, con lo que una lectura de una
+serie dice con palabras:
+
+| Clave | Qué es |
+|---|---|
+| `sites[].first`, `last`, `peak`, `low` | El primer y el último dato de cada sede, su máximo y su mínimo, con el año. |
+| `sites[].change_full`, `change_window` | Cuánto cambió en todo su período y en `window` (2019–2025): sentido (`up`, `down`), cantidad, porcentaje y `small_base` si partió de menos de 150 estudiantes (su porcentaje no se compara). |
+| `sites[].largest_rise`, `largest_fall` | Su mayor alza y su mayor caída de un año al siguiente. |
+| `sites[].runs` | Los tramos en que subió o bajó **todos** los años (tres pasos o más). |
+| `rank_change_full_amount`, `rank_change_full_pct`, `rank_change_window_amount`, `rank_change_window_pct` | Quién cambió más, en número y en porcentaje, en todo el período y en la ventana. |
+| `rank_longest_run` | La racha más larga de cada sede, ordenadas: «el crecimiento más sostenido» sale de aquí. |
+
+Un valor que no calza con sus vecinos no cuenta en nada de esto, y un año sin dato corta los tramos.
+
 **No toques la portada ni las figuras.** Tu trabajo son los bloques `reading`.
 
 ## 2 · Escribe las lecturas
@@ -61,17 +75,29 @@ publica. Un reporte no mejora con párrafos de relleno.
    - Es el error que las cifras correctas no delatan: una lectura dijo «las tres sedes con más
      entrantes … U. Mayor», con todas sus cifras bien, y la tercera era otra sede.
    - **Sin ranking de uno.** Con una sola sede no hay orden: se describe.
-3. **Muestras chicas, sin lecturas fuertes.** Una sede con pocos entrantes (mira la figura «Cuántos
+3. **Lo que dices de una serie también se copia de `groups`.** «La que más creció», «su mayor
+   salto», «sin pausa hasta 2021», «subió todos los años desde 2019», «su máximo fue en 2021»: cada
+   una de estas frases tiene su clave, y si no está, no la escribas.
+   - **«La que más creció» exige decir en qué:** en número (`..._amount`) o en porcentaje
+     (`..._pct`), y en qué período. Rara vez es la misma sede: en La Araucanía, entre 2019 y 2025,
+     U. Autónoma de Chile sumó más estudiantes y U. Mayor creció más en porcentaje.
+   - **«Todos los años», «sin pausa» o «sostenido» sólo si hay un tramo en `runs`** que cubra esos
+     años. Una sede que creció en el total pero bajó un año no creció «sin pausa».
+   - Un cambio con `small_base` puede tener un porcentaje enorme por partir de muy poco: no lo pongas
+     como el que más creció en porcentaje. Los órdenes por porcentaje ya lo dejan fuera.
+   - **«El más sostenido» compara rachas:** sale de `rank_longest_run`. Una racha que sigue abierta
+     («sube todos los años desde 2017») no es la más larga si otra sede tuvo una mayor antes.
+4. **Muestras chicas, sin lecturas fuertes.** Una sede con pocos entrantes (mira la figura «Cuántos
    entran» y el `n` de cada barra) puede tener porcentajes extremos por azar. Nómbrala si hace falta,
    pero no construyas el relato sobre ella.
-4. **La referencia es el país, no el promedio de las sedes.** La línea punteada es el valor nacional,
+5. **La referencia es el país, no el promedio de las sedes.** La línea punteada es el valor nacional,
    calculado sobre todos los estudiantes. Compara contra ella, no contra «el resto de la región».
-5. **Las sedes en retirada se declaran una vez, en la portada**, y no vuelven a aparecer. No las nombres
+6. **Las sedes en retirada se declaran una vez, en la portada**, y no vuelven a aparecer. No las nombres
    en las lecturas de las secciones.
-6. **El universo son las universidades**, en pregrado. Si una lectura podría leerse como «todos los que
+7. **El universo son las universidades**, en pregrado. Si una lectura podría leerse como «todos los que
    estudian en la región», di que son universidades: los institutos profesionales y los CFT no están.
-7. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426.
-8. **Sin jerga de la casa.** Nada de «pack», «artefacto», nombres de reglas ni códigos de criterio.
+8. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426.
+9. **Sin jerga de la casa.** Nada de «pack», «artefacto», nombres de reglas ni códigos de criterio.
 
 ## 3 · Compón
 
