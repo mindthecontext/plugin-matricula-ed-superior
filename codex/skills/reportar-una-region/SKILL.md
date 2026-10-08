@@ -17,6 +17,15 @@ Devuelve `spec`: la portada (`cover`), las secciones con sus figuras ya armadas 
 un bloque `reading` vacío para su lectura. Trae además `facts`: cifras de contexto que puedes citar
 (cuántas sedes activas, cuántas en retirada, los entrantes del período, la matrícula de la región).
 
+Cada figura de barras trae a su lado **`groups`**, con los órdenes y los grupos ya calculados:
+
+| Clave | Qué es |
+|---|---|
+| `rank` | Las sedes de mayor a menor, con su puesto. Dos sedes con el mismo valor comparten puesto. |
+| `above_reference`, `at_reference`, `below_reference` | Las sedes sobre, en y bajo el valor nacional. |
+| `zero`, `no_data` | Las sedes que valen 0 y las que no tienen dato. |
+| `small_sample` | Las sedes con muestra chica: sin lecturas fuertes sobre ellas. |
+
 **No toques la portada ni las figuras.** Tu trabajo son los bloques `reading`.
 
 ## 2 · Escribe las lecturas
@@ -41,8 +50,18 @@ publica. Un reporte no mejora con párrafos de relleno.
 
    No calcules diferencias, sumas ni razones por tu cuenta: si una cifra no está en `facts` ni en las
    figuras, no la escribas.
-2. **Sin ranking de uno.** «La más grande», «la que más» sólo si comparaste **todas** las barras de la
-   figura. Con una sola sede no hay ranking: se describe.
+
+   **La cifra va con su sede**, y la sede se escribe **tal como viene en la figura**. El compositor no
+   revisa a quién le pones cada cifra: eso es tuyo.
+2. **Los órdenes y los grupos se copian de `groups`; no se deducen.** «Las tres que más reciben», «la
+   segunda», «las que superan la referencia», «cinco de las siete», «las que no tienen jornada
+   vespertina»: cada una de estas frases nombra un grupo, y **las sedes que pones en él son las de
+   `groups`**, en ese orden.
+   - Si citas un grupo de **otra** figura («las tres sedes con más entrantes», en la lectura de la
+     edad), cópialo del `rank` de **esa** figura.
+   - Es el error que las cifras correctas no delatan: una lectura dijo «las tres sedes con más
+     entrantes … U. Mayor», con todas sus cifras bien, y la tercera era otra sede.
+   - **Sin ranking de uno.** Con una sola sede no hay orden: se describe.
 3. **Muestras chicas, sin lecturas fuertes.** Una sede con pocos entrantes (mira la figura «Cuántos
    entran» y el `n` de cada barra) puede tener porcentajes extremos por azar. Nómbrala si hace falta,
    pero no construyas el relato sobre ella.

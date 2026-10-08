@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.8.0 · 2026-10-08
+
+Lecturas más confiables en el reporte regional. Junto a cada figura de barras, el servicio entrega ahora los órdenes y los grupos ya calculados —qué sedes reciben más, cuáles quedan sobre, en o bajo el valor del país, cuáles valen cero y cuáles tienen pocos estudiantes—, y el asistente los copia en vez de deducirlos. Era la forma en que una lectura podía decir algo falso con todas sus cifras correctas: «las tres sedes con más entrantes» nombraba una que no lo era. Además, cada sede se llama igual en todo el reporte; en las regiones con ciudades partidas, la serie y las barras la nombraban distinto.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.7.0 · 2026-10-08
 
 El primer reporte: la nueva skill `reportar-una-region` arma una página con la portada de la región —sus sedes universitarias y, declaradas una sola vez, las que están en retirada— y la primera sección, «Quiénes son», con siete figuras: cuántos entran, en cuántas carreras, cómo cambió la matrícula de cada sede, a qué edad llegan y en qué jornada estudian, cada una contra el valor del país. Las cifras son las mismas del reporte regional que existía antes. Las lecturas que acompañan a cada figura las escribe el asistente, separando lo que las cifras muestran de lo que sólo es una explicación posible, y ningún número del texto puede ser uno que el servicio no entregó: si lo es, el reporte no se publica. Las demás secciones llegarán una a una. La herramienta nueva es `reporte_region`.
