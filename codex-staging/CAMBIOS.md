@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.10.1 · 2026-10-08
+
+Correcciones que encontró el primer uso de la sección 2. Si el plugin instalado es más antiguo que el servicio y no conoce una figura nueva, el reporte ya no se publica a medias con tablas vacías: dice que hay que actualizar el plugin. La portada ya no repite la ciudad de una sede que la trae en el nombre («U. de Concepción (Concepción) (Concepción)»), y una figura en que todas las sedes valen cero lo dice así, sin dibujar un eje vacío.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.10.0 · 2026-10-08
 
 El reporte regional suma su segunda sección, «Con qué llegan», con tres figuras: el puntaje PAES de quienes entraron a cada sede —no el promedio, sino la distribución completa, contra la mediana del país—, la carrera de mayor puntaje en cada sede, que suele ser Medicina y explica por qué el extremo alto se despega, y cuántos venían entre el 10% superior de su colegio. La PAES se declara como lo que es: cubre a quienes la rindieron y entraron desde 2023, no al alumnado completo. Las cifras son las mismas del reporte regional que existía antes, y los órdenes que una lectura cita —la mediana más alta, la caja más angosta— vienen calculados.

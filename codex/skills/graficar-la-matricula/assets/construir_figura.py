@@ -96,7 +96,9 @@ def validar(spec: dict) -> list[str]:
     """Los motivos por los que el spec NO se dibuja. Mismas reglas y mensajes que la receta."""
     forma = spec.get("form", _FALTA) if isinstance(spec, dict) else _FALTA
     if forma not in VALIDADORES:
-        return [f"la forma «{js(forma)}» no está implementada; hoy existen {', '.join(VALIDADORES)}"]
+        # UNA FORMA DESCONOCIDA ES UN PLUGIN VIEJO, no un dato malo (qa/, 08-10): se dice qué hacer.
+        return [f"esta versión del plugin no conoce la forma «{js(forma)}» (conoce {', '.join(VALIDADORES)}): "
+                "el servicio es más nuevo que el plugin instalado; actualiza el plugin y vuelve a componer"]
     errores: list[str] = []
     encabezado(spec, errores)
     return VALIDADORES[forma](spec, errores)
@@ -410,8 +412,10 @@ def notas_region(spec: dict) -> str:
 
 def notas_barras(spec: dict) -> str:
     items = []
-    _, ocultas = barras_visibles(spec)
-    if ocultas:
+    visibles, ocultas = barras_visibles(spec)
+    if ocultas and not visibles:
+        items.append(f"<li>Las {ocultas} sedes valen 0: no hay barras que dibujar.</li>")
+    elif ocultas:
         items.append(f"<li>{ocultas} sedes valen 0 y no se dibujan: son la gran mayoría y el gráfico "
                      "quedaría vacío.</li>")
     sin = [b["label"] for b in spec.get("bars") or [] if b.get("value") is None]
@@ -569,6 +573,11 @@ def validar_reporte(spec: dict) -> list[str]:
             if b.get("kind") != "figure":
                 continue
             f = b.get("figure") or {}
+            if f.get("form") not in VALIDADORES:
+                # Una figura inválida va como tabla y el reporte sigue; una forma que esta versión no conoce,
+                # no: la tabla saldría vacía y el reporte se publicaría a medias.
+                errores += validar(f)
+                continue
             nombres = [x.get("label") for x in (f.get("bars") or []) + (f.get("series") or [])]
             dentro = sorted(retiradas & set(nombres))
             if dentro:
@@ -620,8 +629,12 @@ def figura_html(id_: str, spec: dict, dibujables: dict, avisos: list) -> str:
 
 def componer_reporte(spec: dict, avisos: list) -> str:
     c = spec.get("cover") or {}
-    sedes = "".join(f"<li>{e(x['label'])}{'' if x.get('city') == spec.get('region') else ' (' + e(x['city']) + ')'}</li>"
-                    for x in c.get("sites") or [])
+    # La ciudad va una vez: si el nombre ya la trae (una institución con dos sedes), no se repite.
+    def con_ciudad(x):
+        ciudad = x.get("city")
+        sobra = ciudad == spec.get("region") or str(x["label"]).endswith(f"({ciudad})")
+        return e(x["label"]) + ("" if sobra else f" ({e(ciudad)})")
+    sedes = "".join(f"<li>{con_ciudad(x)}</li>" for x in c.get("sites") or [])
     retiradas = "; ".join(f"{x['label']} ({c.get('year_last')}: {_fmt_unidad(x['enrollment_last'] or 0, 'count')})"
                           for x in c.get("retreating") or [])
     partes = [f'<header class="portada"><h1>{e(spec["title"])}</h1><p class="sub">{e(spec["subtitle"])}</p>',

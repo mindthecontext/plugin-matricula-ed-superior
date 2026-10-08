@@ -137,7 +137,10 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 
 - **Si responde con el nombre del archivo**, el reporte está listo. Dice cuántas figuras y lecturas
   lleva, y si alguna figura salió como tabla.
-- **Si se niega (código 2)**, dice qué lectura cita qué cifra que no está. Corrige esa lectura y vuelve
+- **Si se niega (código 2)**, dice qué lectura cita qué cifra que no está.
+- **Si dice que «esta versión del plugin no conoce la forma»**, el servicio es más nuevo que el plugin
+  instalado. No publiques nada: dile a quien preguntó que actualice el plugin y vuelva a pedir el
+  reporte. Corrige esa lectura y vuelve
   a componer. Si la negativa es por una sede en retirada en el cuerpo, el spec se tocó: pídelo de nuevo.
 - **Una figura que no se puede dibujar sale como tabla** y el reporte sigue: dilo en tu respuesta.
 

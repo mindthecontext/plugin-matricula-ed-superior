@@ -69,7 +69,10 @@ function exigencias(spec) {
 function validar(spec) {
   const forma = spec && spec.form;
   if (!VALIDADORES[forma]) {
-    return [`la forma «${forma}» no está implementada; hoy existen ${Object.keys(VALIDADORES).join(", ")}`];
+    // UNA FORMA DESCONOCIDA ES UN PLUGIN VIEJO, no un dato malo: el servicio se actualiza al publicar y el
+    // plugin instalado puede ir atrás (qa/, 08-10: la §2 salió «no implementada»). Se dice qué hacer.
+    return [`esta versión del plugin no conoce la forma «${forma}» (conoce ${Object.keys(VALIDADORES).join(", ")}): ` +
+            "el servicio es más nuevo que el plugin instalado; actualiza el plugin y vuelve a componer"];
   }
   const errores = [];
   encabezado(spec, errores);
@@ -418,6 +421,8 @@ function barrasVisibles(spec) {
 
 function barrasSedes(spec, Plot, ancho) {
   const { filas } = barrasVisibles(spec);
+  // TODAS EN CERO: no hay barras, y un eje vacío con la referencia sola no dice nada. El pie lo explica.
+  if (!filas.length) return document.createElement("div");
   const fmt = formatoUnidad(spec.unit);
   const angosto = ancho < 520;
   const ref = spec.reference;
