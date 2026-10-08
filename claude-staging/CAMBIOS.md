@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.3.0 · 2026-10-07
+
+La primera figura: la nueva skill `graficar-la-matricula` dibuja cómo evolucionó la matrícula de una o varias sedes universitarias entre 2007 y 2025, y la entrega como una página que se lee en claro, en oscuro y en un teléfono. Una serie con años sin registro se dibuja cortada, sin unir el hueco, y un valor que no calza con sus años vecinos se muestra aparte y se declara, sin tratarlo como tendencia. Si algo de eso no viene declarado, la figura no se dibuja y se entrega la tabla. Las sedes en retirada no se comparan: se nombran al pie. La fuente se toma de la herramienta y nunca se escribe a mano. Las herramientas y los datos no cambian.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula` · aparece `graficar-la-matricula`
+- Datos: `2026-10-07-lab`
+
 ## v0.2.0 · 2026-10-07
 
 El saber trae ahora tres skills que ordenan cómo se responde, en vez de una plantilla: `empezar-aqui` presenta lo que cubre con la cobertura consultada en vivo y dice desde la primera respuesta lo que no cubre; `explorar-una-carrera` empieza por el tipo de mercado —universitario, mixto o de institutos profesionales y CFT— antes de cualquier cifra, pone la cobertura antes del dato y lee la matriz de sustitución como lo que es, los flujos mayores del país y no todos; `analizar-una-region` recorre el mercado universitario de un territorio sin promediar percentiles entre sedes ni rellenar los huecos de una serie. Las herramientas y los datos no cambian.
