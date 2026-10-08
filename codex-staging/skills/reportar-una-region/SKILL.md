@@ -160,8 +160,10 @@ publica. Un reporte no mejora con párrafos de relleno.
 - **El porcentaje y las personas responden preguntas distintas.** El porcentaje dice cómo es el aula; las
   personas, dónde está esa población. Si el orden cambia entre las dos figuras, ése es el hallazgo; cópialo
   de los `groups` de cada una. Las personas son una estimación: no las presentes como un conteo exacto.
-- **Prioritario y primera generación no se suman**: un mismo estudiante suele ser las dos cosas. Y
-  primera generación se mide sobre menos estudiantes (el `n` es menor).
+- **Prioritario y primera generación no se suman**: un mismo estudiante suele ser las dos cosas.
+- **Primera generación es de 2021–2022, no del alumnado actual.** El DEMRE dejó de preguntar la educación
+  de los padres desde 2023, y la cifra cubre sólo a quienes entraron esos dos años y respondieron la
+  ficha. Escribe «entre quienes entraron en 2021 y 2022», nunca «hoy» ni «2021–2025».
 - **La caja de puntaje por tipo de colegio cubre sólo a quienes rindieron la PAES**, como en la sección 2.
 
 ## 3 · Compón
