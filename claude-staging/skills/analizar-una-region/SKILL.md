@@ -15,6 +15,18 @@ description: Responde sobre el mercado universitario de una región chilena — 
 5. **`preferencias`** para competencia revelada; **`acceso_equidad`** para gratuidad y PACE;
    **`carreras_tope`** para las carreras de mayor exigencia PAES de cada sede.
 
+## La evolución de la región: con y sin las sedes en retirada
+
+`panorama_region` trae `matricula_region` con la serie regional y su crecimiento **con todas las sedes
+y sin las en retirada**. Las dos cifras son correctas y responden cosas distintas: cuánto cambió la
+matrícula de la región, y cuánto creció el mercado que sigue compitiendo. Si das una, di cuál es.
+Y lee `avisos` antes de dar el número: un año puede venir sin total, o sumado sin una sede, y eso se
+dice.
+
+**En retirada no es lo mismo que chica.** Una sede con `en_retirada` ya casi no recibe estudiantes
+nuevos y no entra en comparaciones. Una con `nota` de muestra chica sigue compitiendo: se compara,
+sin lecturas fuertes sobre ella.
+
 ## El universo de esta puerta es universitario
 
 Solo universidades, sin IP ni CFT. Si la pregunta es «¿cuánta gente estudia esto en la región?», la
@@ -33,7 +45,7 @@ en ese tramo.
   llega como `no_derivable`: se entrega el rango y se explica por qué.
 - **Sin superlativos que no vengan del dato.** «La más inclusiva» exige haber comparado el eje
   completo, no haber mirado dos filas.
-- **Las sedes en retirada no entran a los rankings**: llegan marcadas con su nota.
+- **Las sedes en retirada no entran a los rankings**: llegan con `en_retirada` y su razón.
 - **Nada de comparar puntajes cruzando 2022/2023** — quiebre PSU→PAES.
 
 ## Dos cifras que parecen contradictorias y no lo son

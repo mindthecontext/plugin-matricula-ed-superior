@@ -9,8 +9,8 @@ inconsistente:
   "title": "La matrícula de dos sedes universitarias de La Araucanía",
   "subtitle": "matrícula total de pregrado por sede, universidades, 2007–2025",
   "provenance": {
-    "fuente_original": "<copiado de procedencia.fuente_original>",
-    "universo": "<copiado de procedencia.universo>"
+    "fuente_original": "<copiado de procedencia_matricula.fuente_original>",
+    "universo": "<copiado de procedencia_matricula.universo>"
   },
   "x": [2007, 2008, 2009, 2010, 2011, 2012, "…", 2025],
   "series": [
@@ -37,11 +37,11 @@ inconsistente:
 | `form` | sí | Siempre `matricula_series`. |
 | `title` | sí | El QUÉ: frase nominal que nombra la vista. No una oración ni el hallazgo. |
 | `subtitle` | sí | Unidad, universo y ventana. |
-| `provenance` | sí | El bloque `procedencia` de la herramienta, con `fuente_original`. |
+| `provenance` | sí | El bloque `procedencia_matricula` de la herramienta, con `fuente_original`. |
 | `x` | sí | Los años, enteros y crecientes, tal como vienen en `serie_matricula.x`. |
 | `series[].label` | sí | El nombre de la sede, escrito como se escribe. |
 | `series[].points` | sí | **Un punto por año de `x`**, con `null` donde no hay dato. |
-| `series[].retreating` | no | `true` para una sede residual: no se dibuja, se nombra al pie. |
+| `series[].retreating` | no | `true` para una sede con `en_retirada`: no se dibuja, se nombra al pie. |
 | `annotations` | según los datos | Una por hueco (`gap`) y una por valor inconsistente (`inconsistent`), con `series`, `year` y `note`. |
 | `notices` | no | Avisos que el lector necesita y no salen de los datos. |
 

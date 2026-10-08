@@ -10,11 +10,11 @@ matrícula total de pregrado de una o varias sedes universitarias, año a año. 
 
 ## 1 · Trae los datos de las herramientas, en esta sesión
 
-- **Las sedes de una región:** `panorama_region(region)`. De ahí sale la lista de sedes y cuáles están
-  en retirada: las que traen `nota` con «sede residual».
-- **La serie de cada sede:** `ficha_sede(institucion, region)` → `serie_matricula {x, matricula}`.
-  `panorama_region` no trae la serie, así que es **una llamada por sede**.
-- **La procedencia:** el bloque `procedencia` de la misma respuesta. Lo copias tal cual.
+- **Varias sedes de una región:** `panorama_region(region)`, **una sola llamada**. Cada sede trae su
+  `serie_matricula {x, matricula}` y, si está en retirada, `"en_retirada": true`.
+- **Una sede:** `ficha_sede(institucion, region)` trae lo mismo para esa sede.
+- **La procedencia:** el bloque **`procedencia_matricula`** de la misma respuesta, no `procedencia`,
+  que es la de toda la puerta e incluye fuentes que no intervienen en la matrícula. Lo copias tal cual.
 
 Ninguna cifra del spec ni de tu texto sale de otra parte. Si una herramienta no responde, no hay figura.
 
@@ -31,7 +31,8 @@ El formato completo, con un ejemplo, está en `references/spec.md`. Lo esencial:
   la línea uniría el hueco y la figura se niega.
 - **`label`** con el nombre como se escribe, no en mayúsculas: «U. de la Frontera», no
   «UNIVERSIDAD DE LA FRONTERA».
-- Las sedes residuales van con `"retreating": true`: no se dibujan, se nombran al pie.
+- Las sedes con `"en_retirada": true` van con `"retreating": true`: no se dibujan, se nombran al
+  pie. Una sede con `nota` de muestra chica **no** está en retirada: se dibuja.
 
 ## 3 · Declara lo que la serie no dice sola
 
@@ -67,6 +68,7 @@ En el texto que la acompaña:
 
 ## Lo que esta skill no hace
 
-Hoy existe **una forma**: la serie de matrícula por sede. No dibuja la matrícula de una región
-agregada (el servicio todavía no la entrega con y sin residuales), ni carreras, ni otros indicadores.
+Hoy existe **una forma**: la serie de matrícula por sede. No dibuja la serie de la región agregada
+—`panorama_region` la entrega en `matricula_region.serie`, con y sin las sedes en retirada, pero esa
+forma todavía no tiene receta: dila con sus cifras y sus avisos—, ni carreras, ni otros indicadores.
 Si te piden otro gráfico, dilo y responde con la tabla de las herramientas correspondientes.
