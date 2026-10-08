@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.7.0 · 2026-10-08
+
+El primer reporte: la nueva skill `reportar-una-region` arma una página con la portada de la región —sus sedes universitarias y, declaradas una sola vez, las que están en retirada— y la primera sección, «Quiénes son», con siete figuras: cuántos entran, en cuántas carreras, cómo cambió la matrícula de cada sede, a qué edad llegan y en qué jornada estudian, cada una contra el valor del país. Las cifras son las mismas del reporte regional que existía antes. Las lecturas que acompañan a cada figura las escribe el asistente, separando lo que las cifras muestran de lo que sólo es una explicación posible, y ningún número del texto puede ser uno que el servicio no entregó: si lo es, el reporte no se publica. Las demás secciones llegarán una a una. La herramienta nueva es `reporte_region`.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `reporte_region`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region` · aparece `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.6.0 · 2026-10-08
 
 Una segunda figura: la matrícula de una región entera desde 2007, con una línea para el total y una banda para lo que aportaban las sedes que están en retirada. Se ve cuánto pesaban y cómo se fueron cerrando, y por eso la región crece más sin ellas (en Ñuble, +2,1% con todas y +14,1% sin las en retirada, entre 2019 y 2025). Un año que se sumó sin una sede va con el punto hueco, y uno en que faltaba demasiado queda sin punto; el pie dice qué sede faltó y cuánto pesaba. La herramienta nueva es `figura_matricula_region`.

@@ -55,7 +55,23 @@ figure{margin:0;background:var(--superficie);border:1px solid var(--regla);paddi
 .notas .marca{color:var(--marca-cuadro);font-weight:600}
 .src{margin:10px 0 0;font:italic .8rem/1.45 var(--sans);color:var(--texto-tenue)}
 .negativa{background:var(--panel);border-left:3px solid var(--marca-cuadro);padding:10px 12px;font-size:.88rem}
-@media (max-width:520px){figure{padding:14px 12px 12px}.ft{font-size:1.08rem}}
+/* El reporte: portada, secciones y lecturas. */
+.portada{padding:8px 0 18px;border-bottom:2px solid var(--texto);margin-bottom:8px}
+.portada h1{font:600 1.8rem/1.2 var(--serif);margin:0 0 6px}
+.portada .sub{font:400 .9rem/1.4 var(--mono);color:var(--texto-tenue);margin:0 0 14px}
+.portada .sedes{columns:2;column-gap:24px;margin:6px 0 10px;padding-left:1.1em}
+.portada .retirada{background:var(--panel);border-left:3px solid var(--marca-cuadro);padding:8px 12px}
+.portada .universo{font-size:.86rem;color:var(--texto-tenue)}
+section{padding:22px 0 8px}
+section h2{font:600 1.35rem/1.25 var(--serif);margin:0 0 4px}
+section .pregunta{color:var(--texto-tenue);margin:0 0 14px}
+section figure{margin:14px 0}
+.lectura{max-width:68ch;margin:0 0 18px}
+.lectura p{margin:0 0 10px}
+.lectura .compatible{font-size:.92rem;color:var(--texto-suave);border-left:2px solid var(--regla);padding-left:10px}
+.tw{overflow-x:auto}.tw table{border-collapse:collapse;width:100%;font-size:.86rem}.tw th,.tw td{padding:6px 10px;border-bottom:1px solid var(--regla);text-align:left}
+footer{margin-top:22px;border-top:1px solid var(--regla);padding-top:10px}
+@media (max-width:520px){figure{padding:14px 12px 12px}.ft{font-size:1.08rem}.portada .sedes{columns:1}.portada h1{font-size:1.45rem}}
 @media print{body{background:#fff;padding:0}figure{border:none}}
 </style>
 </head>
@@ -67,20 +83,22 @@ __CUERPO__
 <script>/* __PLOT__ */</script>
 <script>
 __RECETAS__
-const FIGURA = /* __FIGURA__ */;
+const FIGURAS = /* __FIGURAS__ */;
 function pintar(){
-  const destino = document.getElementById("grafico");
-  if (!destino || !FIGURA) return;
-  destino.replaceChildren();
-  try {
-    const ley = leyenda(FIGURA);
-    if (ley) destino.append(ley);
-    destino.append(dibujar(FIGURA, destino.clientWidth));
-  } catch (error) {
-    const aviso = document.createElement("p");
-    aviso.className = "negativa";
-    aviso.textContent = "La figura no pudo dibujarse: " + error.message;
-    destino.append(aviso);
+  for (const [id, spec] of Object.entries(FIGURAS)) {
+    const destino = document.getElementById("fig-" + id);
+    if (!destino) continue;
+    destino.replaceChildren();
+    try {
+      const ley = leyenda(spec);
+      if (ley) destino.append(ley);
+      destino.append(dibujar(spec, destino.clientWidth));
+    } catch (error) {
+      const aviso = document.createElement("p");
+      aviso.className = "negativa";
+      aviso.textContent = "La figura no pudo dibujarse: " + error.message;
+      destino.append(aviso);
+    }
   }
 }
 document.addEventListener("DOMContentLoaded", pintar);

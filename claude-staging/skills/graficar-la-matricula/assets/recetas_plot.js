@@ -1,6 +1,6 @@
-// Recetas de visualización del saber Matrícula de Educación Superior. Hay dos formas:
-// `matricula_series`, la serie de matrícula de una o varias sedes, y `matricula_region`, la de una
-// región entera, con y sin las sedes en retirada.
+// Recetas de visualización del saber Matrícula de Educación Superior. Hay tres formas:
+// `matricula_series`, la serie de matrícula de una o varias sedes; `matricula_region`, la de una
+// región entera, con y sin las sedes en retirada; y `barras_sedes`, un eje con una barra por sede.
 //
 // EL REPARTO. El agente produce un spec JSON con datos y encuadre; la receta dibuja. Las reglas
 // van pegadas a la receta y no se configuran desde el spec: que la línea se corte en un hueco, que
@@ -69,7 +69,7 @@ function exigencias(spec) {
 function validar(spec) {
   const forma = spec && spec.form;
   if (!VALIDADORES[forma]) {
-    return [`la forma «${forma}» no está implementada; hoy existen matricula_series y matricula_region`];
+    return [`la forma «${forma}» no está implementada; hoy existen ${Object.keys(VALIDADORES).join(", ")}`];
   }
   const errores = [];
   encabezado(spec, errores);
@@ -86,6 +86,10 @@ function encabezado(spec, errores) {
   if (!spec.provenance || !String(spec.provenance.fuente_original || "").trim()) {
     errores.push("falta «provenance.fuente_original»: cópiala tal cual de la herramienta");
   }
+}
+
+/** Las formas con años: una lista entera, creciente y sin repetir. */
+function anios(spec, errores) {
   const x = spec.x || [];
   if (!x.length || x.some((v, i) => !Number.isInteger(v) || (i > 0 && v <= x[i - 1]))) {
     errores.push("«x» tiene que ser una lista de años enteros, creciente y sin repetir");
@@ -93,6 +97,7 @@ function encabezado(spec, errores) {
 }
 
 function validarSeries(spec, errores) {
+  anios(spec, errores);
   const x = spec.x || [];
   const series = spec.series || [];
   if (!series.length) errores.push("no hay series");
@@ -153,6 +158,7 @@ function crecimiento(x, v, desde, hasta) {
  * otro número, se niega. Así el pie no puede contar una historia distinta de la figura.
  */
 function validarRegion(spec, errores) {
+  anios(spec, errores);
   const x = spec.x || [];
   const total = spec.total || [], activa = spec.active || [];
   if (total.length !== x.length || activa.length !== x.length) {
@@ -206,7 +212,40 @@ function validarRegion(spec, errores) {
   return errores;
 }
 
-const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion };
+const UNIDADES = ["count", "pct", "years"];
+
+/**
+ * `barras_sedes`: un eje, una barra por sede activa, con el valor nacional como referencia.
+ *
+ * LAS SEDES EN RETIRADA NO ENTRAN AL CUERPO (el gate del reporte local): el spec las nombra en
+ * `excluded`, y si alguna aparece entre las barras, la receta se niega.
+ */
+function validarBarras(spec, errores) {
+  if (!UNIDADES.includes(spec.unit)) errores.push(`«unit» tiene que ser una de ${UNIDADES.join(", ")}`);
+  const barras = spec.bars || [];
+  if (!barras.length) errores.push("no hay barras");
+  const nombres = new Set();
+  const fuera = new Set(spec.excluded || []);
+  for (const b of barras) {
+    if (!String(b.label || "").trim()) errores.push("una barra no trae «label»");
+    if (nombres.has(b.label)) errores.push(`la barra «${b.label}» está repetida`);
+    nombres.add(b.label);
+    if (fuera.has(b.label)) errores.push(`«${b.label}» está en retirada y no puede aparecer en el cuerpo`);
+    const vacio = b.value === null || b.value === undefined;
+    if (!vacio && (typeof b.value !== "number" || b.value < 0)) errores.push(`«${b.label}»: el valor tiene que ser un número no negativo o null`);
+    else if (!vacio && spec.unit === "pct" && b.value > 100) errores.push(`«${b.label}»: un porcentaje no puede pasar de 100`);
+    if (b.n !== null && b.n !== undefined && (!Number.isInteger(b.n) || b.n < 0)) errores.push(`«${b.label}»: «n» tiene que ser un entero no negativo`);
+  }
+  const ref = spec.reference;
+  if (ref !== null && ref !== undefined) {
+    if (!String(ref.label || "").trim() || typeof ref.value !== "number" || ref.value < 0) {
+      errores.push("«reference» tiene que traer «label» y un «value» numérico no negativo, o ser null");
+    }
+  }
+  return errores;
+}
+
+const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion, barras_sedes: validarBarras };
 
 // ── el dibujo ───────────────────────────────────────────────────────────────────────────────────
 const tono = nombre => getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
@@ -318,9 +357,51 @@ function matriculaRegion(spec, Plot, ancho) {
   });
 }
 
+function formatoUnidad(unidad) {
+  if (unidad === "pct") return v => `${v.toLocaleString("es-CL", { maximumFractionDigits: 1 })}%`;
+  if (unidad === "years") return v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
+  return v => Math.round(v).toLocaleString("es-CL");
+}
+
+/** Las barras que se dibujan: con dato, y sin las que valen cero si son la gran mayoría. */
+function barrasVisibles(spec) {
+  const conDato = (spec.bars || []).filter(b => b.value !== null && b.value !== undefined);
+  const ceros = conDato.filter(b => b.value === 0).length;
+  const ocultar = conDato.length > 0 && ceros / conDato.length > 0.7;
+  return { filas: (ocultar ? conDato.filter(b => b.value !== 0) : conDato).sort((a, b) => b.value - a.value), ocultas: ocultar ? ceros : 0 };
+}
+
+function barrasSedes(spec, Plot, ancho) {
+  const { filas } = barrasVisibles(spec);
+  const fmt = formatoUnidad(spec.unit);
+  const angosto = ancho < 520;
+  const ref = spec.reference;
+  const tope = Math.max(...filas.map(f => f.value), ref ? ref.value : 0, 0) * 1.18 || 1;
+  const margen = Math.min(angosto ? 150 : 210, Math.round(ancho * 0.42));
+  return Plot.plot({
+    width: ancho, height: 40 + Math.max(filas.length, 1) * (angosto ? 26 : 28), marginLeft: margen, marginRight: 50,
+    marginTop: ref ? 22 : 8, marginBottom: 24,
+    style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
+    x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: fmt },
+    y: { label: null, domain: filas.map(f => f.label), tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
+    marks: [
+      Plot.barX(filas, { x: "value", y: "label", fill: COLORES[0], fillOpacity: 0.85, insetTop: 4, insetBottom: 4,
+                         title: f => `${f.label}: ${fmt(f.value)}${f.n != null ? ` (n=${f.n.toLocaleString("es-CL")})` : ""}` }),
+      Plot.text(filas, { x: "value", y: "label", text: f => fmt(f.value), dx: 5, textAnchor: "start", fontSize: angosto ? 9.5 : 10.5,
+                         fill: tono("--texto"), stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" }),
+      Plot.ruleX([0], { stroke: tono("--fig-regla") }),
+      // EL VALOR NACIONAL ES LA REFERENCIA, no la mediana entre sedes (como en el reporte local).
+      ...(ref ? [Plot.ruleX([ref.value], { stroke: COLORES[1], strokeWidth: 1.6, strokeDasharray: "4 3" }),
+                 Plot.text([ref], { x: "value", text: r => `${r.label} ${fmt(r.value)}`, frameAnchor: "top", dy: -14,
+                                    fontSize: 10, fill: tono("--marca-cuadro") })] : []),
+    ],
+  });
+}
+
 /** La leyenda, en HTML: con muestra de color, trazo y forma, para que no dependa del color. */
 function leyenda(spec) {
   if (spec.form === "matricula_region") return leyendaRegion(spec);
+  if (spec.form === "barras_sedes") return null;
   const activas = (spec.series || []).filter(s => !s.retreating);
   if (activas.length < 2 || activas.length > MAX_EN_UN_PANEL) return null;
   const caja = document.createElement("div");
@@ -361,7 +442,7 @@ function leyendaRegion(spec) {
   return caja;
 }
 
-const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion };
+const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion, barras_sedes: barrasSedes };
 
 /** Dibuja una figura en el ancho dado, o se niega. */
 function dibujar(spec, ancho = 720) {
@@ -393,4 +474,4 @@ function escalable(nodo) {
   return nodo;
 }
 
-if (typeof module !== "undefined") module.exports = { validar, exigencias, crecimiento, FACTOR_DE_SALTO, MAX_EN_UN_PANEL };
+if (typeof module !== "undefined") module.exports = { validar, exigencias, crecimiento, barrasVisibles, FACTOR_DE_SALTO, MAX_EN_UN_PANEL };

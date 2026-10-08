@@ -96,7 +96,7 @@ def validar(spec: dict) -> list[str]:
     """Los motivos por los que el spec NO se dibuja. Mismas reglas y mensajes que la receta."""
     forma = spec.get("form", _FALTA) if isinstance(spec, dict) else _FALTA
     if forma not in VALIDADORES:
-        return [f"la forma «{js(forma)}» no está implementada; hoy existen matricula_series y matricula_region"]
+        return [f"la forma «{js(forma)}» no está implementada; hoy existen {', '.join(VALIDADORES)}"]
     errores: list[str] = []
     encabezado(spec, errores)
     return VALIDADORES[forma](spec, errores)
@@ -110,6 +110,9 @@ def encabezado(spec: dict, errores: list[str]) -> None:
         errores.append("el spec trae «source»: la fuente no se escribe, se deriva de «provenance»")
     if not str((spec.get("provenance") or {}).get("fuente_original") or "").strip():
         errores.append("falta «provenance.fuente_original»: cópiala tal cual de la herramienta")
+
+
+def _validar_anios(spec: dict, errores: list[str]) -> None:
     x = spec.get("x") or []
     if not x or any(not isinstance(v, int) or isinstance(v, bool) or (i > 0 and v <= x[i - 1])
                     for i, v in enumerate(x)):
@@ -117,6 +120,7 @@ def encabezado(spec: dict, errores: list[str]) -> None:
 
 
 def validar_series(spec: dict, errores: list[str]) -> list[str]:
+    _validar_anios(spec, errores)
     x = spec.get("x") or []
     series = spec.get("series") or []
     if not series:
@@ -163,6 +167,7 @@ def validar_series(spec: dict, errores: list[str]) -> list[str]:
 
 def validar_region(spec: dict, errores: list[str]) -> list[str]:
     """`matricula_region`: aritmética, años sin total declarados y crecimiento recalculado."""
+    _validar_anios(spec, errores)
     x = spec.get("x") or []
     total, activa = spec.get("total") or [], spec.get("active") or []
     if len(total) != len(x) or len(activa) != len(x):
@@ -222,7 +227,64 @@ def validar_region(spec: dict, errores: list[str]) -> list[str]:
     return errores
 
 
-VALIDADORES = {"matricula_series": validar_series, "matricula_region": validar_region}
+UNIDADES = ("count", "pct", "years")
+
+
+def _numero(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def validar_barras(spec: dict, errores: list[str]) -> list[str]:
+    """`barras_sedes`: una barra por sede activa; las sedes en retirada no entran al cuerpo."""
+    if spec.get("unit") not in UNIDADES:
+        errores.append(f"«unit» tiene que ser una de {', '.join(UNIDADES)}")
+    barras = spec.get("bars") or []
+    if not barras:
+        errores.append("no hay barras")
+    nombres, fuera = set(), set(spec.get("excluded") or [])
+    for b in barras:
+        label = b.get("label")
+        if not str(label or "").strip():
+            errores.append("una barra no trae «label»")
+        if label in nombres:
+            errores.append(f"la barra «{label}» está repetida")
+        nombres.add(label)
+        if label in fuera:
+            errores.append(f"«{label}» está en retirada y no puede aparecer en el cuerpo")
+        v = b.get("value")
+        if v is not None and (not _numero(v) or v < 0):
+            errores.append(f"«{label}»: el valor tiene que ser un número no negativo o null")
+        elif v is not None and spec.get("unit") == "pct" and v > 100:
+            errores.append(f"«{label}»: un porcentaje no puede pasar de 100")
+        n = b.get("n")
+        if n is not None and (not isinstance(n, int) or isinstance(n, bool) or n < 0):
+            errores.append(f"«{label}»: «n» tiene que ser un entero no negativo")
+    ref = spec.get("reference")
+    if ref is not None:
+        if not str(ref.get("label") or "").strip() or not _numero(ref.get("value")) or ref["value"] < 0:
+            errores.append("«reference» tiene que traer «label» y un «value» numérico no negativo, o ser null")
+    return errores
+
+
+VALIDADORES = {"matricula_series": validar_series, "matricula_region": validar_region,
+               "barras_sedes": validar_barras}
+
+
+def barras_visibles(spec: dict) -> tuple[list, int]:
+    """Igual que `barrasVisibles` en la receta: con dato, y sin los ceros si son más del 70%."""
+    con = [b for b in spec.get("bars") or [] if b.get("value") is not None]
+    ceros = sum(1 for b in con if b["value"] == 0)
+    ocultar = bool(con) and ceros / len(con) > 0.7
+    filas = sorted([b for b in con if not (ocultar and b["value"] == 0)], key=lambda b: -b["value"])
+    return filas, (ceros if ocultar else 0)
+
+
+def _fmt_unidad(v, unidad: str) -> str:
+    if unidad == "pct":
+        return f"{v:.1f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
+    if unidad == "years":
+        return f"{v:.1f}".rstrip("0").rstrip(".").replace(".", ",")
+    return f"{v:,.0f}".replace(",", ".")
 
 
 def _miles(v) -> str:
@@ -235,6 +297,12 @@ def _pct(v) -> str:
 
 def tabla(spec: dict) -> str:
     """La tabla que se entrega cuando la figura no se dibuja: los mismos datos, sin interpolar."""
+    if spec.get("form") == "barras_sedes":
+        filas = ["| Sede | Valor | n |", "|---|---:|---:|"]
+        for b in spec.get("bars") or []:
+            v = "sin dato" if b.get("value") is None else _fmt_unidad(b["value"], spec.get("unit"))
+            filas.append(f"| {b.get('label')} | {v} | {'' if b.get('n') is None else b['n']} |")
+        return "\n".join(filas)
     if spec.get("form") == "matricula_region":
         filas = ["| Año | Todas las sedes | Sin las sedes en retirada |", "|---|---:|---:|"]
         for a, t, v in zip(spec.get("x") or [], spec.get("total") or [], spec.get("active") or []):
@@ -286,8 +354,29 @@ def notas_region(spec: dict) -> str:
     return f'<div class="notas"><ul>{"".join(items)}</ul></div>'
 
 
+def notas_barras(spec: dict) -> str:
+    items = []
+    _, ocultas = barras_visibles(spec)
+    if ocultas:
+        items.append(f"<li>{ocultas} sedes valen 0 y no se dibujan: son la gran mayoría y el gráfico "
+                     "quedaría vacío.</li>")
+    sin = [b["label"] for b in spec.get("bars") or [] if b.get("value") is None]
+    if sin:
+        items.append("<li>Sin dato: " + e("; ".join(sin)) + ".</li>")
+    ref = spec.get("reference")
+    if ref:
+        items.append(f"<li>La línea punteada es el valor {e(ref['label'])} "
+                     f"({e(_fmt_unidad(ref['value'], spec.get('unit')))}), calculado sobre todos los "
+                     "estudiantes del país, no como promedio de las sedes.</li>")
+    for aviso in spec.get("notices") or []:
+        items.append(f"<li>{e(aviso)}</li>")
+    return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
+
+
 def notas_html(spec: dict) -> str:
     """Lo que el lector tiene que saber para no leer mal la figura, derivado de los datos."""
+    if spec.get("form") == "barras_sedes":
+        return notas_barras(spec)
     if spec.get("form") == "matricula_region":
         return notas_region(spec)
     items = []
@@ -315,25 +404,192 @@ def notas_html(spec: dict) -> str:
     return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
 
 
+# ── el reporte (MAT-17) ──────────────────────────────────────────────────────────────────────────
+# Las lecturas las redacta el agente. Lo que se protege son las CIFRAS: todo número de un texto tiene
+# que estar en lo que entregó el servicio —portada, figuras, cifras de contexto—, entero o redondeado
+# a un decimal. Un número que no está, se inventó o se calculó por fuera, y el reporte se niega.
+NUMERO = re.compile(r"(?<![\w.,])\d{1,3}(?:\.\d{3})+(?:,\d+)?(?![\w])|(?<![\w.,])\d+(?:,\d+)?(?![\w])")
+
+
+def _a_float(texto: str) -> float:
+    return float(texto.replace(".", "").replace(",", "."))
+
+
+CLAVES_PORCENTAJE = ("pct", "weight_pct")
+
+
+def _variantes(v: float) -> set:
+    """El valor exacto y su redondeo a un decimal. NO el redondeo a entero de un valor con decimales:
+    con él, un 9,3% respaldaba un «9%» inventado (se vio al probarlo el 08-10-2026)."""
+    return {float(v), round(float(v), 1)}
+
+
+def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
+    """Todos los números que el servicio entregó: (todos, sólo los porcentajes).
+
+    Un porcentaje es un valor de una figura con `unit: pct`, su referencia, un crecimiento, un peso
+    (`weight_pct`), o un número seguido de «%» en un texto del servicio.
+    """
+    acc = set() if acc is None else acc
+    pct = set() if pct is None else pct
+    if isinstance(nodo, dict):
+        en_pct = es_pct or nodo.get("unit") == "pct"
+        for k, v in nodo.items():
+            hijo_pct = en_pct and k in ("bars", "value", "reference") or k in CLAVES_PORCENTAJE \
+                or k == "growth" or (es_pct and k in ("total", "active"))
+            if k == "blocks" and isinstance(v, list):
+                for bl in v:
+                    if bl.get("kind") == "figure":
+                        numeros_del_spec(bl.get("figure"), acc, pct)
+            elif k == "growth" and isinstance(v, dict):
+                for gk, gv in v.items():
+                    if gk != "period":
+                        numeros_del_spec(gv, acc, pct, True)
+                numeros_del_spec(v.get("period"), acc, pct)
+            else:
+                numeros_del_spec(v, acc, pct, hijo_pct)
+    elif isinstance(nodo, list):
+        for v in nodo:
+            numeros_del_spec(v, acc, pct, es_pct)
+    elif _numero(nodo):
+        acc.update(_variantes(nodo))
+        if es_pct:
+            pct.update(_variantes(nodo))
+    elif isinstance(nodo, str):
+        # LOS TEXTOS DEL SERVICIO TAMBIÉN RESPALDAN: «más de 30 años» es la definición del eje y está en
+        # el subtítulo que escribió el servicio. Los textos del agente (las lecturas) no entran aquí.
+        for m in re.finditer(NUMERO, nodo):
+            acc.add(_a_float(m.group()))
+            if nodo[m.end():m.end() + 2].lstrip().startswith("%"):
+                pct.add(_a_float(m.group()))
+    return acc, pct
+
+
+def lecturas(spec: dict):
+    for sec in spec.get("sections") or []:
+        for b in sec.get("blocks") or []:
+            if b.get("kind") == "reading":
+                yield sec, b
+
+
+def validar_reporte(spec: dict) -> list[str]:
+    """Lo que hace que el REPORTE no se componga. Una figura inválida no lo detiene: va como tabla."""
+    errores = []
+    for campo in ("title", "subtitle"):
+        if not str(spec.get(campo) or "").strip():
+            errores.append(f"falta «{campo}»")
+    if "source" in spec:
+        errores.append("el spec trae «source»: la fuente no se escribe, se deriva de «provenance»")
+    if not (spec.get("provenance") or {}).get("fuente_original"):
+        errores.append("falta «provenance.fuente_original»")
+    retiradas = {r.get("label") for r in (spec.get("cover") or {}).get("retreating") or []}
+    for sec in spec.get("sections") or []:
+        for b in sec.get("blocks") or []:
+            if b.get("kind") != "figure":
+                continue
+            f = b.get("figure") or {}
+            nombres = [x.get("label") for x in (f.get("bars") or []) + (f.get("series") or [])]
+            dentro = sorted(retiradas & set(nombres))
+            if dentro:
+                # EL GATE DEL REPORTE LOCAL: una sede en retirada se declara en la portada y no entra al cuerpo.
+                errores.append(f"«{b.get('id')}» trae sedes en retirada en el cuerpo: {', '.join(dentro)}")
+    todos, porcentajes = numeros_del_spec({k: v for k, v in spec.items() if k != "sections"})
+    for sec in spec.get("sections") or []:
+        t, p_ = numeros_del_spec({"blocks": [b for b in sec.get("blocks") or [] if b.get("kind") == "figure"]})
+        todos |= t
+        porcentajes |= p_
+    for sec, b in lecturas(spec):
+        for campo in ("text", "compatible"):
+            texto = str(b.get(campo) or "")
+            for m in re.finditer(NUMERO, texto):
+                valor, es_pct = _a_float(m.group()), texto[m.end():m.end() + 2].lstrip().startswith("%")
+                if es_pct and valor not in porcentajes:
+                    errores.append(f"la lectura de «{b.get('for')}» ({campo}) cita {m.group()}%, que no es un "
+                                   "porcentaje de los que entregó el servicio")
+                elif not es_pct and valor not in todos:
+                    errores.append(f"la lectura de «{b.get('for')}» ({campo}) cita {m.group()}, que no está en los "
+                                   "datos que entregó el servicio")
+    return errores
+
+
+def _parrafos(texto: str) -> str:
+    return "".join(f"<p>{e(p.strip())}</p>" for p in str(texto).split("\n\n") if p.strip())
+
+
+def _tabla_html(md: str) -> str:
+    filas = [f.strip("|").split("|") for f in md.splitlines() if f.strip() and not set(f) <= set("|-: ")]
+    cab, *cuerpo = filas
+    return ('<div class="tw"><table><thead><tr>' + "".join(f"<th>{e(c.strip())}</th>" for c in cab) + "</tr></thead><tbody>"
+            + "".join("<tr>" + "".join(f"<td>{e(c.strip())}</td>" for c in f) + "</tr>" for f in cuerpo)
+            + "</tbody></table></div>")
+
+
+def figura_html(id_: str, spec: dict, dibujables: dict, avisos: list) -> str:
+    errores = validar(spec)
+    cabeza = f'<p class="ft">{e(spec.get("title"))}</p><p class="fs">{e(spec.get("subtitle"))}</p>'
+    if errores:
+        avisos.append(f"figura «{id_}» no dibujada: {'; '.join(errores)}")
+        return ('<figure>' + cabeza + '<p class="negativa">Esta figura no se dibuja: '
+                + e("; ".join(errores)) + ". Los datos van en la tabla.</p>" + _tabla_html(tabla(spec)) + "</figure>")
+    dibujables[id_] = spec
+    fuente = e(str(spec["provenance"]["fuente_original"]).strip())
+    return (f'<figure>{cabeza}<div class="grafico" id="fig-{e(id_)}"></div>{notas_html(spec)}'
+            f'<p class="src">Fuente: {fuente}.</p></figure>')
+
+
+def componer_reporte(spec: dict, avisos: list) -> str:
+    c = spec.get("cover") or {}
+    sedes = "".join(f"<li>{e(x['label'])}{'' if x.get('city') == spec.get('region') else ' (' + e(x['city']) + ')'}</li>"
+                    for x in c.get("sites") or [])
+    retiradas = "; ".join(f"{x['label']} ({c.get('year_last')}: {_fmt_unidad(x['enrollment_last'] or 0, 'count')})"
+                          for x in c.get("retreating") or [])
+    partes = [f'<header class="portada"><h1>{e(spec["title"])}</h1><p class="sub">{e(spec["subtitle"])}</p>',
+              f'<p>{len(c.get("sites") or [])} sedes universitarias en la región:</p><ul class="sedes">{sedes}</ul>']
+    if retiradas:
+        partes.append(f'<p class="retirada"><b>En retirada</b>, y fuera del resto del reporte: {e(retiradas)}. '
+                      "Conservan matrícula, pero ya casi no reciben estudiantes nuevos.</p>")
+    partes.append(f'<p class="universo">Universo: {e(c.get("universe"))}.</p></header>')
+    dibujables: dict = {}
+    for sec in spec.get("sections") or []:
+        partes.append(f'<section><h2>{e(sec.get("title"))}</h2><p class="pregunta">{e(sec.get("question"))}</p>')
+        for b in sec.get("blocks") or []:
+            if b.get("kind") == "figure":
+                partes.append(figura_html(b.get("id"), b.get("figure") or {}, dibujables, avisos))
+            elif b.get("kind") == "reading" and (b.get("text") or b.get("compatible")):
+                partes.append('<div class="lectura">' + _parrafos(b.get("text") or ""))
+                if b.get("compatible"):
+                    partes.append('<p class="compatible"><b>Explicación compatible:</b> '
+                                  + e(b["compatible"]) + "</p>")
+                partes.append("</div>")
+        partes.append("</section>")
+    partes.append(f'<footer><p class="src">Fuente: {e(spec["provenance"]["fuente_original"])}. '
+                  f'Universo: {e(spec["provenance"].get("universo"))}.</p></footer>')
+    return _pagina(spec["title"], "".join(partes), dibujables)
+
+
+def _pagina(titulo: str, cuerpo: str, figuras: dict) -> str:
+    plantilla = (ASSETS / "figura.template.html").read_text(encoding="utf-8")
+    return (plantilla
+            .replace("__TITULO__", e(titulo))
+            .replace("__CUERPO__", cuerpo)
+            .replace("/* __D3__ */", (ASSETS / "vendor" / "d3.min.js").read_text(encoding="utf-8"))
+            .replace("/* __PLOT__ */", (ASSETS / "vendor" / "plot.umd.min.js").read_text(encoding="utf-8"))
+            .replace("__RECETAS__", (ASSETS / "recetas_plot.js").read_text(encoding="utf-8"))
+            .replace("/* __FIGURAS__ */", json.dumps(figuras, ensure_ascii=False)))
+
+
 def componer(spec: dict) -> str:
     fuente = str(spec["provenance"]["fuente_original"]).strip()
     cuerpo = (
         "<figure>"
         f'<p class="ft">{e(spec["title"])}</p>'
         f'<p class="fs">{e(spec["subtitle"])}</p>'
-        '<div class="grafico" id="grafico"></div>'
+        '<div class="grafico" id="fig-figura"></div>'
         f"{notas_html(spec)}"
         f'<p class="src">Fuente: {e(fuente)}.</p>'
         "</figure>"
     )
-    plantilla = (ASSETS / "figura.template.html").read_text(encoding="utf-8")
-    return (plantilla
-            .replace("__TITULO__", e(spec["title"]))
-            .replace("__CUERPO__", cuerpo)
-            .replace("/* __D3__ */", (ASSETS / "vendor" / "d3.min.js").read_text(encoding="utf-8"))
-            .replace("/* __PLOT__ */", (ASSETS / "vendor" / "plot.umd.min.js").read_text(encoding="utf-8"))
-            .replace("__RECETAS__", (ASSETS / "recetas_plot.js").read_text(encoding="utf-8"))
-            .replace("/* __FIGURA__ */", json.dumps(spec, ensure_ascii=False)))
+    return _pagina(spec["title"], cuerpo, {"figura": spec})
 
 
 def main() -> int:
@@ -342,6 +598,30 @@ def main() -> int:
     ap.add_argument("--salida", required=True, type=Path)
     a = ap.parse_args()
     spec = json.loads(a.entrada.read_text(encoding="utf-8"))
+
+    if spec.get("form") == "reporte_region":
+        errores = validar_reporte(spec)
+        if errores:
+            print("NO SE COMPONE EL REPORTE:", file=sys.stderr)
+            for err in errores:
+                print(f"  - {err}", file=sys.stderr)
+            print("\nCorrige la lectura (usa sólo cifras del spec) o vuelve a pedir el reporte.", file=sys.stderr)
+            return 2
+        avisos: list = []
+        pagina = componer_reporte(spec, avisos)
+        jerga = sorted(set(JERGA.findall(pagina)))
+        if jerga:
+            print(f"NO SE COMPONE: la página trae vocabulario interno ({', '.join(jerga)}).", file=sys.stderr)
+            return 2
+        a.salida.write_text(pagina, encoding="utf-8")
+        n_fig = sum(1 for sec in spec["sections"] for b in sec["blocks"] if b.get("kind") == "figure")
+        n_lec = sum(1 for _, b in lecturas(spec) if b.get("text") or b.get("compatible"))
+        print(a.salida)
+        print(f"reporte · {len(spec['sections'])} sección(es) · {n_fig} figuras · {n_lec} lecturas · "
+              f"{len(avisos)} figuras como tabla")
+        for aviso in avisos:
+            print(f"  aviso: {aviso}")
+        return 0
 
     errores = validar(spec)
     if errores:
