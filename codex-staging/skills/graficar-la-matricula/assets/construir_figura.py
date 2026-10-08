@@ -413,15 +413,18 @@ def notas_region(spec: dict) -> str:
 def notas_barras(spec: dict) -> str:
     items = []
     visibles, ocultas = barras_visibles(spec)
+    ref = spec.get("reference")
     if ocultas and not visibles:
-        items.append(f"<li>Las {ocultas} sedes valen 0: no hay barras que dibujar.</li>")
-    elif ocultas:
+        # Sin barras no hay línea punteada que explicar: el valor nacional se dice en la misma línea.
+        nac = f"; el valor {e(ref['label'])} es {e(_fmt_unidad(ref['value'], spec.get('unit')))}" if ref else ""
+        items.append(f"<li>Las {ocultas} sedes valen 0, así que no hay barras que dibujar{nac}.</li>")
+        return f'<div class="notas"><ul>{"".join(items)}</ul></div>'
+    if ocultas:
         items.append(f"<li>{ocultas} sedes valen 0 y no se dibujan: son la gran mayoría y el gráfico "
                      "quedaría vacío.</li>")
     sin = [b["label"] for b in spec.get("bars") or [] if b.get("value") is None]
     if sin:
         items.append("<li>Sin dato: " + e("; ".join(sin)) + ".</li>")
-    ref = spec.get("reference")
     if ref:
         items.append(f"<li>La línea punteada es el valor {e(ref['label'])} "
                      f"({e(_fmt_unidad(ref['value'], spec.get('unit')))}), calculado sobre todos los "
@@ -621,8 +624,11 @@ def figura_html(id_: str, spec: dict, dibujables: dict, avisos: list) -> str:
         avisos.append(f"figura «{id_}» no dibujada: {'; '.join(errores)}")
         return ('<figure>' + cabeza + '<p class="negativa">Esta figura no se dibuja: '
                 + e("; ".join(errores)) + ". Los datos van en la tabla.</p>" + _tabla_html(tabla(spec)) + "</figure>")
-    dibujables[id_] = spec
     fuente = e(str(spec["provenance"]["fuente_original"]).strip())
+    if spec.get("form") == "barras_sedes" and not barras_visibles(spec)[0]:
+        # TODAS EN CERO: no hay gráfico, y una caja vacía con su pie parece una figura rota (qa/, 08-10).
+        return f'<figure>{cabeza}{notas_html(spec)}<p class="src">Fuente: {fuente}.</p></figure>'
+    dibujables[id_] = spec
     return (f'<figure>{cabeza}<div class="grafico" id="fig-{e(id_)}"></div>{notas_html(spec)}'
             f'<p class="src">Fuente: {fuente}.</p></figure>')
 

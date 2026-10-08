@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.10.2 · 2026-10-08
+
+Una figura en que todas las sedes valen cero ya no deja una caja vacía con un pie que habla de una línea que no se dibuja: dice en una línea que no hay barras y cuál es el valor del país.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.10.1 · 2026-10-08
 
 Correcciones que encontró el primer uso de la sección 2. Si el plugin instalado es más antiguo que el servicio y no conoce una figura nueva, el reporte ya no se publica a medias con tablas vacías: dice que hay que actualizar el plugin. La portada ya no repite la ciudad de una sede que la trae en el nombre («U. de Concepción (Concepción) (Concepción)»), y una figura en que todas las sedes valen cero lo dice así, sin dibujar un eje vacío.
