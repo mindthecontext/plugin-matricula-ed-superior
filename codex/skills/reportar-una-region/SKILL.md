@@ -108,8 +108,12 @@ publica. Un reporte no mejora con párrafos de relleno.
    en las lecturas de las secciones.
 7. **El universo son las universidades**, en pregrado. Si una lectura podría leerse como «todos los que
    estudian en la región», di que son universidades: los institutos profesionales y los CFT no están.
-8. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426.
-9. **Sin jerga de la casa.** Nada de «pack», «artefacto», nombres de reglas ni códigos de criterio.
+8. **Cada cifra tiene su fuente y sus años, y no todas son iguales.** Cada figura dice al pie de qué base
+   sale y su subtítulo, qué años cubre: la matrícula es 2021–2025, la PAES 2023–2025, primera
+   generación 2021–2022, el 10% superior llega a egresos de 2023. Si en tu respuesta citas una cifra
+   fuera del reporte, di de qué base y de qué años es; no la presentes como «hoy».
+9. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426.
+10. **Sin jerga de la casa.** Nada de «pack», «artefacto», nombres de reglas ni códigos de criterio.
 
 ### Cómo leer la sección 2, «Con qué llegan»
 

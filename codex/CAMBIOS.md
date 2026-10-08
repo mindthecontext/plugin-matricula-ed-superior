@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.14.0 · 2026-10-08
+
+Cada dato dice ahora de dónde sale. Las figuras del reporte estampan la fuente de su propio indicador —el registro de egreso de enseñanza media para el colegio pagado, la ficha SEP para los prioritarios, el registro NEM del DEMRE para el 10% superior, el historial de matrícula para quienes llegan directo del colegio— en vez de una fuente genérica, y el pie del reporte las lista todas. Lo que todavía está calculado de forma imperfecta se dice en la propia figura: que el n es el de la sede completa, que quien no tiene ficha SEP cuenta como no prioritario, que el registro NEM llega a los egresos de 2023. Las respuestas en texto traen la misma información: la fuente y los años de cada indicador.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-07-lab`
+
 ## v0.13.1 · 2026-10-08
 
 Corrección: la figura de primera generación en la universidad decía cubrir a quienes entraron entre 2021 y 2025, y cubre sólo 2021–2022. El dato sale de la ficha socioeconómica del DEMRE, que dejó de preguntar la educación de los padres desde el proceso 2023. Ahora la figura dice sus años, su fuente propia y que mide sólo a quienes respondieron la ficha, y la lectura no puede presentarla como el alumnado actual.

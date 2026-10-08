@@ -700,8 +700,17 @@ def componer_reporte(spec: dict, avisos: list) -> str:
                                   + e(b["compatible"]) + "</p>")
                 partes.append("</div>")
         partes.append("</section>")
-    partes.append(f'<footer><p class="src">Fuente: {e(spec["provenance"]["fuente_original"])}. '
-                  f'Universo: {e(spec["provenance"].get("universo"))}.</p></footer>')
+    # EL PIE LISTA TODAS LAS FUENTES QUE USA LA PÁGINA (MAT-30): decía sólo «matrícula», y el reporte cita
+    # también puntajes, fichas del DEMRE, el registro de egreso y la SEP.
+    fuentes = [spec["provenance"]["fuente_original"]]
+    for sec in spec.get("sections") or []:
+        for b in sec.get("blocks") or []:
+            f = (b.get("figure") or {}).get("provenance", {}).get("fuente_original") if b.get("kind") == "figure" else None
+            if f and f not in fuentes:
+                fuentes.append(f)
+    lista = "".join(f"<li>{e(f)}</li>" for f in fuentes)
+    partes.append(f'<footer><p class="src">Fuentes de este reporte:</p><ul class="src">{lista}</ul>'
+                  f'<p class="src">Universo: {e(spec["provenance"].get("universo"))}.</p></footer>')
     return _pagina(spec["title"], "".join(partes), dibujables)
 
 
