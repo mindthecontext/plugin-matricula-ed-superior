@@ -222,7 +222,8 @@ function validarRegion(spec, errores) {
   return errores;
 }
 
-const UNIDADES = ["count", "pct", "years"];
+// «clp_m»: millones de pesos, para el arancel (MAT-22).
+const UNIDADES = ["count", "pct", "years", "clp_m"];
 
 /**
  * `barras_sedes`: un eje, una barra por sede activa, con el valor nacional como referencia.
@@ -446,6 +447,7 @@ function matriculaRegion(spec, Plot, ancho) {
 }
 
 function formatoUnidad(unidad) {
+  if (unidad === "clp_m") return v => `$${v.toLocaleString("es-CL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} M`;
   if (unidad === "pct") return v => `${v.toLocaleString("es-CL", { maximumFractionDigits: 1 })}%`;
   if (unidad === "years") return v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
   return v => Math.round(v).toLocaleString("es-CL");

@@ -232,7 +232,7 @@ def validar_region(spec: dict, errores: list[str]) -> list[str]:
     return errores
 
 
-UNIDADES = ("count", "pct", "years")
+UNIDADES = ("count", "pct", "years", "clp_m")
 
 
 def _numero(v) -> bool:
@@ -333,6 +333,8 @@ def barras_visibles(spec: dict) -> tuple[list, int]:
 
 
 def _fmt_unidad(v, unidad: str) -> str:
+    if unidad == "clp_m":
+        return "$" + f"{v:.2f}".replace(".", ",") + " M"
     if unidad == "pct":
         return f"{v:.1f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
     if unidad == "years":

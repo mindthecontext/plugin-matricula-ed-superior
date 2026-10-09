@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.16.0 · 2026-10-09
+
+El reporte regional suma su quinta sección, «Cómo entran y quién paga»: por qué vía entran a cada sede —la centralizada, la de equidad y, dentro de ella, el PACE—, cuántos llegan desde la misma institución o con un título previo, cuánto cuesta y cuántos estudian con gratuidad. Cada figura dice su fuente y sus años: la equidad y el PACE sólo se registran desde 2024, y el arancel está en pesos nominales de cinco años, sin ajustar por inflación. La presencia del PACE por tipo de institución se calcula del dato: hoy la tiene el 87% de las sedes estatales del Consejo de Rectores, el 86% de las privadas del Consejo y el 15% de las privadas fuera de él.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.15.1 · 2026-10-08
 
 Las respuestas sobre una región dejan fuera de cualquier comparación a las sedes en retirada —también de los rangos del tipo «va de X a Y»—, saben que cada indicador trae el número de estudiantes con dato y por eso su cobertura, y citan la fuente y los años de cada indicador.

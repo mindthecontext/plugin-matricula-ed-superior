@@ -1,6 +1,6 @@
 ---
 name: reportar-una-region
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», y 4, «De qué origen vienen»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», y 5, «Cómo entran y quién paga»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -170,6 +170,19 @@ publica. Un reporte no mejora con párrafos de relleno.
   ficha. Escribe «entre quienes entraron en 2021 y 2022», nunca «hoy» ni «2021–2025».
 - **La caja de puntaje por tipo de colegio cubre sólo a quienes rindieron la PAES**, como en la sección 2.
 
+### Cómo leer la sección 5, «Cómo entran y quién paga»
+
+- **Los ejes de la vía no se suman.** La vía centralizada incluye a la de equidad, y el PACE es una parte de
+  la equidad. No escribas «el 88% entra por la vía centralizada y otro 4% por equidad».
+- **Equidad y PACE son de 2024–2025**, no de toda la ventana: antes no se registraba la vía.
+- **Gratuidad 0% no es un error ni una exclusión:** la institución no adhiere, y es una decisión de modelo
+  de financiamiento. No escribas que «sus estudiantes no acceden a la gratuidad» como si fuera un juicio
+  sobre ellos.
+- **El arancel está en pesos nominales de cinco años**, sin ajustar por inflación. Sirve para comparar sedes
+  entre sí, no como «el arancel de hoy».
+- **Un 0% de PACE en una privada fuera del Consejo de Rectores es lo normal de su grupo**; la nota lo dice con
+  la cifra del país. No lo leas como falta de compromiso con la equidad.
+
 ## 3 · Compón
 
     python3 <carpeta de la skill graficar-la-matricula>/assets/construir_figura.py --entrada reporte.json --salida reporte.html
@@ -191,6 +204,6 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 - **Si no puedes**, entrega el archivo.
 
 En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué no todavía. Hoy cubre la portada y
-las secciones 1 a 4; el acceso y el financiamiento, las preferencias y los desenlaces, los planos y la
-síntesis llegarán como secciones nuevas. No los
+las secciones 1 a 5; las preferencias y los desenlaces, los planos y la síntesis llegarán como
+secciones nuevas. No los
 completes con otras herramientas dentro del reporte.
