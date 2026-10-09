@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.17.1 · 2026-10-09
+
+Los puntajes de las figuras de rangos llegan con un decimal, redondeados como los dibuja la figura: la lectura y el gráfico muestran la misma cifra (antes una lectura podía decir 567,25 donde la figura mostraba 567,3). Las lecturas tampoco encadenan paréntesis cuando el nombre de la sede ya trae la ciudad.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.17.0 · 2026-10-09
 
 El reporte regional suma dos secciones. «Dónde los eligen» muestra, por sede, cuántos de quienes entraron por la admisión centralizada la habían puesto como primera preferencia y cuántos llegaron desplazados, y a qué institución habían puesto primero esos desplazados. «En qué termina» muestra los cuatro desenlaces de las cohortes que entraron entre 2011 y 2016: se tituló en su carrera, se tituló en otra, sigue estudiando o salió sin título. Las dos usan una figura nueva, la barra partida al 100%, con el país como última fila de referencia, y hay que actualizar el plugin para verla. Cada sección declara su fuente: las postulaciones del DEMRE y las trayectorias de titulación. La herramienta de preferencias también cita ahora esa fuente, en vez de la genérica.

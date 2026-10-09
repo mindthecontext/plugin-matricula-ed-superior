@@ -122,7 +122,9 @@ publica. Un reporte no mejora con párrafos de relleno.
    sale y su subtítulo, qué años cubre: la matrícula es 2021–2025, la PAES 2023–2025, primera
    generación 2021–2022, el 10% superior llega a egresos de 2023. Si en tu respuesta citas una cifra
    fuera del reporte, di de qué base y de qué años es; no la presentes como «hoy».
-9. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426.
+9. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426. Si el nombre de la sede ya lleva
+   paréntesis, no le agregues otro con la cifra: «U. de Los Lagos (Castro), con 567,3», no «U. de Los
+   Lagos (Castro) (567,3)».
 10. **Sin jerga de la casa.** Nada de «pack», «artefacto», nombres de reglas ni códigos de criterio.
 
 ### Cómo leer la sección 2, «Con qué llegan»
