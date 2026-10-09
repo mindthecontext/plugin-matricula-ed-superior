@@ -573,7 +573,10 @@ function rangosSedes(spec, Plot, ancho) {
   const ref = spec.reference;
   // UN DECIMAL, NO ENTERO: el dato es 674,5 y la lectura lo cita de la figura. Mostrado como «675», el
   // guardia de cifras lo rechazaría, porque no acepta el redondeo a entero de un valor con decimales.
-  const fmt = v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
+  // El valor lleva siempre su decimal («609,0», como lo escribe la lectura); el eje, sólo si hace falta («600»).
+  // La misma regla que las barras (MAT-22): un «609» junto a «567,3» parecía otra precisión (qa/, MAT-32).
+  const fmt = v => v.toLocaleString("es-CL", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const fmtEje = v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
   const halo = { stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" };
   const largo = Math.max(...filas.map(f => f.eti.length));
   const margen = Math.min(angosto ? Math.round(ancho * 0.52) : 300, Math.round(largo * 5.6) + 14);
@@ -600,7 +603,7 @@ function rangosSedes(spec, Plot, ancho) {
     width: ancho, height: 44 + filas.length * (angosto ? 32 : 34), marginLeft: margen, marginRight: spec.whiskers === "min_max" ? 64 : 40,
     marginTop: ref ? 24 : 10, marginBottom: 24,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
-    x: { label: null, domain: [bajo - 20, alto + 20], grid: true, ticks: angosto ? 3 : 6, tickFormat: fmt },
+    x: { label: null, domain: [bajo - 20, alto + 20], grid: true, ticks: angosto ? 3 : 6, tickFormat: fmtEje },
     y: { label: null, domain: filas.map(f => f.eti), tickFormat: acorta },
     marks: [
       // DOS BIGOTES, NO UNA LÍNEA QUE CRUZA LA CAJA (el reporte local lo corrigió dos veces).

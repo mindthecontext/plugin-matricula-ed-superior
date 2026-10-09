@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.17.2 · 2026-10-09
+
+Las figuras de puntaje rotulan cada mediana con su decimal, también cuando es cero («609,0» y no «609»), como ya lo hacían las barras con los porcentajes: la figura y la lectura muestran la misma precisión. Sólo cambia el dibujo, que hace el plugin; hay que actualizarlo.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.17.1 · 2026-10-09
 
 Los puntajes de las figuras de rangos llegan con un decimal, redondeados como los dibuja la figura: la lectura y el gráfico muestran la misma cifra (antes una lectura podía decir 567,25 donde la figura mostraba 567,3). Las lecturas tampoco encadenan paréntesis cuando el nombre de la sede ya trae la ciudad.
