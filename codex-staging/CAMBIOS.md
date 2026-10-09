@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.15.0 · 2026-10-08
+
+Tres indicadores de las sedes se calculan ahora mejor. Alumnos prioritarios: quien egresó de un colegio subvencionado sin ficha SEP ya no cuenta como «no prioritario», porque no se sabe; el egresado de colegio particular pagado sí cuenta como «no», porque ahí la SEP no existe. En el país la cifra pasa de 39,9% a 51,1%, y el pie advierte que, si los colegios sin ficha tuvieran menos prioritarios, estaría algo sobreestimada. Primera generación ya no cuenta como tal a quien respondió «no sé» por la educación de ambos padres (56,9% a 56,1%). Y el número de estudiantes que acompaña a cada barra del 10% superior, del colegio pagado, del alumnado de la región y de los prioritarios es el de quienes tienen el dato, no el de toda la sede. Los demás indicadores no cambian.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab` · antes `2026-10-07-lab`
+
 ## v0.14.1 · 2026-10-08
 
 Las figuras que salen del registro de egreso de enseñanza media —colegio pagado y alumnado de la región— dicen ahora su cobertura, egresos 2002–2025, que alcanza a todos los entrantes del período. La del 10% superior advierte que su registro llega a 2023; sin decirlo también aquí, no se sabía si faltaba el aviso o no había límite.
