@@ -49,7 +49,13 @@ en ese tramo.
   llega como `no_derivable`: se entrega el rango y se explica por qué.
 - **Sin superlativos que no vengan del dato.** «La más inclusiva» exige haber comparado el eje
   completo, no haber mirado dos filas.
-- **Las sedes en retirada no entran a los rankings**: llegan con `en_retirada` y su razón.
+- **Las sedes en retirada no entran a ninguna comparación**: ni rankings, ni rangos («va de X a Y»), ni
+  mínimos o máximos, ni promedios. Llegan con `en_retirada` y su razón; si las nombras, que sea aparte y
+  como lo que son. En qa/ (08-10) una respuesta dijo «va de 38,9% (INACAP)…» con INACAP en retirada: el
+  rango real entre las sedes activas empezaba en 58,4%.
+- **Cada eje trae su `n`, que es el de quienes tienen el dato**, no el de toda la sede. La cobertura de un
+  eje en una sede es su `n` dividido por los entrantes de la sede, y se puede comparar entre sedes. No
+  digas que «los datos no traen la cobertura»: la traen.
 - **Nada de comparar puntajes cruzando 2022/2023** — quiebre PSU→PAES.
 
 ## Dos cifras que parecen contradictorias y no lo son
@@ -61,5 +67,7 @@ el denominador de cada una.
 
 ## Cierra con las fuentes
 
-Fuente original, años y consideraciones desde `procedencia`. Y si en la misma respuesta usaste la
+Fuente original, años y consideraciones desde `procedencia`. La fuente y el alcance de **cada indicador**
+están en `procedencia.por_eje`: úsalos, porque no todos los indicadores salen de la misma base ni cubren
+los mismos años. Y si en la misma respuesta usaste la
 puerta por carrera, explica por qué los universos difieren.
