@@ -1,5 +1,5 @@
 ---
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», 5, «Cómo entran y quién paga», 6, «Dónde los eligen», 7, «En qué termina», y 8, «La región en tres planos»; la síntesis llegará después. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», 5, «Cómo entran y quién paga», 6, «Dónde los eligen», 7, «En qué termina», y 8, «La región en tres planos», con una síntesis al principio y las notas de método al final. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -12,8 +12,8 @@ lecturas las escribes tú**, y esta skill dice cómo, porque es lo que hace que 
 
     reporte_region(region)
 
-Devuelve `spec`: la portada (`cover`), las secciones con sus figuras ya armadas y, junto a cada figura,
-un bloque `reading` vacío para su lectura. Trae además `facts`: cifras de contexto que puedes citar
+Devuelve `spec`: la portada (`cover`), la síntesis, las secciones con sus figuras ya armadas y, junto a
+cada figura, un bloque `reading` vacío para su lectura, y al final las notas de método (sin lectura). Trae además `facts`: cifras de contexto que puedes citar
 (cuántas sedes activas, cuántas en retirada, los entrantes del período, la matrícula de la región).
 
 Cada figura de barras trae a su lado **`groups`**, con los órdenes y los grupos ya calculados:
@@ -135,6 +135,29 @@ publica. Un reporte no mejora con párrafos de relleno.
    paréntesis, no le agregues otro con la cifra: «U. de Los Lagos (Castro), con 567,3», no «U. de Los
    Lagos (Castro) (567,3)».
 10. **Sin jerga de la casa.** Nada de «pack», «artefacto», nombres de reglas ni códigos de criterio.
+
+### Cómo escribir la síntesis
+
+La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste las demás lecturas. Su bloque
+`findings` trae los hechos candidatos, cada uno con su sección (`section`), calculados de las mismas figuras:
+
+| Hecho | Qué dice |
+|---|---|
+| `tamano` | La sede con más matrícula el último año y la que más entrantes recibe; `same_site` dice si son la misma. |
+| `puntajes` | Las sedes que concentran los mejores puntajes, con la regla (`rule`). Si la lista está vacía, ninguna. |
+| `mercado` | La retención universitaria y el balance: si el sistema local es mayor o más chico que lo que la región aporta. |
+| `colegio` | La brecha de puntaje según el colegio de egreso. |
+| `gratuidad` | Las sedes que no adhieren a la gratuidad y cuántos entrantes reciben. |
+| `preferencias` | La sede con el alumnado más convencido y la con más desplazados, y el imán de la región. |
+| `desenlaces` | Dónde más y dónde menos se titulan en la carrera de entrada, y el país. |
+| `planos` | Las sedes sobre el país en puntaje y en prioritarios a la vez. |
+
+- **De 4 a 6 viñetas**, cada una en una línea que empieza con «- » y termina con su sección: «(§3)».
+- **Sólo hechos de `findings`**, con sus cifras tal como vienen. Un hecho que la región no permite (una sola
+  sede, sin cohortes) no viene: no lo reemplaces con otro.
+- **Elige lo que distingue a la región**, no lo que se repite en todas. Una lista vacía (`concentrates_top_scores: []`)
+  también es un hecho, pero rara vez vale una viñeta.
+- **Sin interpretación**: la síntesis no lleva `compatible`. Las explicaciones ya están en sus secciones.
 
 ### Cómo leer la sección 2, «Con qué llegan»
 
@@ -259,6 +282,6 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 - **Si puedes publicar una página** (un Artifact), publica `reporte.html` tal cual.
 - **Si no puedes**, entrega el archivo.
 
-En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué no todavía. Hoy cubre la portada y
-las secciones 1 a 8; la síntesis llegará como sección nueva. No la completes con otras
-herramientas dentro del reporte.
+En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué deja fuera: las notas de método al final
+lo dicen (la acreditación, la titulación de cohortes recientes, las preferencias fuera de la admisión
+centralizada). No lo completes con otras herramientas dentro del reporte.

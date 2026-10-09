@@ -695,10 +695,11 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
         en_pct = es_pct or nodo.get("unit") == "pct"
         for k, v in nodo.items():
             hijo_pct = en_pct and k in ("bars", "value", "reference", "rows") or k in CLAVES_PORCENTAJE \
+                or str(k).endswith("_pct") \
                 or k == "growth" or (es_pct and k in ("total", "active"))
             if k == "blocks" and isinstance(v, list):
                 for bl in v:
-                    if bl.get("kind") in ("facts", "note"):
+                    if bl.get("kind") in ("facts", "note", "findings"):
                         # Las cifras y las notas que escribe el servicio también respaldan (MAT-20).
                         numeros_del_spec({k: x for k, x in bl.items() if k != "kind"}, acc, pct)
                     if bl.get("kind") == "figure":
@@ -770,7 +771,8 @@ def validar_reporte(spec: dict) -> list[str]:
                 errores.append(f"«{b.get('id')}» trae sedes en retirada en el cuerpo: {', '.join(dentro)}")
     todos, porcentajes = numeros_del_spec({k: v for k, v in spec.items() if k != "sections"})
     for sec in spec.get("sections") or []:
-        t, p_ = numeros_del_spec({"blocks": [b for b in sec.get("blocks") or [] if b.get("kind") in ("figure", "facts", "note")]})
+        t, p_ = numeros_del_spec({"blocks": [b for b in sec.get("blocks") or []
+                                             if b.get("kind") in ("figure", "facts", "note", "findings")]})
         todos |= t
         porcentajes |= p_
     for sec, b in lecturas(spec):
@@ -788,7 +790,15 @@ def validar_reporte(spec: dict) -> list[str]:
 
 
 def _parrafos(texto: str) -> str:
-    return "".join(f"<p>{e(p.strip())}</p>" for p in str(texto).split("\n\n") if p.strip())
+    """Párrafos separados por una línea en blanco; un bloque cuyas líneas empiezan con «- » es una lista (la síntesis)."""
+    partes = []
+    for p in str(texto).split("\n\n"):
+        lineas = [x.strip() for x in p.strip().splitlines() if x.strip()]
+        if lineas and all(x.startswith("- ") for x in lineas):
+            partes.append("<ul>" + "".join(f"<li>{e(x[2:].strip())}</li>" for x in lineas) + "</ul>")
+        elif lineas:
+            partes.append(f"<p>{e(p.strip())}</p>")
+    return "".join(partes)
 
 
 def _tabla_html(md: str) -> str:
