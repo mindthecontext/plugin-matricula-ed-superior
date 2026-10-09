@@ -446,9 +446,12 @@ function matriculaRegion(spec, Plot, ancho) {
   });
 }
 
-function formatoUnidad(unidad) {
-  if (unidad === "clp_m") return v => `$${v.toLocaleString("es-CL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} M`;
-  if (unidad === "pct") return v => `${v.toLocaleString("es-CL", { maximumFractionDigits: 1 })}%`;
+// Los VALORES llevan sus decimales fijos («76,0%», «$4,20 M»), como los escriben las lecturas; el EJE
+// los suprime cuando sobran («50%», «$2 M»): en una marca redonda, «$2,00 M» es ruido (MAT-22).
+function formatoUnidad(unidad, eje = false) {
+  const dec = (v, n) => v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : n, maximumFractionDigits: n });
+  if (unidad === "clp_m") return v => `$${dec(v, 2)} M`;
+  if (unidad === "pct") return v => `${dec(v, 1)}%`;
   if (unidad === "years") return v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
   return v => Math.round(v).toLocaleString("es-CL");
 }
@@ -466,6 +469,7 @@ function barrasSedes(spec, Plot, ancho) {
   // TODAS EN CERO: no hay barras, y un eje vacío con la referencia sola no dice nada. El pie lo explica.
   if (!filas.length) return document.createElement("div");
   const fmt = formatoUnidad(spec.unit);
+  const fmtEje = formatoUnidad(spec.unit, true);
   const angosto = ancho < 520;
   const ref = spec.reference;
   // El detalle de una barra (las personas, o el % de colegio pagado de una universidad) va en gris al
@@ -480,13 +484,11 @@ function barrasSedes(spec, Plot, ancho) {
     width: ancho, height: 40 + Math.max(filas.length, 1) * (angosto ? 26 : 28), marginLeft: margen, marginRight: margenDerecho,
     marginTop: ref ? 22 : 8, marginBottom: 24,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
-    x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: fmt },
+    x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: fmtEje },
     y: { label: null, domain: filas.map(f => f.label), tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
     marks: [
       Plot.barX(filas, { x: "value", y: "label", fill: COLORES[0], fillOpacity: 0.85, insetTop: 4, insetBottom: 4,
                          title: f => `${f.label}: ${fmt(f.value)}${f.n != null ? ` (n=${f.n.toLocaleString("es-CL")})` : ""}` }),
-      Plot.text(filas, { x: "value", y: "label", text: f => fmt(f.value), dx: 5, textAnchor: "start", fontSize: angosto ? 9.5 : 10.5,
-                         fill: tono("--texto"), stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" }),
       Plot.ruleX([0], { stroke: tono("--fig-regla") }),
       ...(conDetalle ? [Plot.text(filas.filter(f => f.detail), { x: tope, y: "label", text: "detail", textAnchor: "start", dx: 10,
                                                                   fontSize: angosto ? 8.5 : 9.5, fill: tono("--texto-tenue") })] : []),
@@ -494,6 +496,10 @@ function barrasSedes(spec, Plot, ancho) {
       ...(ref ? [Plot.ruleX([ref.value], { stroke: COLORES[1], strokeWidth: 1.6, strokeDasharray: "4 3" }),
                  Plot.text([ref], { x: "value", text: r => `${r.label} ${fmt(r.value)}`, frameAnchor: "top", dy: -14,
                                     fontSize: 10, fill: tono("--marca-cuadro") })] : []),
+      // El valor, DESPUÉS de la referencia: si no, la línea punteada se pinta encima del halo y tacha el
+      // rótulo de las barras que terminan cerca del nacional (MAT-22, el arancel).
+      Plot.text(filas, { x: "value", y: "label", text: f => fmt(f.value), dx: 5, textAnchor: "start", fontSize: angosto ? 9.5 : 10.5,
+                         fill: tono("--texto"), stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" }),
     ],
   });
 }
