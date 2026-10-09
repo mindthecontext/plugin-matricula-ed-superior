@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.19.3 · 2026-10-09
+
+Pedir sólo algunas secciones del reporte regional, o sólo algunas instituciones en la figura de matrícula, funciona como se espera: se aceptan como lista o como texto con nombres separados por coma. Antes, un texto como «con_que_llegan» se leía letra por letra y el reporte respondía con un error por cada una. La descripción del reporte dice ahora qué secciones tiene.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.19.2 · 2026-10-09
 
 La figura de «Los primeros de su curso» dice qué es estar en el 10% superior: la marca del registro «NEM y Percentil» que indica si el estudiante egresó en el 10% de mejor rendimiento de su promoción en su establecimiento —la misma que usa la Beca de Excelencia Académica—. Las respuestas en texto lo citan igual. Las cifras no cambian.
