@@ -1,5 +1,5 @@
 ---
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», y 5, «Cómo entran y quién paga»; las demás secciones llegarán una a una. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», 5, «Cómo entran y quién paga», 6, «Dónde los eligen», y 7, «En qué termina»; los planos y la síntesis llegarán después. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -49,6 +49,17 @@ Las figuras de rangos de la sección 2 (la PAES por sede y la carrera que estira
 | `rank_upper_tail` | Cuánto se despega el extremo alto de la caja: la cola larga. |
 | `above_reference`, `at_reference`, `below_reference` | Las sedes con mediana sobre, en y bajo la mediana nacional. |
 | `not_robust` | Las filas con menos de 30 puntajes: van sin caja y no sostienen lecturas fuertes. |
+
+Las figuras partidas de las secciones 6 y 7 (cada sede partida en tramos que suman 100%) traen su
+**`groups`**:
+
+| Clave | Qué es |
+|---|---|
+| `rank_<tramo>` | Las sedes de mayor a menor en ese tramo: `rank_conv`, `rank_desp`; `rank_titula`, `rank_otra_carrera`, `rank_sigue`, `rank_sin_titulo`. |
+| `above_reference`, `below_reference` | Por tramo, las sedes sobre y bajo el país (la última fila de la figura). |
+| `small_sample`, `no_data` | Las sedes con muestra chica y las que no tienen dato (sin preferencias registradas o sin cohortes). |
+| `displaced_top_origin` | Sección 6: por sede, la institución que más de sus desplazados había puesto primero, y qué parte (`pct`). |
+| `magnet` | Sección 6: la institución que más desplazados de las sedes de la región había puesto primero. |
 
 **No toques la portada ni las figuras.** Tu trabajo son los bloques `reading`.
 
@@ -182,6 +193,29 @@ publica. Un reporte no mejora con párrafos de relleno.
 - **Un 0% de PACE en una privada fuera del Consejo de Rectores es lo normal de su grupo**; la nota lo dice con
   la cifra del país. No lo leas como falta de compromiso con la equidad.
 
+### Cómo leer la sección 6, «Dónde los eligen»
+
+- **Convencido y desplazado se miden sólo en la admisión centralizada.** Quien entró por otra vía no está.
+  Escribe «de quienes entraron por la admisión centralizada», no «de sus estudiantes».
+- **Desplazado no es segunda opción**: pudo ser la cuarta. No escribas «su segunda opción».
+- **No es prestigio.** Si el postulante pone primero lo que cree alcanzable, la cifra mide deseabilidad
+  filtrada por expectativa. No escribas que una sede es «la más deseada» o «la preferida de la región».
+- **A quién habían puesto primero** sale de `displaced_top_origin`, y **el imán de la región**, de `magnet`.
+  Pueden ser instituciones de afuera: escribe el nombre tal como viene, con su región entre paréntesis.
+- Las razones de una elección —calidad percibida, pares, distancia, costo— no están en este registro: si
+  quieres proponer una, va en `compatible`.
+
+### Cómo leer la sección 7, «En qué termina»
+
+- **Describe a quienes entraron hace una década** (cohortes 2011–2016), no a la sede de hoy. Escribe
+  «de quienes entraron entre 2011 y 2016», nunca «hoy se titula el X%».
+- **Los cuatro tramos suman 100% y el del medio importa:** titularse en otra carrera es cambiar de rumbo
+  sin abandonar. No leas sólo «se tituló» contra «sin título».
+- **Una titulación baja no prueba una admisión menos selectiva**: también son compatibles las carreras más
+  largas, el trabajo en paralelo y el cambio de institución. Eso va en `compatible`, no en `text`.
+- **Si la región no tiene cohortes observables**, la sección trae sólo la nota que lo explica: no hay
+  lectura que escribir.
+
 ## 3 · Compón
 
     python3 <carpeta de la skill graficar-la-matricula>/assets/construir_figura.py --entrada reporte.json --salida reporte.html
@@ -203,6 +237,5 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 - **Si no puedes**, entrega el archivo.
 
 En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué no todavía. Hoy cubre la portada y
-las secciones 1 a 5; las preferencias y los desenlaces, los planos y la síntesis llegarán como
-secciones nuevas. No los
-completes con otras herramientas dentro del reporte.
+las secciones 1 a 7; los planos y la síntesis llegarán como secciones nuevas. No los completes con otras
+herramientas dentro del reporte.

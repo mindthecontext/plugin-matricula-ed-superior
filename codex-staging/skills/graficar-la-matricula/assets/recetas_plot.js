@@ -301,8 +301,65 @@ function validarRangos(spec, errores) {
   return errores;
 }
 
+// Los colores de los tramos, en orden: azul y bermellón para dos (lo bueno y lo que se pierde), y para
+// cuatro la escala del reporte local: los dos títulos en azules, seguir en ámbar, salir sin título en
+// bermellón. Con su tinta, para que el número dentro del tramo se lea (blanco sobre lo oscuro).
+const COLORES_TRAMOS = ["#0072B2", "#56B4E9", "#E69F00", "#D55E00"];
+const TINTAS_TRAMOS = ["white", "#0f2e46", "#3d2c00", "white"];
+// Los redondeos a un decimal de cada tramo pueden alejar la suma de 100 en unas décimas, no más.
+const TOLERANCIA_SUMA = 1.0;
+// Con dos tramos se usan los extremos de la escala —azul y bermellón—, no dos azules casi iguales.
+const indicesTramos = n => (n === 2 ? [0, 3] : [...Array(n).keys()]);
+
+function validarTramos(label, valores, claves, errores) {
+  if (!valores || typeof valores !== "object" || Object.keys(valores).length !== claves.length || !claves.every(k => k in valores)) {
+    errores.push(`«${label}»: «values» tiene que traer un valor por tramo (${claves.join(", ")})`);
+    return;
+  }
+  const vs = claves.map(k => valores[k]);
+  if (!vs.every(v => typeof v === "number" && Number.isFinite(v) && v >= 0)) {
+    errores.push(`«${label}»: cada tramo tiene que ser un número no negativo`);
+    return;
+  }
+  const suma = vs.reduce((a, b) => a + b, 0);
+  if (Math.abs(suma - 100) > TOLERANCIA_SUMA) errores.push(`«${label}»: los tramos suman ${Math.round(suma * 10) / 10}, no 100`);
+}
+
+/**
+ * `barras_partidas` (MAT-23): cada fila es una sede partida en tramos que suman 100% —convencidos y
+ * desplazados, o los cuatro desenlaces de una cohorte—, con el país como última fila de referencia.
+ */
+function validarPartidas(spec, errores) {
+  if (spec.unit !== "pct") errores.push("«unit» tiene que ser pct");
+  const tramos = spec.segments || [];
+  const claves = tramos.map(t => t.key);
+  if (tramos.length < 2 || tramos.length > COLORES_TRAMOS.length) errores.push(`«segments» tiene que traer entre 2 y ${COLORES_TRAMOS.length} tramos`);
+  if (new Set(claves).size !== claves.length || !claves.every(k => String(k || "").trim()) || !tramos.every(t => String(t.label || "").trim())) {
+    errores.push("cada tramo trae «key» y «label», y las «key» no se repiten");
+  }
+  const filas = spec.rows || [];
+  if (!filas.length) errores.push("no hay filas");
+  const nombres = new Set();
+  const fuera = new Set(spec.excluded || []);
+  for (const f of filas) {
+    if (!String(f.label || "").trim()) errores.push("una fila no trae «label»");
+    if (nombres.has(f.label)) errores.push(`la fila «${f.label}» está repetida`);
+    nombres.add(f.label);
+    if (fuera.has(f.label)) errores.push(`«${f.label}» está en retirada y no puede aparecer en el cuerpo`);
+    validarTramos(f.label, f.values, claves, errores);
+    if (f.n !== null && f.n !== undefined && (!Number.isInteger(f.n) || f.n < 0)) errores.push(`«${f.label}»: «n» tiene que ser un entero no negativo`);
+    if (f.detail !== null && f.detail !== undefined && typeof f.detail !== "string") errores.push(`«${f.label}»: «detail» tiene que ser un texto o null`);
+  }
+  const ref = spec.reference;
+  if (ref !== null && ref !== undefined) {
+    if (!String(ref.label || "").trim()) errores.push("«reference» tiene que traer «label», o ser null");
+    validarTramos("reference", ref.values, claves, errores);
+  }
+  return errores;
+}
+
 const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion, barras_sedes: validarBarras,
-                      rangos_sedes: validarRangos };
+                      rangos_sedes: validarRangos, barras_partidas: validarPartidas };
 
 // ── el dibujo ───────────────────────────────────────────────────────────────────────────────────
 const tono = nombre => getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
@@ -571,9 +628,56 @@ function rangosSedes(spec, Plot, ancho) {
   });
 }
 
+/**
+ * `barras_partidas`: una barra al 100% por fila, partida en sus tramos, en el orden del spec. El país va
+ * al pie, separado por un espacio, para que se lea como referencia y no como una sede más.
+ *
+ * EL TEXTO SE APILA CON LA MISMA TRANSFORMACIÓN QUE LAS BARRAS (reporte local): filtrar los tramos chicos
+ * antes de apilar corre los rótulos; el filtro va en `text`, como cadena vacía.
+ */
+function barrasPartidas(spec, Plot, ancho) {
+  const angosto = ancho < 520;
+  const tramos = spec.segments;
+  const fmt = v => `${v.toLocaleString("es-CL", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+  const ref = spec.reference;
+  const SEP = "\u2003";  // la fila vacía que separa al país de las sedes
+  const filas = [...spec.rows, ...(ref ? [{ label: SEP, values: null }, { ...ref, esRef: true }] : [])];
+  const dominio = filas.map(f => f.label);
+  const apilado = filas.filter(f => f.values).flatMap(f => tramos.map((t, j) => (
+    { label: f.label, tramo: t.label, i: indicesTramos(tramos.length)[j], v: f.values[t.key], esRef: !!f.esRef, n: f.n })));
+  // EL DETALLE VA A LA DERECHA EN ESCRITORIO Y SOBRE LA BARRA EN PANTALLA ANGOSTA: a la derecha no cabe, y
+  // escondiéndolo la nota del pie hablaba de un rótulo que no se veía (revisado en el navegador, 09-10).
+  const conDetalle = spec.rows.some(f => f.detail);
+  const arriba = conDetalle && angosto;
+  const margen = Math.min(angosto ? 150 : 210, Math.round(ancho * 0.42));
+  const minimo = angosto ? 12 : 8;   // un tramo más angosto que esto no lleva número dentro
+  const orden = tramos.map(t => t.label);
+  return Plot.plot({
+    width: ancho, height: 30 + filas.length * (arriba ? 40 : angosto ? 26 : 28), marginLeft: margen,
+    marginRight: conDetalle && !angosto ? 200 : 16, marginTop: arriba ? 16 : 8, marginBottom: 26,
+    style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
+    x: { label: null, domain: [0, 100], grid: true, ticks: angosto ? 3 : 5, tickFormat: v => `${v}%` },
+    y: { label: null, domain: dominio, tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
+    color: { domain: orden, range: indicesTramos(tramos.length).map(i => COLORES_TRAMOS[i]) },
+    marks: [
+      Plot.barX(apilado, { y: "label", x: "v", fill: "tramo", order: orden, insetTop: arriba ? 10 : 4, insetBottom: arriba ? 4 : 4,
+                           fillOpacity: d => (d.esRef ? 0.6 : 0.92),
+                           title: d => `${d.label}\n${d.tramo}: ${fmt(d.v)}${d.n != null ? ` (n=${d.n.toLocaleString("es-CL")})` : ""}` }),
+      Plot.text(apilado, Plot.stackX({ y: "label", x: "v", z: "tramo", order: orden,
+                                       fill: d => TINTAS_TRAMOS[d.i], fontSize: angosto ? 9 : 9.5, fontWeight: "bold",
+                                       text: d => (d.v >= minimo ? fmt(d.v) : "") })),
+      ...(conDetalle ? [Plot.text(spec.rows.filter(f => f.detail), arriba
+        ? { y: "label", x: () => 0, text: "detail", dy: -14, textAnchor: "start", fontSize: 8.5, fill: tono("--texto-tenue") }
+        : { y: "label", x: () => 100, text: "detail", dx: 8, textAnchor: "start", fontSize: 9, fill: tono("--texto-tenue") })] : []),
+      Plot.ruleX([0], { stroke: tono("--fig-regla") }),
+    ],
+  });
+}
+
 /** La leyenda, en HTML: con muestra de color, trazo y forma, para que no dependa del color. */
 function leyenda(spec) {
   if (spec.form === "matricula_region") return leyendaRegion(spec);
+  if (spec.form === "barras_partidas") return leyendaPartidas(spec);
   if (spec.form === "barras_sedes" || spec.form === "rangos_sedes") return null;
   const activas = (spec.series || []).filter(s => !s.retreating);
   if (activas.length < 2 || activas.length > MAX_EN_UN_PANEL) return null;
@@ -590,6 +694,19 @@ function leyenda(spec) {
     item.innerHTML = `<svg width="36" height="12" aria-hidden="true"><line x1="0" y1="6" x2="36" y2="6" ` +
       `stroke="${COLORES[i]}" stroke-width="2.2"${trazo}/><g fill="${COLORES[i]}">${formas[SIMBOLOS[i]]}</g></svg>`;
     item.append(document.createTextNode(serie.label));
+    caja.append(item);
+  });
+  return caja;
+}
+
+// Los tramos en su orden de izquierda a derecha: la posición, además del color, dice cuál es cuál.
+function leyendaPartidas(spec) {
+  const caja = document.createElement("div");
+  caja.className = "leyenda";
+  spec.segments.forEach((t, i) => {
+    const item = document.createElement("span");
+    item.innerHTML = `<svg width="14" height="12" aria-hidden="true"><rect x="0" y="1" width="14" height="10" fill="${COLORES_TRAMOS[indicesTramos(spec.segments.length)[i]]}"/></svg>`;
+    item.append(document.createTextNode(`${i + 1}. ${t.label}`));
     caja.append(item);
   });
   return caja;
@@ -616,7 +733,7 @@ function leyendaRegion(spec) {
 }
 
 const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion, barras_sedes: barrasSedes,
-                 rangos_sedes: rangosSedes };
+                 rangos_sedes: rangosSedes, barras_partidas: barrasPartidas };
 
 /** Dibuja una figura en el ancho dado, o se niega. */
 function dibujar(spec, ancho = 720) {

@@ -319,8 +319,66 @@ def validar_rangos(spec: dict, errores: list[str]) -> list[str]:
     return errores
 
 
+# Los redondeos a un decimal de cada tramo pueden alejar la suma de 100 en unas décimas, no más.
+TOLERANCIA_SUMA = 1.0
+
+
+def _validar_tramos(label: str, valores, claves: list, errores: list[str]) -> None:
+    if not isinstance(valores, dict) or set(valores) != set(claves):
+        errores.append(f"«{label}»: «values» tiene que traer un valor por tramo ({', '.join(claves)})")
+        return
+    if not all(_numero(v) and v >= 0 for v in valores.values()):
+        errores.append(f"«{label}»: cada tramo tiene que ser un número no negativo")
+        return
+    if abs(sum(valores.values()) - 100) > TOLERANCIA_SUMA:
+        errores.append(f"«{label}»: los tramos suman {_num(round(sum(valores.values()), 1))}, no 100")
+
+
+def validar_partidas(spec: dict, errores: list[str]) -> list[str]:
+    """`barras_partidas` (MAT-23): cada fila es una sede partida en tramos que suman 100%."""
+    if spec.get("unit") != "pct":
+        errores.append("«unit» tiene que ser pct")
+    tramos = spec.get("segments") or []
+    claves = [t.get("key") for t in tramos]
+    if not 2 <= len(tramos) <= len(COLORES_TRAMOS):
+        errores.append(f"«segments» tiene que traer entre 2 y {len(COLORES_TRAMOS)} tramos")
+    if len(set(claves)) != len(claves) or not all(str(k or "").strip() for k in claves) \
+            or not all(str(t.get("label") or "").strip() for t in tramos):
+        errores.append("cada tramo trae «key» y «label», y las «key» no se repiten")
+    filas = spec.get("rows") or []
+    if not filas:
+        errores.append("no hay filas")
+    nombres, fuera = set(), set(spec.get("excluded") or [])
+    for f in filas:
+        label = f.get("label")
+        if not str(label or "").strip():
+            errores.append("una fila no trae «label»")
+        if label in nombres:
+            errores.append(f"la fila «{label}» está repetida")
+        nombres.add(label)
+        if label in fuera:
+            errores.append(f"«{label}» está en retirada y no puede aparecer en el cuerpo")
+        _validar_tramos(label, f.get("values"), claves, errores)
+        n = f.get("n")
+        if n is not None and (not isinstance(n, int) or isinstance(n, bool) or n < 0):
+            errores.append(f"«{label}»: «n» tiene que ser un entero no negativo")
+        if f.get("detail") is not None and not isinstance(f.get("detail"), str):
+            errores.append(f"«{label}»: «detail» tiene que ser un texto o null")
+    ref = spec.get("reference")
+    if ref is not None:
+        if not str(ref.get("label") or "").strip():
+            errores.append("«reference» tiene que traer «label», o ser null")
+        _validar_tramos("reference", ref.get("values"), claves, errores)
+    return errores
+
+
+# Los colores de los tramos, en orden: azul y bermellón para dos (lo bueno y lo que se pierde), y para
+# cuatro la escala del reporte local: los dos títulos en azules, seguir en ámbar, salir sin título en bermellón.
+COLORES_TRAMOS = ("#0072B2", "#56B4E9", "#E69F00", "#D55E00")
+
 VALIDADORES = {"matricula_series": validar_series, "matricula_region": validar_region,
-               "barras_sedes": validar_barras, "rangos_sedes": validar_rangos}
+               "barras_sedes": validar_barras, "rangos_sedes": validar_rangos,
+               "barras_partidas": validar_partidas}
 
 
 def barras_visibles(spec: dict) -> tuple[list, int]:
@@ -365,6 +423,17 @@ def tabla(spec: dict) -> str:
             c = [_fmt_unidad(f.get(k), "years") if f.get(k) is not None else "—" for k in ("low", "q1", "mid", "q3", "high")]
             eti = f"{f.get('label')} — {f['detail']}" if f.get("detail") else f.get("label")
             filas.append(f"| {eti} | " + " | ".join(c) + f" | {f.get('n')} |")
+        return "\n".join(filas)
+    if spec.get("form") == "barras_partidas":
+        tramos = spec.get("segments") or []
+        filas = ["| Fila | " + " | ".join(str(t.get("label")) for t in tramos) + " | n | Detalle |",
+                 "|---|" + "---:|" * len(tramos) + "---:|---|"]
+        ref = spec.get("reference")
+        for f in (spec.get("rows") or []) + ([ref] if ref else []):
+            v = f.get("values") or {}
+            celdas = [_fmt_unidad(v[t.get("key")], "pct") if _numero(v.get(t.get("key"))) else "sin dato" for t in tramos]
+            filas.append(f"| {f.get('label')} | " + " | ".join(celdas)
+                         + f" | {'' if f.get('n') is None else f['n']} | {f.get('detail') or ''} |")
         return "\n".join(filas)
     if spec.get("form") == "matricula_region":
         filas = ["| Año | Todas las sedes | Sin las sedes en retirada |", "|---|---:|---:|"]
@@ -463,8 +532,21 @@ def notas_rangos(spec: dict) -> str:
     return f'<div class="notas"><ul>{"".join(items)}</ul></div>'
 
 
+def notas_partidas(spec: dict) -> str:
+    items = []
+    ref = spec.get("reference")
+    if ref:
+        items.append(f"<li>La última fila, separada, es el {e(ref['label'])}: calculada sobre todos los estudiantes "
+                     "del país, no como promedio de las sedes.</li>")
+    for aviso in spec.get("notices") or []:
+        items.append(f"<li>{e(aviso)}</li>")
+    return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
+
+
 def notas_html(spec: dict) -> str:
     """Lo que el lector tiene que saber para no leer mal la figura, derivado de los datos."""
+    if spec.get("form") == "barras_partidas":
+        return notas_partidas(spec)
     if spec.get("form") == "barras_sedes":
         return notas_barras(spec)
     if spec.get("form") == "rangos_sedes":
@@ -538,7 +620,7 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
     if isinstance(nodo, dict):
         en_pct = es_pct or nodo.get("unit") == "pct"
         for k, v in nodo.items():
-            hijo_pct = en_pct and k in ("bars", "value", "reference") or k in CLAVES_PORCENTAJE \
+            hijo_pct = en_pct and k in ("bars", "value", "reference", "rows") or k in CLAVES_PORCENTAJE \
                 or k == "growth" or (es_pct and k in ("total", "active"))
             if k == "blocks" and isinstance(v, list):
                 for bl in v:
@@ -550,6 +632,10 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
                         # Los órdenes y los cambios que el servicio calculó junto a la figura (MAT-27):
                         # «creció 39,8%» o «su mayor alza, 632» salen de ahí y tienen respaldo.
                         numeros_del_spec(bl.get("groups"), acc, pct)
+            elif k == "values" and en_pct and isinstance(v, dict):
+                # Los tramos de `barras_partidas` (MAT-23) son porcentajes.
+                for x in v.values():
+                    numeros_del_spec(x, acc, pct, True)
             elif k == "growth" and isinstance(v, dict):
                 for gk, gv in v.items():
                     if gk != "period":
@@ -602,7 +688,7 @@ def validar_reporte(spec: dict) -> list[str]:
                 # no: la tabla saldría vacía y el reporte se publicaría a medias.
                 errores += validar(f)
                 continue
-            nombres = [x.get("label") for x in (f.get("bars") or []) + (f.get("series") or [])]
+            nombres = [x.get("label") for x in (f.get("bars") or []) + (f.get("series") or []) + (f.get("rows") or [])]
             dentro = sorted(retiradas & set(nombres))
             if dentro:
                 # EL GATE DEL REPORTE LOCAL: una sede en retirada se declara en la portada y no entra al cuerpo.
