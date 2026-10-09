@@ -358,8 +358,50 @@ function validarPartidas(spec, errores) {
   return errores;
 }
 
+// MAT-24: los ejes de una dispersión, los cuadrantes que nombra y lo mínimo para que un plano diga algo.
+const UNIDADES_EJE = ["score", "pct", "clp_m"];
+const CUADRANTES = ["x_above_y_above", "x_above_y_below", "x_below_y_above", "x_below_y_below"];
+const MIN_EN_PLANO = 3;
+
+/**
+ * `dispersion_sedes` (MAT-24): una burbuja por sede, con dos ejes y el país como referencia en los dos.
+ * Sin el país los cuadrantes no significan nada, así que la referencia es obligatoria.
+ */
+function validarDispersion(spec, errores) {
+  for (const eje of ["x", "y"]) {
+    const e = spec[eje] || {};
+    if (!String(e.label || "").trim() || !UNIDADES_EJE.includes(e.unit)) errores.push(`«${eje}» tiene que traer «label» y una «unit» de ${UNIDADES_EJE.join(", ")}`);
+  }
+  const puntos = spec.points || [];
+  if (puntos.length < MIN_EN_PLANO) errores.push(`un plano necesita al menos ${MIN_EN_PLANO} sedes`);
+  const nombres = new Set();
+  const fuera = new Set(spec.excluded || []);
+  const num = v => typeof v === "number" && Number.isFinite(v);
+  for (const p of puntos) {
+    if (!String(p.label || "").trim()) errores.push("una burbuja no trae «label»");
+    if (nombres.has(p.label)) errores.push(`la burbuja «${p.label}» está repetida`);
+    nombres.add(p.label);
+    if (fuera.has(p.label)) errores.push(`«${p.label}» está en retirada y no puede aparecer en el cuerpo`);
+    for (const eje of ["x", "y"]) {
+      const v = p[eje];
+      if (!num(v) || v < 0) errores.push(`«${p.label}»: «${eje}» tiene que ser un número no negativo`);
+      else if ((spec[eje] || {}).unit === "pct" && v > 100) errores.push(`«${p.label}»: un porcentaje no puede pasar de 100`);
+    }
+    if (!Number.isInteger(p.size) || p.size < 0) errores.push(`«${p.label}»: «size» tiene que ser un entero no negativo`);
+  }
+  const ref = spec.reference;
+  if (!ref || typeof ref !== "object" || !num(ref.x) || !num(ref.y) || !String(ref.label || "").trim()) {
+    errores.push("«reference» tiene que traer «label», «x» e «y»: sin el país los cuadrantes no significan nada");
+  }
+  const q = Object.keys(spec.quadrant_labels || {});
+  if (q.length !== CUADRANTES.length || !CUADRANTES.every(k => q.includes(k))) {
+    errores.push(`«quadrant_labels» tiene que nombrar los cuatro cuadrantes (${CUADRANTES.join(", ")})`);
+  }
+  return errores;
+}
+
 const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion, barras_sedes: validarBarras,
-                      rangos_sedes: validarRangos, barras_partidas: validarPartidas };
+                      rangos_sedes: validarRangos, barras_partidas: validarPartidas, dispersion_sedes: validarDispersion };
 
 // ── el dibujo ───────────────────────────────────────────────────────────────────────────────────
 const tono = nombre => getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
@@ -677,11 +719,70 @@ function barrasPartidas(spec, Plot, ancho) {
   });
 }
 
+/**
+ * `dispersion_sedes`: una burbuja por sede (área = entrantes), con las líneas del país partiendo el plano.
+ *
+ * SE ROTULAN HASTA 15 SEDES, LAS DE MÁS ENTRANTES (decisión del 09-10): con treinta en la Metropolitana los
+ * nombres se tapan. Las demás van sin nombre, y TODAS muestran su ficha al pasar el cursor. El nombre de cada cuadrante
+ * va en el pie y no en el gráfico: en las esquinas tapaba a las sedes que caen justo ahí (revisado en el navegador).
+ */
+function dispersionSedes(spec, Plot, ancho) {
+  const angosto = ancho < 520;
+  const fmtDe = (u, eje) => v => (u === "clp_m" ? `$${v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : 2, maximumFractionDigits: 2 })} M`
+    : u === "pct" ? `${v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : 1, maximumFractionDigits: 1 })}%`
+    : v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : 1, maximumFractionDigits: 1 }));
+  const fx = fmtDe(spec.x.unit), fy = fmtDe(spec.y.unit);
+  const ref = spec.reference;
+  const puntos = [...spec.points].sort((a, b) => b.size - a.size);
+  const halo = { stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" };
+  const xs = [...puntos.map(p => p.x), ref.x], ys = [...puntos.map(p => p.y), ref.y];
+  const holgura = (vs, f) => { const a = Math.min(...vs), b = Math.max(...vs), h = (b - a) * f || 1; return [a - h, b + h]; };
+  const alto = Math.min(440, Math.round(ancho * 0.66) + 60);
+  const m = { l: 56, r: 24, t: 30, b: 44 };
+  const dx = holgura(xs, 0.12), dy = holgura(ys, 0.15);
+  const corto = p => (p.label.length > 30 ? p.label.slice(0, 29) + "…" : p.label);
+  const letra = angosto ? 8.5 : 9.5;
+  // DE LAS 15 MÁS GRANDES, SE ROTULA LA QUE CABE: un nombre que tapa a otro ya puesto queda sin rótulo y se ve al
+  // pasar el cursor (en la Metropolitana, quince nombres en el mismo rincón eran ilegibles). Las cajas se estiman
+  // con las mismas escalas que usa Plot; el ancho de una letra, como 0,56 del cuerpo.
+  const puestas = [];
+  const rotuladas = new Set();
+  for (const p of puntos.slice(0, MAX_ROTULOS)) {
+    const cx = m.l + (p.x - dx[0]) / (dx[1] - dx[0]) * (ancho - m.l - m.r);
+    const cy = alto - m.b - (p.y - dy[0]) / (dy[1] - dy[0]) * (alto - m.t - m.b) - 12;
+    const w = corto(p).length * letra * 0.56, h = letra + 2;
+    const caja = [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2];
+    if (puestas.some(o => caja[0] < o[2] && o[0] < caja[2] && caja[1] < o[3] && o[1] < caja[3])) continue;
+    puestas.push(caja);
+    rotuladas.add(p.label);
+  }
+  return Plot.plot({
+    width: ancho, height: alto, marginLeft: m.l, marginRight: m.r, marginTop: m.t, marginBottom: m.b,
+    style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
+    x: { label: `${spec.x.label} →`, domain: dx, grid: true, ticks: angosto ? 4 : 6, tickFormat: fmtDe(spec.x.unit, true) },
+    y: { label: `↑ ${spec.y.label}`, domain: dy, grid: true, ticks: 5, tickFormat: fmtDe(spec.y.unit, true) },
+    r: { range: [4, angosto ? 16 : 22] },
+    marks: [
+      Plot.ruleX([ref.x], { stroke: COLORES[1], strokeWidth: 1.4, strokeDasharray: "4 3" }),
+      Plot.ruleY([ref.y], { stroke: COLORES[1], strokeWidth: 1.4, strokeDasharray: "4 3" }),
+      Plot.text([ref], { x: "x", text: r => `${r.label} ${fx(r.x)}`, frameAnchor: "top", dy: -14, fontSize: 9.5, fill: tono("--marca-cuadro") }),
+      Plot.text([ref], { y: "y", text: r => `${r.label} ${fy(r.y)}`, frameAnchor: "right", textAnchor: "end", dy: -7, fontSize: 9.5,
+        fill: tono("--marca-cuadro"), ...halo }),
+      Plot.dot(puntos, { x: "x", y: "y", r: "size", fill: COLORES[0], fillOpacity: 0.45, stroke: COLORES[0], strokeWidth: 1.2,
+        channels: { sede: "label", [spec.x.label]: d => fx(d.x), [spec.y.label]: d => fy(d.y),
+                    [spec.size_label || "tamaño"]: d => d.size.toLocaleString("es-CL") },
+        tip: { format: { x: false, y: false, r: false } } }),
+      Plot.text(puntos.filter(p => rotuladas.has(p.label)), { x: "x", y: "y", text: corto,
+        dy: -12, fontSize: letra, fill: tono("--texto"), ...halo }),
+    ],
+  });
+}
+
 /** La leyenda, en HTML: con muestra de color, trazo y forma, para que no dependa del color. */
 function leyenda(spec) {
   if (spec.form === "matricula_region") return leyendaRegion(spec);
   if (spec.form === "barras_partidas") return leyendaPartidas(spec);
-  if (spec.form === "barras_sedes" || spec.form === "rangos_sedes") return null;
+  if (spec.form === "barras_sedes" || spec.form === "rangos_sedes" || spec.form === "dispersion_sedes") return null;
   const activas = (spec.series || []).filter(s => !s.retreating);
   if (activas.length < 2 || activas.length > MAX_EN_UN_PANEL) return null;
   const caja = document.createElement("div");
@@ -736,7 +837,7 @@ function leyendaRegion(spec) {
 }
 
 const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion, barras_sedes: barrasSedes,
-                 rangos_sedes: rangosSedes, barras_partidas: barrasPartidas };
+                 rangos_sedes: rangosSedes, barras_partidas: barrasPartidas, dispersion_sedes: dispersionSedes };
 
 /** Dibuja una figura en el ancho dado, o se niega. */
 function dibujar(spec, ancho = 720) {

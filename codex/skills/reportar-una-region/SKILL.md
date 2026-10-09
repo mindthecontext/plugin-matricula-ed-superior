@@ -1,6 +1,6 @@
 ---
 name: reportar-una-region
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», 5, «Cómo entran y quién paga», 6, «Dónde los eligen», y 7, «En qué termina»; los planos y la síntesis llegarán después. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», 5, «Cómo entran y quién paga», 6, «Dónde los eligen», 7, «En qué termina», y 8, «La región en tres planos»; la síntesis llegará después. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -61,6 +61,15 @@ Las figuras partidas de las secciones 6 y 7 (cada sede partida en tramos que sum
 | `small_sample`, `no_data` | Las sedes con muestra chica y las que no tienen dato (sin preferencias registradas o sin cohortes). |
 | `displaced_top_origin` | Sección 6: por sede, la institución que más de sus desplazados había puesto primero, y qué parte (`pct`). |
 | `magnet` | Sección 6: la institución que más desplazados de las sedes de la región había puesto primero. |
+
+Los planos de la sección 8 (una burbuja por sede, dos ejes contra el país) traen su **`groups`**:
+
+| Clave | Qué es |
+|---|---|
+| `quadrants` | Las sedes de cada cuadrante, de la más grande a la más chica: `x_above_y_above`, `x_above_y_below`, `x_below_y_above`, `x_below_y_below`. El nombre de cada uno está en `quadrant_labels` de la figura. |
+| `on_reference` | Las sedes que caen justo sobre una línea del país: no están en ningún cuadrante. |
+| `rank_x`, `rank_y` | Las sedes de mayor a menor en cada eje. |
+| `small_sample` | Las sedes con pocos entrantes. |
 
 **No toques la portada ni las figuras.** Tu trabajo son los bloques `reading`.
 
@@ -219,6 +228,18 @@ publica. Un reporte no mejora con párrafos de relleno.
 - **Si la región no tiene cohortes observables**, la sección trae sólo la nota que lo explica: no hay
   lectura que escribir.
 
+### Cómo leer la sección 8, «La región en tres planos»
+
+- **Un cuadrante dice dónde cae una sede, no qué vale.** Usa el nombre descriptivo de `quadrant_labels` («más
+  puntaje y más prioritarios que el país») y las sedes de `quadrants`. No escribas «la esquina más exigente», «la
+  más meritoria» ni «la mejor»: una interpretación así, si hace falta, va en `compatible`.
+- **Los dos ejes de un plano no son del mismo período.** La PAES es de 2023–2025; prioritarios, 10% superior,
+  arancel y gratuidad, de 2021–2025. No escribas que una sede «hoy» combina las dos cosas.
+- **El tamaño de la burbuja es el número de entrantes**, no un resultado: no digas que una sede «pesa más» en el
+  plano por su posición.
+- **Si un plano no se dibujó** porque la región no tiene tres sedes con los dos ejes, la nota de la sección lo
+  dice: no hay lectura que escribir para él.
+
 ## 3 · Compón
 
     python3 <carpeta de la skill graficar-la-matricula>/assets/construir_figura.py --entrada reporte.json --salida reporte.html
@@ -240,5 +261,5 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 - **Si no puedes**, entrega el archivo.
 
 En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué no todavía. Hoy cubre la portada y
-las secciones 1 a 7; los planos y la síntesis llegarán como secciones nuevas. No los completes con otras
+las secciones 1 a 8; la síntesis llegará como sección nueva. No la completes con otras
 herramientas dentro del reporte.

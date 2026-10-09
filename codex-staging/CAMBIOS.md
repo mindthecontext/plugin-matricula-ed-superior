@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.18.0 · 2026-10-09
+
+El reporte regional suma su octava sección, «La región en tres planos»: tres figuras que cruzan dos ejes a la vez —el puntaje PAES y el 10% superior contra el % de alumnos prioritarios, y el arancel contra la gratuidad—, con una burbuja por sede del tamaño de sus entrantes y las líneas del país partiendo el plano en cuatro cuadrantes. Los cuadrantes dicen dónde cae cada sede respecto del país, sin calificarla. Cada plano declara sus dos fuentes y sus años; uno con menos de tres sedes no se dibuja y se dice. Al pasar el cursor por una burbuja se ve la sede y sus valores. Es una figura nueva: hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.17.2 · 2026-10-09
 
 Las figuras de puntaje rotulan cada mediana con su decimal, también cuando es cero («609,0» y no «609»), como ya lo hacían las barras con los porcentajes: la figura y la lectura muestran la misma precisión. Sólo cambia el dibujo, que hace el plugin; hay que actualizarlo.

@@ -376,9 +376,50 @@ def validar_partidas(spec: dict, errores: list[str]) -> list[str]:
 # cuatro la escala del reporte local: los dos títulos en azules, seguir en ámbar, salir sin título en bermellón.
 COLORES_TRAMOS = ("#0072B2", "#56B4E9", "#E69F00", "#D55E00")
 
+# MAT-24: los ejes de una dispersión, los cuadrantes que nombra y lo mínimo para que un plano diga algo.
+UNIDADES_EJE = ("score", "pct", "clp_m")
+CUADRANTES = ("x_above_y_above", "x_above_y_below", "x_below_y_above", "x_below_y_below")
+MIN_EN_PLANO = 3
+
+
+def validar_dispersion(spec: dict, errores: list[str]) -> list[str]:
+    """`dispersion_sedes` (MAT-24): una burbuja por sede, dos ejes y el país como referencia en los dos."""
+    for eje in ("x", "y"):
+        e_ = spec.get(eje) or {}
+        if not str(e_.get("label") or "").strip() or e_.get("unit") not in UNIDADES_EJE:
+            errores.append(f"«{eje}» tiene que traer «label» y una «unit» de {', '.join(UNIDADES_EJE)}")
+    puntos = spec.get("points") or []
+    if len(puntos) < MIN_EN_PLANO:
+        errores.append(f"un plano necesita al menos {MIN_EN_PLANO} sedes")
+    nombres, fuera = set(), set(spec.get("excluded") or [])
+    for p in puntos:
+        label = p.get("label")
+        if not str(label or "").strip():
+            errores.append("una burbuja no trae «label»")
+        if label in nombres:
+            errores.append(f"la burbuja «{label}» está repetida")
+        nombres.add(label)
+        if label in fuera:
+            errores.append(f"«{label}» está en retirada y no puede aparecer en el cuerpo")
+        for eje in ("x", "y"):
+            v = p.get(eje)
+            if not _numero(v) or v < 0:
+                errores.append(f"«{label}»: «{eje}» tiene que ser un número no negativo")
+            elif (spec.get(eje) or {}).get("unit") == "pct" and v > 100:
+                errores.append(f"«{label}»: un porcentaje no puede pasar de 100")
+        if not isinstance(p.get("size"), int) or isinstance(p.get("size"), bool) or p["size"] < 0:
+            errores.append(f"«{label}»: «size» tiene que ser un entero no negativo")
+    ref = spec.get("reference")
+    if not isinstance(ref, dict) or not _numero(ref.get("x")) or not _numero(ref.get("y")) or not str(ref.get("label") or "").strip():
+        errores.append("«reference» tiene que traer «label», «x» e «y»: sin el país los cuadrantes no significan nada")
+    if set((spec.get("quadrant_labels") or {}).keys()) != set(CUADRANTES):
+        errores.append(f"«quadrant_labels» tiene que nombrar los cuatro cuadrantes ({', '.join(CUADRANTES)})")
+    return errores
+
+
 VALIDADORES = {"matricula_series": validar_series, "matricula_region": validar_region,
                "barras_sedes": validar_barras, "rangos_sedes": validar_rangos,
-               "barras_partidas": validar_partidas}
+               "barras_partidas": validar_partidas, "dispersion_sedes": validar_dispersion}
 
 
 def barras_visibles(spec: dict) -> tuple[list, int]:
@@ -423,6 +464,15 @@ def tabla(spec: dict) -> str:
             c = [_fmt_unidad(f.get(k), "years") if f.get(k) is not None else "—" for k in ("low", "q1", "mid", "q3", "high")]
             eti = f"{f.get('label')} — {f['detail']}" if f.get("detail") else f.get("label")
             filas.append(f"| {eti} | " + " | ".join(c) + f" | {f.get('n')} |")
+        return "\n".join(filas)
+    if spec.get("form") == "dispersion_sedes":
+        x, y = spec.get("x") or {}, spec.get("y") or {}
+        filas = [f"| Sede | {x.get('label')} | {y.get('label')} | {spec.get('size_label') or 'tamaño'} |", "|---|---:|---:|---:|"]
+        ref = spec.get("reference") or {}
+        for p in (spec.get("points") or []) + ([{**ref, "size": None}] if ref else []):
+            celda = lambda v, u: _fmt_unidad(v, "years" if u == "score" else u) if _numero(v) else "sin dato"
+            filas.append(f"| {p.get('label')} | {celda(p.get('x'), x.get('unit'))} | {celda(p.get('y'), y.get('unit'))} | "
+                         f"{'' if p.get('size') is None else _fmt_unidad(p['size'], 'count')} |")
         return "\n".join(filas)
     if spec.get("form") == "barras_partidas":
         tramos = spec.get("segments") or []
@@ -543,8 +593,24 @@ def notas_partidas(spec: dict) -> str:
     return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
 
 
+def notas_dispersion(spec: dict) -> str:
+    q = spec.get("quadrant_labels") or {}
+    items = ["<li>Los cuadrantes: arriba a la derecha, " + e(q.get("x_above_y_above")) + "; arriba a la izquierda, "
+             + e(q.get("x_below_y_above")) + "; abajo a la derecha, " + e(q.get("x_above_y_below"))
+             + "; abajo a la izquierda, " + e(q.get("x_below_y_below")) + ".</li>"]
+    items += [f"<li>{e(a)}</li>" for a in spec.get("notices") or []]
+    puntos = spec.get("points") or []
+    if len(puntos) > 3:
+        # La receta rotula hasta 15, las de más entrantes cuyo nombre no tapa a otro: el pie no promete cuántas.
+        items.append(f"<li>Se rotulan hasta {MAX_ROTULOS} sedes, las de más entrantes cuyo nombre cabe sin tapar a otro; "
+                     "al pasar el cursor por cualquier burbuja se ve de qué sede es y sus valores.</li>")
+    return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
+
+
 def notas_html(spec: dict) -> str:
     """Lo que el lector tiene que saber para no leer mal la figura, derivado de los datos."""
+    if spec.get("form") == "dispersion_sedes":
+        return notas_dispersion(spec)
     if spec.get("form") == "barras_partidas":
         return notas_partidas(spec)
     if spec.get("form") == "barras_sedes":
@@ -617,6 +683,14 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
     """
     acc = set() if acc is None else acc
     pct = set() if pct is None else pct
+    if isinstance(nodo, dict) and nodo.get("form") == "dispersion_sedes":
+        # Una dispersión tiene dos ejes con su propia unidad (MAT-24): cada coordenada es % si su eje lo es.
+        for p in (nodo.get("points") or []) + ([nodo["reference"]] if isinstance(nodo.get("reference"), dict) else []):
+            for eje in ("x", "y"):
+                numeros_del_spec(p.get(eje), acc, pct, (nodo.get(eje) or {}).get("unit") == "pct")
+            numeros_del_spec(p.get("size"), acc, pct)
+        resto = {k: v for k, v in nodo.items() if k not in ("points", "reference", "form")}
+        return numeros_del_spec(resto, acc, pct)
     if isinstance(nodo, dict):
         en_pct = es_pct or nodo.get("unit") == "pct"
         for k, v in nodo.items():
@@ -688,7 +762,8 @@ def validar_reporte(spec: dict) -> list[str]:
                 # no: la tabla saldría vacía y el reporte se publicaría a medias.
                 errores += validar(f)
                 continue
-            nombres = [x.get("label") for x in (f.get("bars") or []) + (f.get("series") or []) + (f.get("rows") or [])]
+            nombres = [x.get("label") for x in (f.get("bars") or []) + (f.get("series") or []) + (f.get("rows") or [])
+                       + (f.get("points") or [])]
             dentro = sorted(retiradas & set(nombres))
             if dentro:
                 # EL GATE DEL REPORTE LOCAL: una sede en retirada se declara en la portada y no entra al cuerpo.
@@ -793,9 +868,11 @@ def componer_reporte(spec: dict, avisos: list) -> str:
     fuentes = [spec["provenance"]["fuente_original"]]
     for sec in spec.get("sections") or []:
         for b in sec.get("blocks") or []:
-            f = (b.get("figure") or {}).get("provenance", {}).get("fuente_original") if b.get("kind") == "figure" else None
-            if f and f not in fuentes:
-                fuentes.append(f)
+            prov = (b.get("figure") or {}).get("provenance", {}) if b.get("kind") == "figure" else {}
+            # Una figura con dos ejes de fuentes distintas (MAT-24) las declara por separado en `fuentes`.
+            for f in prov.get("fuentes") or [prov.get("fuente_original")]:
+                if f and f not in fuentes:
+                    fuentes.append(f)
     lista = "".join(f"<li>{e(f)}</li>" for f in fuentes)
     partes.append(f'<footer><p class="src">Fuentes de este reporte:</p><ul class="src">{lista}</ul>'
                   f'<p class="src">Universo: {e(spec["provenance"].get("universo"))}.</p></footer>')
