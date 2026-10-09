@@ -81,6 +81,9 @@ Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelv
 
 ## 5 · Entrega
 
+- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, `figura_matricula`
+  trae su propio widget), no la publiques de nuevo como página salvo que te lo pidan: escribe el texto que la
+  acompaña. En los demás clientes la figura no aparece sola, y sigues como abajo.
 - **Si puedes publicar una página** (un Artifact), publica `figura.html` tal cual.
 - **Si no puedes**, entrega el archivo.
 

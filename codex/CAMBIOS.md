@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.20.0 · 2026-10-09
+
+Piloto de gráficos dentro de la conversación: en claude.ai, el chat de Claude Desktop y los móviles, la serie de matrícula por sede aparece dibujada en la respuesta, sin pasar por una página aparte. Es el mismo gráfico del reporte, con la misma receta y la misma validación. En Claude Code y en cualquier cliente que no muestre estas figuras no cambia nada: el agente sigue componiendo la página como hasta ahora.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.19.4 · 2026-10-09
 
 Sin cambios para quien lo usa en una conversación: el plugin trae ahora sus palabras clave, su categoría (educación) y una descripción larga que cuenta qué responde el saber —las dos puertas, el reporte regional y cómo trata la procedencia—, para que se encuentre y se entienda en el catálogo. El retorno laboral no se anuncia todavía: sus cifras de IP y CFT se están corrigiendo.

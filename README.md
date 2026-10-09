@@ -6,4 +6,4 @@ Lo genera y lo empuja la fábrica privada <https://github.com/mindthecontext/sab
 
 Los catálogos lo referencian por `git-subdir` apuntando a una de sus carpetas —`claude/`, `claude-staging/`, `codex/`, `codex-staging/`— y fijando un `ref`. Las que terminan en `-staging` son el canal de staging (ADR 0006).
 
-Publicado: `v0.19.4`
+Publicado: `v0.20.0`
