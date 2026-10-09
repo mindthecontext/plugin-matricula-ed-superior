@@ -223,8 +223,9 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 - **Gratuidad 0% no es un error ni una exclusión:** la institución no adhiere, y es una decisión de modelo
   de financiamiento. No escribas que «sus estudiantes no acceden a la gratuidad» como si fuera un juicio
   sobre ellos.
-- **El arancel está en pesos nominales de cinco años**, sin ajustar por inflación. Sirve para comparar sedes
-  entre sí, no como «el arancel de hoy».
+- **El arancel es la mediana de personas, no de años:** cada entrante 2021–2025 aporta el arancel de su carrera en
+  su año de entrada, en pesos nominales sin ajustar por inflación y sin los montos informados en UF. No es «el
+  arancel de 2025» ni «el arancel de hoy», ni un promedio de años: sirve para comparar sedes entre sí.
 - **Un 0% de PACE en una privada fuera del Consejo de Rectores es lo normal de su grupo**; la nota lo dice con
   la cifra del país. No lo leas como falta de compromiso con la equidad.
 

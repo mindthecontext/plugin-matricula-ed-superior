@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.19.1 · 2026-10-09
+
+El arancel dice cómo se calcula: es la mediana del arancel de cada estudiante que entró entre 2021 y 2025, el de su carrera en su año de entrada —no el del último año ni un promedio de años—, así que cada año pesa según cuántos entraron; está en pesos nominales y deja fuera los aranceles informados en UF. Lo dicen las dos figuras que lo usan y las respuestas en texto.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.19.0 · 2026-10-09
 
 El reporte regional queda completo. Abre con «En síntesis»: de cuatro a seis viñetas con lo principal de la región, cada una con la sección que la sostiene, escritas sobre hechos que calcula el servicio a partir de las mismas figuras. Cierra con las notas de método: por qué el género queda fuera (con su rango calculado del dato), para quién es el reporte, qué lenguaje usa, qué unidad mide y qué no responde todavía. Hay que actualizar el plugin para que la síntesis se publique como lista.
