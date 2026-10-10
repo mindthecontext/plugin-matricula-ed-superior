@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.23.0 · 2026-10-10
+
+El arancel y la gratuidad de cada sede son ahora los de quienes entraron en 2025, el último año disponible, y no una mediana de cinco años que mezclaba pesos de años distintos. Las dos figuras y el plano del precio dicen ese año, y los dos ejes del plano son del mismo año. El arancel que la institución informa en UF se convierte a pesos con la UF del 1 de enero, así que la U. del Desarrollo, la U. de los Andes y la U. Adolfo Ibáñez —que cobran todo en UF— tienen su arancel de 2025 en vez del de 2021. En el país el arancel mediano pasa de 4,68 a 5,52 millones y la gratuidad de 48,3% a 54,7%; algunas sedes que adhirieron hace poco a la gratuidad, como la U. de las Américas, suben mucho. Los demás indicadores no cambian.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-10b-lab` · antes `2026-10-10-lab`
+
 ## v0.22.0 · 2026-10-10
 
 El 10% superior de las sedes («Los primeros de su curso» y su plano) se calcula ahora con el percentil del registro de notas de enseñanza media, no con la marca de la Beca de Excelencia Académica. Esa marca no existe para quienes egresaron antes de 2016 y los contaba como «no», lo que subestimaba a las sedes con más estudiantes adultos. Desde 2016 ambas coinciden casi exactamente. En el país la cifra pasa de 16,8% a 17,8%; ninguna sede baja, y algunas con muchos adultos suben más de diez puntos. Los demás indicadores no cambian.

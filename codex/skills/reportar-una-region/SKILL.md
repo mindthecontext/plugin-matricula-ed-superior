@@ -223,9 +223,10 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 - **Gratuidad 0% no es un error ni una exclusión:** la institución no adhiere, y es una decisión de modelo
   de financiamiento. No escribas que «sus estudiantes no acceden a la gratuidad» como si fuera un juicio
   sobre ellos.
-- **El arancel es la mediana de personas, no de años:** cada entrante 2021–2025 aporta el arancel de su carrera en
-  su año de entrada, en pesos nominales sin ajustar por inflación y sin los montos informados en UF. No es «el
-  arancel de 2025» ni «el arancel de hoy», ni un promedio de años: sirve para comparar sedes entre sí.
+- **El arancel y la gratuidad son de un solo año, el último con entrantes** (hoy 2025; lo dice el subtítulo): el
+  arancel es la mediana de quienes entraron ese año, en pesos de ese año, con lo informado en UF convertido con la
+  UF del 1 de enero. Escribe el año («el arancel mediano de quienes entraron en 2025»), no «el arancel de hoy»; y no
+  lo compares con cifras de otros años como si fueran la misma serie.
 - **Un 0% de PACE en una privada fuera del Consejo de Rectores es lo normal de su grupo**; la nota lo dice con
   la cifra del país. No lo leas como falta de compromiso con la equidad.
 
@@ -257,8 +258,9 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 - **Un cuadrante dice dónde cae una sede, no qué vale.** Usa el nombre descriptivo de `quadrant_labels` («más
   puntaje y más prioritarios que el país») y las sedes de `quadrants`. No escribas «la esquina más exigente», «la
   más meritoria» ni «la mejor»: una interpretación así, si hace falta, va en `compatible`.
-- **Los dos ejes de un plano no son del mismo período.** La PAES es de 2023–2025; prioritarios, 10% superior,
-  arancel y gratuidad, de 2021–2025. No escribas que una sede «hoy» combina las dos cosas.
+- **Los dos ejes de un plano no siempre son del mismo período.** La PAES es de 2023–2025; prioritarios y 10%
+  superior, de 2021–2025: no escribas que una sede «hoy» combina las dos cosas. El plano del precio sí tiene sus dos
+  ejes en el mismo año (arancel y gratuidad del último año), y ahí sí se leen juntos.
 - **El tamaño de la burbuja es el número de entrantes**, no un resultado: no digas que una sede «pesa más» en el
   plano por su posición.
 - **Si un plano no se dibujó** porque la región no tiene tres sedes con los dos ejes, la nota de la sección lo
