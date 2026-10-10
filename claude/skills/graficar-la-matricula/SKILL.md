@@ -11,12 +11,13 @@ gráfico, y nunca armes el spec a mano.**
 
 ## 1 · Elige la forma y pide el spec al servicio
 
-Hay **dos formas**, y responden preguntas distintas:
+Hay **tres herramientas**, y responden preguntas distintas:
 
 | La pregunta | La herramienta | La figura |
 |---|---|---|
 | cómo evolucionaron **unas sedes**, o compararlas entre sí | `figura_matricula(region, instituciones=None)` | una línea por sede, en un solo panel; con más de cinco, el nombre de cada sede va al final de su línea |
 | cómo evolucionó **la región entera** | `figura_matricula_region(region)` | el total, y una banda con lo que aportaban las sedes en retirada |
+| **una figura del reporte regional**, sola (la PAES por sede, el plano del precio, las preferencias…) | `figura_region(region, figura)` | la misma figura del reporte, con sus `groups`; un id que no existe trae la lista |
 
 `figura_matricula` sin `instituciones` trae todas las sedes de la región; con ellas, sólo esas
 (`["UFRO", "católica de temuco"]`). Las dos devuelven `spec` **listo para la receta**: las cifras, los
@@ -81,8 +82,8 @@ Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelv
 
 ## 5 · Entrega
 
-- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, `figura_matricula`
-  trae su propio widget), no la publiques de nuevo como página salvo que te lo pidan: escribe el texto que la
+- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, las tres herramientas
+  traen su propio widget, con sus notas), no la publiques de nuevo como página salvo que te lo pidan: escribe el texto que la
   acompaña. En los demás clientes la figura no aparece sola, y sigues como abajo.
 - **Si puedes publicar una página** (un Artifact), publica `figura.html` tal cual.
 - **Si no puedes**, entrega el archivo.

@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.21.0 · 2026-10-09
+
+Las figuras se pueden ver dentro de la conversación en claude.ai, Claude Desktop y los móviles: la serie de matrícula por sede, la de la región entera y, con la herramienta nueva figura_region, cualquier figura del reporte regional por separado —la PAES por sede, las preferencias, el plano del precio…—, cada una con sus notas completas. El reporte entero sigue siendo una página. En Claude Code no cambia nada. Hay que actualizar el plugin para las skills.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `figura_region`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-08-lab`
+
 ## v0.20.1 · 2026-10-09
 
 Sin cambios para quien lo usa: el servicio registra qué herramienta y qué recurso se llaman, y qué cliente se conecta y si anuncia gráficos dentro de la conversación, sin guardar los argumentos. Sirve para diagnosticar las pruebas sin depender de capturas.

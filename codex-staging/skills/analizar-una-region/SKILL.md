@@ -31,6 +31,10 @@ graficar-la-matricula).
 nuevos y no entra en comparaciones. Una con `nota` de muestra chica sigue compitiendo: se compara,
 sin lecturas fuertes sobre ella.
 
+Si la pregunta es sobre un eje del reporte regional (la PAES por sede, la gratuidad, las preferencias, los
+planos), `figura_region(region, figura)` entrega esa figura sola, con sus `groups`, sin pedir el reporte
+completo; en claude.ai y Claude Desktop aparece dibujada en la conversación.
+
 ## El universo de esta puerta es universitario
 
 Solo universidades, sin IP ni CFT. Si la pregunta es «¿cuánta gente estudia esto en la región?», la
