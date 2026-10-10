@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.22.0 · 2026-10-10
+
+El 10% superior de las sedes («Los primeros de su curso» y su plano) se calcula ahora con el percentil del registro de notas de enseñanza media, no con la marca de la Beca de Excelencia Académica. Esa marca no existe para quienes egresaron antes de 2016 y los contaba como «no», lo que subestimaba a las sedes con más estudiantes adultos. Desde 2016 ambas coinciden casi exactamente. En el país la cifra pasa de 16,8% a 17,8%; ninguna sede baja, y algunas con muchos adultos suben más de diez puntos. Los demás indicadores no cambian.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-10-lab` · antes `2026-10-08-lab`
+
 ## v0.21.1 · 2026-10-10
 
 Al pasar el cursor por un gráfico aparece su cifra en todas las figuras, también dentro de la conversación en Claude Desktop y claude.ai (antes dependía del tooltip del navegador, que ahí no se ve). Y cuando piden un gráfico, el saber le indica al asistente que use su propia figura —con sus huecos, sus sedes en retirada y su fuente— en vez de dibujar por su cuenta. Hay que actualizar el plugin.
