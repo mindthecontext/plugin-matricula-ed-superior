@@ -455,7 +455,7 @@ function matriculaSeries(spec, Plot, ancho) {
           x: "year", y: "value", stroke: COLORES[i], strokeWidth: 2.2, strokeDasharray: TRAZOS[i],
         })),
         Plot.dot(conDato, { x: "year", y: "value", fill: "serie", symbol: "serie", r: angosto ? 2.8 : 3.4,
-                            title: d => `${d.serie} · ${d.year}: ${d.value.toLocaleString("es-CL")}` }),
+                            tip: true, title: d => `${d.serie} · ${d.year}: ${d.value.toLocaleString("es-CL")}` }),
         ...salto(marcados),
       ],
     });
@@ -500,7 +500,7 @@ function matriculaSeries(spec, Plot, ancho) {
         fill: tono("--superficie") })),
       // Puntos invisibles con su cifra: al pasar el cursor por cualquier año, la sede y el valor.
       Plot.dot(conDato, { x: "year", y: "value", r: 4, fill: "transparent",
-                          title: d => `${d.serie} · ${d.year}: ${d.value.toLocaleString("es-CL")}` }),
+                          tip: true, title: d => `${d.serie} · ${d.year}: ${d.value.toLocaleString("es-CL")}` }),
       Plot.link(rotulos.filter(r => Math.abs(r.ym - r.value) > gap / 2), {
         x1: "year", y1: "value", x2: "year", y2: "ym", stroke: tono("--texto-tenue"), strokeWidth: 0.7 }),
       Plot.text(rotulos, { x: "year", y: "ym", text: r => corta(r.serie), dx: 8, textAnchor: "start",
@@ -536,7 +536,7 @@ function matriculaRegion(spec, Plot, ancho) {
       // UN AÑO SUMADO SIN UNA SEDE VA HUECO: es una cifra, pero no una firme. El año sin total corta la línea.
       Plot.dot(conTotal, { x: "year", y: "total", r: angosto ? 3 : 3.6, stroke: COLORES[0], strokeWidth: 1.6,
                            fill: f => (sumados.has(f.year) ? tono("--superficie") : COLORES[0]),
-                           title: f => `${f.year}: ${f.total.toLocaleString("es-CL")}${sumados.has(f.year) ? " (sumado sin una sede)" : ""}` }),
+                           tip: true, title: f => `${f.year}: ${f.total.toLocaleString("es-CL")}${sumados.has(f.year) ? " (sumado sin una sede)" : ""}` }),
       ...(medio ? [Plot.text([medio], { x: "year", y: f => (f.total + f.active) / 2, text: () => "sedes en retirada",
                                          dx: 8, textAnchor: "start", fontSize: angosto ? 9.5 : 10.5, fill: tono("--marca-cuadro"),
                                          // Un halo del color del fondo, para que el rótulo se lea sobre las líneas.
@@ -587,7 +587,7 @@ function barrasSedes(spec, Plot, ancho) {
     y: { label: null, domain: filas.map(f => f.label), tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
     marks: [
       Plot.barX(filas, { x: "value", y: "label", fill: COLORES[0], fillOpacity: 0.85, insetTop: 4, insetBottom: 4,
-                         title: f => `${f.label}: ${fmt(f.value)}${f.n != null ? ` (n=${f.n.toLocaleString("es-CL")})` : ""}` }),
+                         tip: true, title: f => `${f.label}: ${fmt(f.value)}${f.n != null ? ` (n=${f.n.toLocaleString("es-CL")})` : ""}` }),
       Plot.ruleX([0], { stroke: tono("--fig-regla") }),
       ...(conDetalle ? [Plot.text(filas.filter(f => f.detail), { x: tope, y: "label", text: "detail", textAnchor: "start", dx: 10,
                                                                   fontSize: angosto ? 8.5 : 9.5, fill: tono("--texto-tenue") })] : []),
@@ -659,7 +659,7 @@ function rangosSedes(spec, Plot, ancho) {
                             insetTop: 10, insetBottom: 10 }),
       // El centro sobresale de la caja: se distingue del borde sin otro color.
       Plot.tickX(filas, { x: "mid", y: "eti", stroke: color, strokeWidth: 2.6, insetTop: 7, insetBottom: 7,
-                          title: f => `${f.eti}: ${fmt(f.mid)} (n=${f.n.toLocaleString("es-CL")})` }),
+                          tip: true, title: f => `${f.eti}: ${fmt(f.mid)} (n=${f.n.toLocaleString("es-CL")})` }),
       // Con halo: la mediana cae a menudo sobre la línea de la referencia.
       Plot.text(filas, { x: "mid", y: "eti", text: f => fmt(f.mid), dy: -13, fontSize: 9, fill: tono("--texto-tenue"), ...halo }),
       ...(spec.whiskers === "min_max"
@@ -707,7 +707,7 @@ function barrasPartidas(spec, Plot, ancho) {
     marks: [
       Plot.barX(apilado, { y: "label", x: "v", fill: "tramo", order: orden, insetTop: arriba ? 10 : 4, insetBottom: arriba ? 4 : 4,
                            fillOpacity: d => (d.esRef ? 0.6 : 0.92),
-                           title: d => `${d.label}\n${d.tramo}: ${fmt(d.v)}${d.n != null ? ` (n=${d.n.toLocaleString("es-CL")})` : ""}` }),
+                           tip: true, title: d => `${d.label}\n${d.tramo}: ${fmt(d.v)}${d.n != null ? ` (n=${d.n.toLocaleString("es-CL")})` : ""}` }),
       Plot.text(apilado, Plot.stackX({ y: "label", x: "v", z: "tramo", order: orden,
                                        fill: d => TINTAS_TRAMOS[d.i], fontSize: angosto ? 9 : 9.5, fontWeight: "bold",
                                        text: d => (d.v >= minimo ? fmt(d.v) : "") })),
@@ -779,6 +779,8 @@ function dispersionSedes(spec, Plot, ancho) {
 }
 
 /** La leyenda, en HTML: con muestra de color, trazo y forma, para que no dependa del color. */
+// LOS TOOLTIPS SON LOS DE PLOT (`tip: true` sobre el `title` de cada marca), no el `title` nativo del navegador: el
+// iframe de los widgets no muestra el nativo, y Plot dibuja el suyo dentro del gráfico en cualquier cliente (MAT-39).
 function leyenda(spec) {
   if (spec.form === "matricula_region") return leyendaRegion(spec);
   if (spec.form === "barras_partidas") return leyendaPartidas(spec);
