@@ -1,6 +1,6 @@
 {
   "name": "matricula-ed-superior",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "description": "Quién estudia qué en la educación superior chilena, dónde, con qué perfil y en qué termina: matrícula, selectividad, equidad y trayectorias, con cada cifra trazable a su fuente.",
   "author": {
     "name": "MindTheContext"
@@ -16,13 +16,14 @@
     "demre",
     "mineduc",
     "equidad",
-    "titulacion"
+    "titulacion",
+    "empleabilidad"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Matrícula de Educación Superior",
     "shortDescription": "Quién estudia qué en la educación superior chilena, dónde, con qué perfil y en qué termina: matrícula, selectividad, equidad y trayectorias, con cada cifra trazable a su fuente.",
-    "longDescription": "El panorama de la educación superior chilena sobre registros administrativos públicos —SIES, DEMRE y MINEDUC—, servidos a través de una capa de conocimiento curada: no los datos crudos, sino lo que sirve para responder preguntas estratégicas, con los criterios de interpretación viajando junto al dato.\nDos puertas. Por REGIÓN: el mercado universitario de un territorio —quién entra y con qué puntaje, de dónde viene y adónde se va, cómo entra y quién paga, a quién prefería y en qué termina—, y un reporte regional completo, con figuras y lecturas cuyas cifras se verifican contra el dato. Por CARRERA: dónde se estudia algo en el sistema completo, incluidos institutos profesionales y CFT —quién la dicta, quién entra, en qué termina y, sobre todo, la matriz de sustitución: de quienes dejaron una institución, a cuál llegaron.\nCada cifra viaja con su procedencia, sus años y su universo. Lo que no es derivable se declara en vez de aproximarse, y el saber publica además las fronteras que reconoce no poder decidir."
+    "longDescription": "El panorama de la educación superior chilena sobre registros administrativos públicos —SIES, DEMRE, MINEDUC y el retorno laboral de mifuturo—, servidos a través de una capa de conocimiento curada: no los datos crudos, sino lo que sirve para responder preguntas estratégicas, con los criterios de interpretación viajando junto al dato.\nDos puertas. Por REGIÓN: el mercado universitario de un territorio —quién entra y con qué puntaje, de dónde viene y adónde se va, cómo entra y quién paga, a quién prefería y en qué termina—, y un reporte regional completo, con figuras y lecturas cuyas cifras se verifican contra el dato. Por CARRERA: dónde se estudia algo en el sistema completo, incluidos institutos profesionales y CFT —quién la dicta, quién entra, en qué termina, qué empleabilidad e ingresos tiene según el tipo de institución que domina la carrera y, sobre todo, la matriz de sustitución: de quienes dejaron una institución, a cuál llegaron.\nCada cifra viaja con su procedencia, sus años y su universo. Lo que no es derivable se declara en vez de aproximarse, y el saber publica además las fronteras que reconoce no poder decidir."
   },
   "mcpServers": "./.mcp.json"
 }

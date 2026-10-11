@@ -47,12 +47,25 @@ perder alumnado hacia una universidad par que hacia un instituto profesional.
 que no aparece como origen, la respuesta no es «no pierde a nadie» sino «su fuga, si existe, está
 repartida en montos bajo el corte de esta matriz». Decirlo al revés invierte el hallazgo.
 
-## Si el retorno laboral trae un aviso, el aviso va primero
+## El retorno laboral es de un tipo de institución: dilo
 
-Cuando `desenlaces_carrera` traiga `_aviso_vintage` en `retorno_laboral`, la empleabilidad y los
-ingresos de esa respuesta pueden venir del grupo de instituciones equivocado. Dilo **antes** de la
-cifra, con las palabras del aviso, y no la uses para comparar entre carreras. Si el campo no viene,
-no hay nada que advertir.
+`retorno_laboral` trae la empleabilidad y los ingresos del **tipo de institución que domina la
+matrícula de la carrera** (`tipo_servido`), y en `por_tipo` los tres que publica mifuturo
+—universidades, institutos profesionales y CFT—, cada uno con su peso en la carrera
+(`pct_matricula_de_la_carrera`).
+
+- **Di siempre de qué tipo es la cifra.** «Al primer año, los egresados de institutos profesionales
+  ganan $0,80 millones», no «los egresados ganan…».
+- **Si el dominante gana por poco** (los dos primeros a menos de 10 puntos de matrícula, como IP 49%
+  y CFT 45% en Técnico en Enfermería), da los dos: la cifra «de la carrera» depende de un empate.
+- **No compares tipos como si fueran mejores o peores.** Un instituto profesional con más ingreso
+  que una universidad puede estar recibiendo a adultos que ya trabajaban; los datos no dicen por qué.
+- **No compares entre carreras de tipos distintos** sin decirlo: el ingreso de una carrera
+  universitaria y el de una técnica describen poblaciones distintas.
+- Si `retorno_laboral` viene como no derivable, mifuturo no publica esa carrera: dilo así.
+
+Hasta octubre de 2026 estas cifras eran siempre las de universidades. Si alguien cita un valor
+anterior, puede no coincidir.
 
 ## No inventes causas
 

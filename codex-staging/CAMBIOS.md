@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.25.0 · 2026-10-11
+
+La empleabilidad y los ingresos de cada carrera son ahora los del tipo de institución que domina su matrícula, y no siempre los de las universidades. En 18 carreras, sobre todo técnicas, pasan a ser los de los institutos profesionales; en Técnico en Enfermería el ingreso al primer año baja de $0,86 a $0,80 millones. La respuesta trae además los tres tipos que publica mifuturo —universidades, institutos profesionales y CFT—, cada uno con su peso en la carrera, y deja de advertir que el dato podía venir del grupo equivocado. Animación Digital y Mecánica Automotriz tienen retorno laboral por primera vez. Las carreras universitarias mantienen sus cifras. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab` · antes `2026-10-11-lab`
+
 ## v0.24.0 · 2026-10-11
 
 La ficha de una sede ya no trae el indicador «primera opción por vía regular», que parecía decir cuántos pusieron la sede en primer lugar y medía otra cosa: cuántos quedaron en la lista de seleccionados de su primera preferencia, sin contar a quienes la pusieron primera y entraron desde la lista de espera (en la U. de la Frontera daba 66,8% contra 87,8% de convencidos). Para saber cuántos eligieron una sede primero, la cifra es la de convencidos, con su definición y sus límites. Los demás indicadores no cambian.
