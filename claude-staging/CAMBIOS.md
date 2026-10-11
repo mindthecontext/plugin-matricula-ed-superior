@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.24.0 · 2026-10-11
+
+La ficha de una sede ya no trae el indicador «primera opción por vía regular», que parecía decir cuántos pusieron la sede en primer lugar y medía otra cosa: cuántos quedaron en la lista de seleccionados de su primera preferencia, sin contar a quienes la pusieron primera y entraron desde la lista de espera (en la U. de la Frontera daba 66,8% contra 87,8% de convencidos). Para saber cuántos eligieron una sede primero, la cifra es la de convencidos, con su definición y sus límites. Los demás indicadores no cambian.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11-lab` · antes `2026-10-10b-lab`
+
 ## v0.23.0 · 2026-10-10
 
 El arancel y la gratuidad de cada sede son ahora los de quienes entraron en 2025, el último año disponible, y no una mediana de cinco años que mezclaba pesos de años distintos. Las dos figuras y el plano del precio dicen ese año, y los dos ejes del plano son del mismo año. El arancel que la institución informa en UF se convierte a pesos con la UF del 1 de enero, así que la U. del Desarrollo, la U. de los Andes y la U. Adolfo Ibáñez —que cobran todo en UF— tienen su arancel de 2025 en vez del de 2021. En el país el arancel mediano pasa de 4,68 a 5,52 millones y la gratuidad de 48,3% a 54,7%; algunas sedes que adhirieron hace poco a la gratuidad, como la U. de las Américas, suben mucho. Los demás indicadores no cambian.
