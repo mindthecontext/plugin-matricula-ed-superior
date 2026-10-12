@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.26.0 · 2026-10-12
+
+Si pides expresamente un dashboard (o cualquier gráfico propio) con los datos de una región, el asistente recibe junto a los datos lo que ese gráfico tiene que conservar: cada cifra consultada en vivo al saber, los años sin dato como huecos y no unidos, los valores que no calzan marcados aparte, los avisos de cada figura a la vista, las sedes en retirada fuera de las comparaciones y ninguna conclusión escrita a mano —«crece», «la mayor»— que no salga del dato. El reporte regional sigue siendo la página del plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab`
+
 ## v0.25.2 · 2026-10-12
 
 El reporte regional le dice al asistente cómo entregarse: como la página que arma el plugin, publicada tal cual. En claude.ai, donde el cliente ofrece un formato de «dashboard» para los reportes, una vez se rehízo el reporte con ese formato y perdió el control de cifras y los avisos de cada figura. Sin el plugin instalado, el asistente muestra las figuras una a una en la conversación y explica que el reporte completo requiere el plugin. Hay que actualizar el plugin.
