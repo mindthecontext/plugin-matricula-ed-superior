@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.27.2 · 2026-10-13
+
+presencia_institucional compara la empleabilidad e ingreso de una institución con los de su propio tipo —un CFT con los CFT, un IP con los IP—, y deja el tipo que domina la carrera sólo como contexto. Antes la comparación principal era con el tipo dominante, y en carreras de IP y CFT eso hacía ver a un CFT mucho más lejos de lo que está frente a sus pares. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab`
+
 ## v0.27.1 · 2026-10-13
 
 presencia_institucional muestra también las carreras donde la institución tuvo estudiantes y ya no recibe nuevos, marcadas como presencia sólo en cohortes antiguas; separa las sedes con entrantes recientes de las sedes con cohortes antiguas, porque son periodos distintos; y dice cómo calcula la titulación, para que el asistente cite esa cifra y no otra. Hay que actualizar el plugin.

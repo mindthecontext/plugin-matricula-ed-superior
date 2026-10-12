@@ -85,8 +85,9 @@ carreras?»—, usa `presencia_institucional`. Sirve para universidades, IP y CF
   `sedes_con_cohortes_2011_2016`. Si difieren, es porque abrió o cerró sedes, no una inconsistencia.
 - **`presencia: sólo en cohortes antiguas`** es una carrera que tuvo y ya no recibe entrantes: nómbrala
   aparte, no como parte de su oferta de hoy.
-- **La titulación es de las cohortes 2011–2016** y el retorno laboral se compara con el tipo de institución
-  que domina la carrera. Una brecha —más titulación y menos empleabilidad, por ejemplo— se describe, no se
+- **La titulación es de las cohortes 2011–2016.** El retorno laboral de la institución se compara con **su
+  propio tipo** (`retorno_laboral.su_tipo`: un CFT con los CFT, un IP con los IP), no con el tipo que domina
+  la carrera, que va sólo de contexto: comparar un CFT con el promedio de los IP exagera la brecha. Una brecha —más titulación y menos empleabilidad, por ejemplo— se describe, no se
   explica: puede ser quién entra a cada una. Nunca la presentes como un juicio sobre la institución.
 
 ## No inventes causas
