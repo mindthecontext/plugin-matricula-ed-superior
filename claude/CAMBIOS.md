@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.26.2 · 2026-10-13
+
+Si pides el reporte de una región con el conector pero sin el plugin, en claude.ai el asistente arma un dashboard de la región con la receta del saber —datos en vivo, huecos y avisos a la vista, sin conclusiones escritas a mano— en vez de mostrar figuras sueltas. Lo presenta como un dashboard, no como el reporte, y avisa que el reporte con lecturas verificadas requiere el plugin y que cada lector necesita su propio acceso. Donde el cliente no arma dashboards, sigue mostrando las figuras una a una. Y con el plugin instalado, si pides expresamente un dashboard, también lo arma con esa receta —antes se negaba—; pedir «el reporte» sigue entregando la página del plugin. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab`
+
 ## v0.26.0 · 2026-10-12
 
 Si pides expresamente un dashboard (o cualquier gráfico propio) con los datos de una región, el asistente recibe junto a los datos lo que ese gráfico tiene que conservar: cada cifra consultada en vivo al saber, los años sin dato como huecos y no unidos, los valores que no calzan marcados aparte, los avisos de cada figura a la vista, las sedes en retirada fuera de las comparaciones y ninguna conclusión escrita a mano —«crece», «la mayor»— que no salga del dato. El reporte regional sigue siendo la página del plugin.
