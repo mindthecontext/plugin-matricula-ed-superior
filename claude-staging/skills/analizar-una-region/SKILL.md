@@ -10,8 +10,9 @@ description: Responde sobre el mercado universitario de una región chilena — 
 2. **`flujos_region`** y **`perfil_migrante`** si la pregunta es de retención o migración.
 3. **`ficha_sede`** cuando la pregunta sea por UNA sede: todos sus ejes con su n, su serie de matrícula
    desde 2007, origen por vía, gratuidad y desenlaces de cohorte.
-4. **`vista_institucion`** cuando la pregunta sea por una casa multi-sede: integra sus sedes y da su
-   posición en cada mercado.
+4. **`vista_institucion`** cuando la pregunta sea por una universidad multi-sede: integra sus sedes y da su
+   posición en cada mercado. Para un **instituto profesional o un CFT** no sirve —esta puerta es sólo de
+   universidades—: usa `presencia_institucional`, que los mira carrera por carrera.
 5. **`preferencias`** para competencia revelada; **`acceso_equidad`** para gratuidad y PACE;
    **`carreras_tope`** para las carreras de mayor exigencia PAES de cada sede.
 

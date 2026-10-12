@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.27.0 · 2026-10-13
+
+Herramienta nueva, presencia_institucional: para una institución de cualquier tipo —también un instituto profesional o un CFT, que hasta ahora el saber no podía mirar como institución—, en qué carreras está, su puesto y participación en el mercado cuando está entre las cinco primeras, cuántas sedes tiene, su titulación frente a la de la carrera y su empleabilidad e ingreso frente al tipo de institución que domina la carrera. Un nombre que corresponde a varias (la universidad, el IP y el CFT de un mismo grupo) devuelve las opciones en vez de elegir. Cubre las 69 carreras del saber, no toda la oferta de la institución.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `presencia_institucional`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab`
+
 ## v0.26.2 · 2026-10-13
 
 Si pides el reporte de una región con el conector pero sin el plugin, en claude.ai el asistente arma un dashboard de la región con la receta del saber —datos en vivo, huecos y avisos a la vista, sin conclusiones escritas a mano— en vez de mostrar figuras sueltas. Lo presenta como un dashboard, no como el reporte, y avisa que el reporte con lecturas verificadas requiere el plugin y que cada lector necesita su propio acceso. Donde el cliente no arma dashboards, sigue mostrando las figuras una a una. Y con el plugin instalado, si pides expresamente un dashboard, también lo arma con esa receta —antes se negaba—; pedir «el reporte» sigue entregando la página del plugin. Hay que actualizar el plugin.

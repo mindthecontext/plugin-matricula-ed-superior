@@ -68,6 +68,20 @@ matrícula de la carrera** (`tipo_servido`), y en `por_tipo` los tres que public
 Hasta octubre de 2026 estas cifras eran siempre las de universidades. Si alguien cita un valor
 anterior, puede no coincidir.
 
+## Una institución en todas sus carreras
+
+Cuando la pregunta sea por una institución —«¿dónde está el CFT Santo Tomás?», «¿cómo le va al IP en sus
+carreras?»—, usa `presencia_institucional`. Sirve para universidades, IP y CFT.
+
+- **Si el nombre es de un grupo** («Santo Tomás», «INACAP»), te devuelve los candidatos: pregunta cuál
+  —la universidad, el IP o el CFT— en vez de elegir.
+- **El puesto sólo existe entre las cinco primeras** del mercado. Fuera de ellas no hay puesto: di que no
+  está entre las cinco primeras, no inventes «sexta».
+- **Cubre las 69 carreras del saber**, no toda su oferta. Dilo antes de la lista.
+- **La titulación es de las cohortes 2011–2016** y el retorno laboral se compara con el tipo de institución
+  que domina la carrera. Una brecha —más titulación y menos empleabilidad, por ejemplo— se describe, no se
+  explica: puede ser quién entra a cada una. Nunca la presentes como un juicio sobre la institución.
+
 ## No inventes causas
 
 Que quienes se van tengan otro perfil describe **quiénes** migran, no **por qué**. La misma brecha
