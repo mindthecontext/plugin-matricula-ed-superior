@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.25.2 · 2026-10-12
+
+El reporte regional le dice al asistente cómo entregarse: como la página que arma el plugin, publicada tal cual. En claude.ai, donde el cliente ofrece un formato de «dashboard» para los reportes, una vez se rehízo el reporte con ese formato y perdió el control de cifras y los avisos de cada figura. Sin el plugin instalado, el asistente muestra las figuras una a una en la conversación y explica que el reporte completo requiere el plugin. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab`
+
 ## v0.25.1 · 2026-10-12
 
 Corrección: al preguntar por «Técnico en Enfermería», «Técnico en Administración de Empresas», «Pedagogía en Historia» o «Pedagogía en Filosofía y Religión», el saber respondía en silencio con los datos de otra carrera —Enfermería, Administración de Empresas, Historia, Filosofía—. Ahora cada nombre llega a su carrera, también con «en» o «de» de por medio, y si la pregunta tiene palabras que ninguna carrera calza exacto, el saber muestra las candidatas en vez de elegir una.

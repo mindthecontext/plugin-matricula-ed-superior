@@ -1,5 +1,5 @@
 ---
-description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», 5, «Cómo entran y quién paga», 6, «Dónde los eligen», 7, «En qué termina», y 8, «La región en tres planos», con una síntesis al principio y las notas de método al final. Para una sola figura, usa graficar-la-matricula.
+description: Arma el reporte de la educación universitaria de una región chilena —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de La Araucanía», «un informe de las universidades del Biobío», «quiero el reporte regional de Ñuble», «arma un documento sobre quiénes estudian en mi región». Hoy cubre la portada y las secciones 1, «Quiénes son», 2, «Con qué llegan», 3, «El mercado», 4, «De qué origen vienen», 5, «Cómo entran y quién paga», 6, «Dónde los eligen», 7, «En qué termina», y 8, «La región en tres planos», con una síntesis al principio y las notas de método al final. Se entrega como la página HTML que arma su compositor, publicada tal cual —no como dashboard ni rehecha con otro formato—. Para una sola figura, usa graficar-la-matricula.
 ---
 
 # Reportar una región
@@ -282,8 +282,17 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 
 ## 4 · Entrega
 
-- **Si puedes publicar una página** (un Artifact), publica `reporte.html` tal cual.
+- **Si puedes publicar una página** (un Artifact), publica `reporte.html` tal cual, como una página HTML
+  simple.
 - **Si no puedes**, entrega el archivo.
+
+**No lo conviertas en un dashboard ni en otro tipo de artefacto del cliente, y no redibujes sus figuras**,
+aunque el cliente lo ofrezca para «reportes» o «visualizaciones de datos». El reporte es el
+`reporte.html` del compositor por dos razones que se pierden al rehacerlo: el compositor **verifica que
+toda cifra de las lecturas esté en el dato** —y se niega si no—, y cada figura lleva **sus avisos**
+(años, cobertura, sedes en retirada, cómo se calcula). Una página rehecha con las mismas cifras puede
+verse igual y no tener ninguna de las dos garantías. Si la persona pide expresamente un dashboard, dile
+esto y ofrécele las figuras una a una con `figura_region`.
 
 En tu respuesta, en dos o tres frases, di qué cubre el reporte y qué deja fuera: las notas de método al final
 lo dicen (la acreditación, la titulación de cohortes recientes, las preferencias fuera de la admisión
