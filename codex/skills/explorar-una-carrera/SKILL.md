@@ -78,6 +78,13 @@ carreras?»—, usa `presencia_institucional`. Sirve para universidades, IP y CF
 - **El puesto sólo existe entre las cinco primeras** del mercado. Fuera de ellas no hay puesto: di que no
   está entre las cinco primeras, no inventes «sexta».
 - **Cubre las 69 carreras del saber**, no toda su oferta. Dilo antes de la lista.
+- **Cita sus cifras, no las de otra herramienta.** La titulación es el promedio de sus sedes ponderado por
+  cohorte (`titulacion.metodo`): no la reemplaces por una mediana sacada de otra respuesta. Si la cohorte es
+  chica (`n_cohortes` bajo 100), dilo junto a la cifra.
+- **Los dos conteos de sedes son de periodos distintos**: `sedes_con_entrantes_2021_2025` y
+  `sedes_con_cohortes_2011_2016`. Si difieren, es porque abrió o cerró sedes, no una inconsistencia.
+- **`presencia: sólo en cohortes antiguas`** es una carrera que tuvo y ya no recibe entrantes: nómbrala
+  aparte, no como parte de su oferta de hoy.
 - **La titulación es de las cohortes 2011–2016** y el retorno laboral se compara con el tipo de institución
   que domina la carrera. Una brecha —más titulación y menos empleabilidad, por ejemplo— se describe, no se
   explica: puede ser quién entra a cada una. Nunca la presentes como un juicio sobre la institución.
