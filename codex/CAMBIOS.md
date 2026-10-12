@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.25.1 · 2026-10-12
+
+Corrección: al preguntar por «Técnico en Enfermería», «Técnico en Administración de Empresas», «Pedagogía en Historia» o «Pedagogía en Filosofía y Religión», el saber respondía en silencio con los datos de otra carrera —Enfermería, Administración de Empresas, Historia, Filosofía—. Ahora cada nombre llega a su carrera, también con «en» o «de» de por medio, y si la pregunta tiene palabras que ninguna carrera calza exacto, el saber muestra las candidatas en vez de elegir una.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab`
+
 ## v0.25.0 · 2026-10-11
 
 La empleabilidad y los ingresos de cada carrera son ahora los del tipo de institución que domina su matrícula, y no siempre los de las universidades. En 18 carreras, sobre todo técnicas, pasan a ser los de los institutos profesionales; en Técnico en Enfermería el ingreso al primer año baja de $0,86 a $0,80 millones. La respuesta trae además los tres tipos que publica mifuturo —universidades, institutos profesionales y CFT—, cada uno con su peso en la carrera, y deja de advertir que el dato podía venir del grupo equivocado. Animación Digital y Mecánica Automotriz tienen retorno laboral por primera vez. Las carreras universitarias mantienen sus cifras. Hay que actualizar el plugin.
