@@ -10,6 +10,14 @@ lecturas las escribes tú**, y esta skill dice cómo, porque es lo que hace que 
 
 ## 1 · Pide el reporte
 
+**Antes: ¿qué universo pidieron?** Este reporte es de universidades. Una región tiene además sus IP y
+CFT, que en algunas pesan más que las universidades. Si la persona nombró las universidades, sigue. Si
+pidió «el reporte de la educación superior» o «el reporte de la región», sin nombrar un universo, el
+reporte se entrega igual, sin preguntar, pero **abre con `universos_de_la_region`**: cuántos estudian en
+universidades, en el técnico de nivel superior y en las carreras profesionales de los IP, y cuánto pesa
+cada uno. Después ofrece el técnico-profesional (`panorama_tecnico_region`, skill
+analizar-el-tecnico-de-una-region). Si pidió los IP o los CFT, este reporte no es: usa esa puerta.
+
     reporte_region(region)
 
 Devuelve `spec`: la portada (`cover`), la síntesis, las secciones con sus figuras ya armadas y, junto a

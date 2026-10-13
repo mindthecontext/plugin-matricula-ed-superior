@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.33.0 · 2026-10-13
+
+Nueva puerta técnico-profesional: los institutos profesionales y los CFT de una región, con programas presenciales, por institución, ciudad y nivel. En el IP, las carreras profesionales y las técnicas se cuentan como mercados distintos. Cuatro herramientas nuevas: panorama_tecnico_region, ficha_sede_tecnica, a_distancia_tecnico (lo no presencial, que no se asigna a una región) y figura_tecnico_region. Traen la matrícula 2007–2025, la participación en su mercado y el perfil de los entrantes: edad, jornada, prioritarios, gratuidad, arancel, trayectoria previa y continuidad dentro de su grupo. PAES y preferencias no aplican, y así se dice. El reporte universitario trae ahora cuánto pesa cada universo en la región: si la petición no nombró uno, abre con esas cifras. Hay que actualizar el plugin.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `a_distancia_tecnico`, `ficha_sede_tecnica`, `figura_tecnico_region`, `panorama_tecnico_region`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region` · aparece `analizar-el-tecnico-de-una-region`
+- Datos: `2026-10-13b-lab` · antes `2026-10-13-lab`
+
 ## v0.32.0 · 2026-10-13
 
 Quién gana y quién pierde en una carrera: herramienta nueva participacion_primer_anio y su figura, figura_participacion. Dan la participación de cada institución (universidad, IP o CFT) en la matrícula de primer año del CNED, en el país o en una región, entre dos años, con las aperturas y cierres de sedes. Solo se calcula en años completos: si un año pedido tiene una sede que no reportó, se usa el año completo más cercano y se dice. Corrección: primer_anio decía los tipos de institución que pesan al menos el 15%, no todos los que trae la serie (Técnico en Enfermería decía «IP y CFT» y trae también universidades); ahora dice todos, con el peso de cada uno. Hay que actualizar el plugin.

@@ -12,7 +12,7 @@ gráfico, y nunca armes el spec a mano.**
 
 ## 1 · Elige la forma y pide el spec al servicio
 
-Hay **cinco herramientas**, y responden preguntas distintas:
+Hay **seis herramientas**, y responden preguntas distintas:
 
 | La pregunta | La herramienta | La figura |
 |---|---|---|
@@ -21,6 +21,7 @@ Hay **cinco herramientas**, y responden preguntas distintas:
 | **una figura del reporte regional**, sola (la PAES por sede, el plano del precio, las preferencias…) | `figura_region(region, figura)` | la misma figura del reporte, con sus `groups`; un id que no existe trae la lista |
 | cómo evolucionó la matrícula de **primer año de una carrera**, en el país o en una región | `figura_primer_anio(carrera, region=None)` | la forma de la región entera, con un solo total: los años que una sede no reportó van huecos o cortados, y se dicen |
 | **quién gana y quién pierde** participación en una carrera, en el país o en una región | `figura_participacion(carrera, region=None, desde=None, hasta=None)` | una barra por institución con su participación el último año, y al lado la del primero y el cambio |
+| el **técnico-profesional** de una región (IP y CFT): sus unidades en el tiempo o un eje por unidad | `figura_tecnico_region(region, figura, nivel=None, instituciones=None)` | «matricula»: una línea por institución × ciudad × nivel; un eje: una barra por unidad contra los IP y CFT del país |
 
 `figura_matricula` sin `instituciones` trae todas las sedes de la región; con ellas, sólo esas
 (`["UFRO", "católica de temuco"]`). Las dos devuelven `spec` **listo para la receta**: las cifras, los
@@ -103,7 +104,7 @@ Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelv
 
 ## 5 · Entrega
 
-- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, las cinco herramientas
+- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, las seis herramientas
   traen su propio widget, con sus notas), no la publiques de nuevo como página salvo que te lo pidan: escribe el texto que la
   acompaña. En los demás clientes la figura no aparece sola, y sigues como abajo.
 - **Si puedes publicar una página** (un Artifact), publica `figura.html` tal cual.
