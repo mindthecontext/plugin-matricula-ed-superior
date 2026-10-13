@@ -33,6 +33,23 @@ de la matrícula. La regional trae además el crecimiento, con todas las sedes y
 
 Si la herramienta responde con `error`, dilo: no armes el spec a mano.
 
+### La serie es de matrícula total, no de primer año
+
+Las series de `figura_matricula` y `figura_matricula_region` cuentan la **matrícula total** de pregrado:
+todos los años de la carrera, no sólo quienes entran. De primer año, la puerta regional tiene los
+**entrantes acumulados de la ventana** (2021–2025), sin serie por año, y en `figura_region` ni `serie`
+ni `entrantes` son una serie de primer año.
+
+Si piden «la evolución de la matrícula de primer año» de una región:
+
+- **Dilo primero:** esa serie no está en el saber.
+- **Ofrece lo que hay:** la serie de matrícula total, rotulada como total (no le cambies el `subtitle` a
+  «primer año»), o los entrantes de la ventana.
+- **Si la pregunta es por una carrera,** la serie de primer año sí existe: `panorama_carrera`, en
+  `evolucion` (CNED, 2005–2025, la carrera y el sistema universitario).
+
+Cada respuesta de figura trae `sobre_primer_anio` con estas mismas palabras.
+
 ## 2 · El encuadre: los roles de los textos
 
 El formato completo está en `references/spec.md`. El servicio ya trae un título y un subtítulo
