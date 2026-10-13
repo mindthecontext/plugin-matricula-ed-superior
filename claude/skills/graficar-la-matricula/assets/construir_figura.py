@@ -486,6 +486,11 @@ def tabla(spec: dict) -> str:
                          + f" | {'' if f.get('n') is None else f['n']} | {f.get('detail') or ''} |")
         return "\n".join(filas)
     if spec.get("form") == "matricula_region":
+        if not spec.get("retreating_sites"):
+            # sin sedes en retirada, una sola columna (MAT-48): la segunda repetiría la primera
+            filas = ["| Año | Todas las sedes |", "|---|---:|"]
+            filas += [f"| {a} | {_miles(t)} |" for a, t in zip(spec.get("x") or [], spec.get("total") or [])]
+            return "\n".join(filas)
         filas = ["| Año | Todas las sedes | Sin las sedes en retirada |", "|---|---:|---:|"]
         for a, t, v in zip(spec.get("x") or [], spec.get("total") or [], spec.get("active") or []):
             filas.append(f"| {a} | {_miles(t)} | {_miles(v)} |")
@@ -513,8 +518,11 @@ def notas_region(spec: dict) -> str:
     items = []
     g = spec["growth"]
     desde, hasta = g["period"]
-    items.append(f"<li>Crecimiento {desde}→{hasta}: <b>{e(_pct(g.get('total')))}</b> con todas las sedes; "
-                 f"<b>{e(_pct(g.get('active')))}</b> sin las sedes en retirada.</li>")
+    if spec.get("retreating_sites"):
+        items.append(f"<li>Crecimiento {desde}→{hasta}: <b>{e(_pct(g.get('total')))}</b> con todas las sedes; "
+                     f"<b>{e(_pct(g.get('active')))}</b> sin las sedes en retirada.</li>")
+    else:
+        items.append(f"<li>Crecimiento {desde}→{hasta}: <b>{e(_pct(g.get('total')))}</b>.</li>")
     for c in spec.get("incomplete") or []:
         if c.get("series") != "total":
             continue

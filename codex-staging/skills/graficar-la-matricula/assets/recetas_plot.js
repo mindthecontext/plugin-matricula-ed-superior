@@ -521,6 +521,9 @@ function matriculaRegion(spec, Plot, ancho) {
   const banda = filas.map(f => (f.total !== null && f.active !== null ? f : { ...f, total: null, active: null }));
   const medio = banda.filter(f => f.total !== null && f.total > f.active)
     .sort((a, b) => (b.total - b.active) - (a.total - a.active))[0];
+  // SIN SEDES EN RETIRADA NO HAY BANDA NI LÍNEA PUNTEADA (MAT-48): la serie de primer año de una carrera en una
+  // región trae `active` igual a `total`, y dibujar las dos sería sugerir una diferencia que no existe.
+  const conRetirada = (spec.retreating_sites || []).length > 0;
   return Plot.plot({
     width: ancho, height: angosto ? 260 : 320, marginLeft: 56, marginRight: 16, marginTop: 20, marginBottom: 30,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
@@ -530,8 +533,10 @@ function matriculaRegion(spec, Plot, ancho) {
     marks: [
       Plot.ruleY([0], { stroke: tono("--fig-regla") }),
       // LA BANDA ES LA MATRÍCULA DE LAS SEDES EN RETIRADA: entre lo activo y el total.
-      Plot.areaY(banda, { x: "year", y1: "active", y2: "total", fill: COLORES[1], fillOpacity: 0.42 }),
-      Plot.line(banda, { x: "year", y: "active", stroke: COLORES[0], strokeWidth: 1.3, strokeDasharray: "3 2" }),
+      ...(conRetirada ? [
+        Plot.areaY(banda, { x: "year", y1: "active", y2: "total", fill: COLORES[1], fillOpacity: 0.42 }),
+        Plot.line(banda, { x: "year", y: "active", stroke: COLORES[0], strokeWidth: 1.3, strokeDasharray: "3 2" }),
+      ] : []),
       Plot.line(filas, { x: "year", y: "total", stroke: COLORES[0], strokeWidth: 2.4 }),
       // UN AÑO SUMADO SIN UNA SEDE VA HUECO: es una cifra, pero no una firme. El año sin total corta la línea.
       Plot.dot(conTotal, { x: "year", y: "total", r: angosto ? 3 : 3.6, stroke: COLORES[0], strokeWidth: 1.6,
@@ -823,9 +828,11 @@ function leyendaRegion(spec) {
   caja.className = "leyenda";
   const items = [
     [`<line x1="0" y1="6" x2="36" y2="6" stroke="${COLORES[0]}" stroke-width="2.4"/><circle cx="18" cy="6" r="3.4" fill="${COLORES[0]}"/>`, "todas las sedes"],
-    [`<rect x="0" y="1" width="36" height="10" fill="${COLORES[1]}" fill-opacity="0.42"/>`, "sedes en retirada"],
-    [`<line x1="0" y1="6" x2="36" y2="6" stroke="${COLORES[0]}" stroke-width="1.3" stroke-dasharray="3 2"/>`, "sin las sedes en retirada"],
   ];
+  if ((spec.retreating_sites || []).length) {
+    items.push([`<rect x="0" y="1" width="36" height="10" fill="${COLORES[1]}" fill-opacity="0.42"/>`, "sedes en retirada"],
+               [`<line x1="0" y1="6" x2="36" y2="6" stroke="${COLORES[0]}" stroke-width="1.3" stroke-dasharray="3 2"/>`, "sin las sedes en retirada"]);
+  }
   if ((spec.incomplete || []).some(c => c.series === "total" && c.treatment === "summed")) {
     items.push([`<circle cx="18" cy="6" r="3.4" fill="none" stroke="${COLORES[0]}" stroke-width="1.6"/>`, "año sumado sin una sede"]);
   }

@@ -10,7 +10,8 @@ description: Responde sobre una carrera en el sistema de educación superior chi
 1. **`panorama_carrera`** siempre primero. Trae `composicion_del_mercado`, que dice si la carrera es
    universitaria, mixta o de IP y CFT — y eso **cambia cómo se lee todo lo demás**.
 2. Después, lo que la pregunta pida: `sedes_de_la_carrera`, `quien_entra`, `desenlaces_carrera`,
-   `competencia_carrera`.
+   `competencia_carrera`. Para la evolución de la matrícula de primer año —en el país o en una región—,
+   `primer_anio` y su figura, `figura_primer_anio`.
 3. Ante una duda de interpretación, `obtener_criterios()`. Ante una de alcance, `preguntas_abiertas()`.
 
 ## Empieza por el tipo de mercado, no por la cifra
@@ -89,6 +90,17 @@ carreras?»—, usa `presencia_institucional`. Sirve para universidades, IP y CF
   propio tipo** (`retorno_laboral.su_tipo`: un CFT con los CFT, un IP con los IP), no con el tipo que domina
   la carrera, que va sólo de contexto: comparar un CFT con el promedio de los IP exagera la brecha. Una brecha —más titulación y menos empleabilidad, por ejemplo— se describe, no se
   explica: puede ser quién entra a cada una. Nunca la presentes como un juicio sobre la institución.
+
+## La serie de primer año: lo que el CNED recibió
+
+`primer_anio` trae la matrícula de primer año por sede, 2005–2025, del CNED. Tres cosas antes de leerla:
+
+- **Los tipos de institución los dice `tipos_de_institucion`**, y no siempre son todos: en Enfermería es
+  sólo universidades, en Técnico en Enfermería IP y CFT. Dilo junto a la cifra.
+- **Un año que falta en una sede es un año que la institución no reportó** al CNED, que recibe ese reporte
+  de forma voluntaria. No es un cero y no se rellena con otra fuente. En una región, `serie_region.incompletos`
+  dice qué sede faltó y si el año se sumó sin ella o quedó sin total: nómbrala.
+- **Es un conteo por programa**, no por persona: no lo dividas por una cifra de otra herramienta sin decirlo.
 
 ## No inventes causas
 

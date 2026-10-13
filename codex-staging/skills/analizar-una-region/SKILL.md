@@ -30,8 +30,8 @@ graficar-la-matricula).
 
 **Es matrícula total, no de primer año.** La serie cuenta todos los años de la carrera. De primer año
 sólo hay los entrantes acumulados de la ventana, sin serie: si piden la evolución de primer año de una
-región, dilo y ofrece la total o los entrantes. Para una carrera, la serie de primer año está en
-`panorama_carrera` (`evolucion`).
+región, dilo y ofrece la total o los entrantes. Para una carrera, la serie de primer año existe también en
+la región: `primer_anio` y `figura_primer_anio`.
 
 **En retirada no es lo mismo que chica.** Una sede con `en_retirada` ya casi no recibe estudiantes
 nuevos y no entra en comparaciones. Una con `nota` de muestra chica sigue compitiendo: se compara,

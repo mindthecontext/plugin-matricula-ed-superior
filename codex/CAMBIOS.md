@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.31.0 · 2026-10-13
+
+La matrícula de primer año de una carrera, 2005–2025, por sede y sumada en una región: herramienta nueva primer_anio y su figura, figura_primer_anio. Responde «la evolución de la matrícula de primer año de Enfermería en La Araucanía». La serie es la del CNED, que recibe el reporte de cada institución de forma voluntaria: un año que una sede no reportó no se rellena con otra fuente. Al sumar una región, si la sede que falta pesaba menos del 5% el año se suma sin ella y se dice; si no, queda sin total. La respuesta dice qué tipos de institución trae la serie, que no siempre son todos. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_primer_anio`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `figura_primer_anio`, `primer_anio`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13-lab`
+
 ## v0.30.1 · 2026-10-13
 
 Corrección: la figura de la lista de espera existía pero el agente no la encontraba. Al pedirla, tomó la figura de preferencias y concluyó que no había otra. Ahora cada figura del reporte nombra a las demás de su sección, y la definición de la lista de espera dice cómo pedir su figura (figura_region con «lista_espera»).

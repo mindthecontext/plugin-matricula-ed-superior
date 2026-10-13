@@ -12,13 +12,14 @@ gráfico, y nunca armes el spec a mano.**
 
 ## 1 · Elige la forma y pide el spec al servicio
 
-Hay **tres herramientas**, y responden preguntas distintas:
+Hay **cuatro herramientas**, y responden preguntas distintas:
 
 | La pregunta | La herramienta | La figura |
 |---|---|---|
 | cómo evolucionaron **unas sedes**, o compararlas entre sí | `figura_matricula(region, instituciones=None)` | una línea por sede, en un solo panel; con más de cinco, el nombre de cada sede va al final de su línea |
 | cómo evolucionó **la región entera** | `figura_matricula_region(region)` | el total, y una banda con lo que aportaban las sedes en retirada |
 | **una figura del reporte regional**, sola (la PAES por sede, el plano del precio, las preferencias…) | `figura_region(region, figura)` | la misma figura del reporte, con sus `groups`; un id que no existe trae la lista |
+| cómo evolucionó la matrícula de **primer año de una carrera**, en el país o en una región | `figura_primer_anio(carrera, region=None)` | la forma de la región entera, con un solo total: los años que una sede no reportó van huecos o cortados, y se dicen |
 
 `figura_matricula` sin `instituciones` trae todas las sedes de la región; con ellas, sólo esas
 (`["UFRO", "católica de temuco"]`). Las dos devuelven `spec` **listo para la receta**: las cifras, los
@@ -45,8 +46,9 @@ Si piden «la evolución de la matrícula de primer año» de una región:
 - **Dilo primero:** esa serie no está en el saber.
 - **Ofrece lo que hay:** la serie de matrícula total, rotulada como total (no le cambies el `subtitle` a
   «primer año»), o los entrantes de la ventana.
-- **Si la pregunta es por una carrera,** la serie de primer año sí existe: `panorama_carrera`, en
-  `evolucion` (CNED, 2005–2025, la carrera y el sistema universitario).
+- **Si la pregunta es por una carrera,** la serie de primer año sí existe, también en una región:
+  `figura_primer_anio(carrera, region)` (CNED, 2005–2025). Si la pregunta por la región admite leerse por una
+  carrera, ofrécela.
 
 Cada respuesta de figura trae `sobre_primer_anio` con estas mismas palabras.
 
@@ -100,7 +102,7 @@ Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelv
 
 ## 5 · Entrega
 
-- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, las tres herramientas
+- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, las cuatro herramientas
   traen su propio widget, con sus notas), no la publiques de nuevo como página salvo que te lo pidan: escribe el texto que la
   acompaña. En los demás clientes la figura no aparece sola, y sigues como abajo.
 - **Si puedes publicar una página** (un Artifact), publica `figura.html` tal cual.
