@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.34.0 · 2026-10-13
+
+Nueva portada común de la región (portada_region): cuántos estudian en universidades, en el técnico de nivel superior y en las carreras profesionales de los IP, cuánto pesa cada universo, su evolución 2007–2025 y quién lidera cada mercado. Responde «¿cómo está la educación superior en…?» y va antes del reporte cuando la petición no nombra un universo. Dice cuál pesa más en la región: el técnico-profesional supera a las universidades en Tarapacá, Antofagasta, Coquimbo, O'Higgins y Aysén. El reporte técnico-profesional completo viene en una próxima versión. Además, las regiones se reconocen escritas sin signos («ohiggins», «O Higgins») y con nombres comunes («Libertador», «Santiago»). Hay que actualizar el plugin.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `portada_region`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13b-lab`
+
 ## v0.33.0 · 2026-10-13
 
 Nueva puerta técnico-profesional: los institutos profesionales y los CFT de una región, con programas presenciales, por institución, ciudad y nivel. En el IP, las carreras profesionales y las técnicas se cuentan como mercados distintos. Cuatro herramientas nuevas: panorama_tecnico_region, ficha_sede_tecnica, a_distancia_tecnico (lo no presencial, que no se asigna a una región) y figura_tecnico_region. Traen la matrícula 2007–2025, la participación en su mercado y el perfil de los entrantes: edad, jornada, prioritarios, gratuidad, arancel, trayectoria previa y continuidad dentro de su grupo. PAES y preferencias no aplican, y así se dice. El reporte universitario trae ahora cuánto pesa cada universo en la región: si la petición no nombró uno, abre con esas cifras. Hay que actualizar el plugin.

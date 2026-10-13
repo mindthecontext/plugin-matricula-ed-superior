@@ -858,8 +858,14 @@ def componer_reporte(spec: dict, avisos: list) -> str:
     sedes = "".join(f"<li>{con_ciudad(x)}</li>" for x in c.get("sites") or [])
     retiradas = "; ".join(f"{x['label']} ({c.get('year_last')}: {_fmt_unidad(x['enrollment_last'] or 0, 'count')})"
                           for x in c.get("retreating") or [])
-    partes = [f'<header class="portada"><h1>{e(spec["title"])}</h1><p class="sub">{e(spec["subtitle"])}</p>',
-              f'<p>{len(c.get("sites") or [])} sedes universitarias en la región:</p><ul class="sedes">{sedes}</ul>']
+    # LA PORTADA DICE QUÉ SE CUENTA (MAT-51): «sedes universitarias» era fijo; la portada común de la región y el
+    # reporte técnico traen su propio rótulo (`sites_label`) o un párrafo de entrada (`lead`) en vez de la lista.
+    partes = [f'<header class="portada"><h1>{e(spec["title"])}</h1><p class="sub">{e(spec["subtitle"])}</p>']
+    if c.get("lead"):
+        partes.append(f'<p>{e(c["lead"])}</p>')
+    if c.get("sites"):
+        partes.append(f'<p>{len(c["sites"])} {e(c.get("sites_label") or "sedes universitarias en la región")}:</p>'
+                      f'<ul class="sedes">{sedes}</ul>')
     if retiradas:
         partes.append(f'<p class="retirada"><b>En retirada</b>, y fuera del resto del reporte: {e(retiradas)}. '
                       "Conservan matrícula, pero ya casi no reciben estudiantes nuevos.</p>")

@@ -7,6 +7,10 @@ description: Responde sobre el mercado universitario de una región chilena — 
 
 ## El orden
 
+**«¿Cómo está la educación superior en…?»** sin nombrar un universo: la respuesta es
+`portada_region(region)` —universidades, técnico de nivel superior y carreras profesionales de los IP,
+cuánto pesa cada uno y quién lidera cada mercado—. Después, si la pregunta sigue, la puerta que corresponda.
+
 1. **`panorama_region`** para el cuadro: participación, evolución, selectividad y equidad por sede.
 2. **`flujos_region`** y **`perfil_migrante`** si la pregunta es de retención o migración.
 3. **`ficha_sede`** cuando la pregunta sea por UNA sede: todos sus ejes con su n, su serie de matrícula

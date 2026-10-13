@@ -12,12 +12,16 @@ lecturas las escribes tú**, y esta skill dice cómo, porque es lo que hace que 
 ## 1 · Pide el reporte
 
 **Antes: ¿qué universo pidieron?** Este reporte es de universidades. Una región tiene además sus IP y
-CFT, que en algunas pesan más que las universidades. Si la persona nombró las universidades, sigue. Si
-pidió «el reporte de la educación superior» o «el reporte de la región», sin nombrar un universo, el
-reporte se entrega igual, sin preguntar, pero **abre con `universos_de_la_region`**: cuántos estudian en
-universidades, en el técnico de nivel superior y en las carreras profesionales de los IP, y cuánto pesa
-cada uno. Después ofrece el técnico-profesional (`panorama_tecnico_region`, skill
-analizar-el-tecnico-de-una-region). Si pidió los IP o los CFT, este reporte no es: usa esa puerta.
+CFT, que en cinco regiones pesan más que las universidades.
+
+- **Nombró las universidades:** sigue con este reporte.
+- **Nombró los IP, los CFT o el técnico:** este reporte no es; usa `panorama_tecnico_region` (skill
+  analizar-el-tecnico-de-una-region).
+- **No nombró un universo** («el reporte de la educación superior de…», «el reporte de la región»): pide
+  primero **`portada_region(region)`**, redacta sus dos lecturas y entrégala **antes** del reporte. Después
+  va este reporte y, al final, la oferta del técnico-profesional. `reporte_que_va_primero` dice cuál pesa
+  más en la región; si es «tecnico», dilo en la entrega: el reporte técnico completo está en preparación, y
+  mientras tanto el técnico se responde con `panorama_tecnico_region`.
 
     reporte_region(region)
 
