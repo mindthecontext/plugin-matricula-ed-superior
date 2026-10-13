@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.34.1 · 2026-10-13
+
+Corrección: el control de cifras de los reportes rechazaba citar una caída («cayó 2,7%» o «−2,7%») aunque la cifra venía del servicio, porque comparaba sin el signo. Además, la portada común avisa que necesita el compositor de la versión 0.34 o posterior: con uno anterior salía «0 sedes universitarias». Hay que actualizar el plugin.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13b-lab`
+
 ## v0.34.0 · 2026-10-13
 
 Nueva portada común de la región (portada_region): cuántos estudian en universidades, en el técnico de nivel superior y en las carreras profesionales de los IP, cuánto pesa cada universo, su evolución 2007–2025 y quién lidera cada mercado. Responde «¿cómo está la educación superior en…?» y va antes del reporte cuando la petición no nombra un universo. Dice cuál pesa más en la región: el técnico-profesional supera a las universidades en Tarapacá, Antofagasta, Coquimbo, O'Higgins y Aysén. El reporte técnico-profesional completo viene en una próxima versión. Además, las regiones se reconocen escritas sin signos («ohiggins», «O Higgins») y con nombres comunes («Libertador», «Santiago»). Hay que actualizar el plugin.

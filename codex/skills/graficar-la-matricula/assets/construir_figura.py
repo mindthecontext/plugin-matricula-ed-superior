@@ -730,9 +730,12 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
         for v in nodo:
             numeros_del_spec(v, acc, pct, es_pct)
     elif _numero(nodo):
-        acc.update(_variantes(nodo))
+        # UNA CAÍDA SE CITA SIN SIGNO (MAT-51, qa del 13-10): la lectura dice «cayó 2,7%» o «−2,7%», y NUMERO lee
+        # el número sin el signo; con sólo -2.7 en el spec, el control rechazaba una cifra que el servicio entregó.
+        variantes = _variantes(nodo) | (_variantes(abs(nodo)) if nodo < 0 else set())
+        acc.update(variantes)
         if es_pct:
-            pct.update(_variantes(nodo))
+            pct.update(variantes)
     elif isinstance(nodo, str):
         # LOS TEXTOS DEL SERVICIO TAMBIÉN RESPALDAN: «más de 30 años» es la definición del eje y está en
         # el subtítulo que escribió el servicio. Los textos del agente (las lecturas) no entran aquí.
