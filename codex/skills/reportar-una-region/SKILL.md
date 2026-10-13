@@ -242,6 +242,13 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
   Pueden ser instituciones de afuera: escribe el nombre tal como viene, con su región entre paréntesis.
 - Las razones de una elección —calidad percibida, pares, distancia, costo— no están en este registro: si
   quieres proponer una, va en `compatible`.
+- **La lista de espera (`lista_espera`) mide presión por el cupo, no rechazo ni calidad.** De quienes la
+  pusieron primera y se matricularon, cuántos entraron desde la lista de espera, cuando otros seleccionados no
+  se matricularon: siguen siendo convencidos. No escribas «no los aceptaron» ni «entraron de segunda». Una
+  cifra alta dice que la sede llena más cupos de los que selecciona de entrada; una de 0%, que todos los que la
+  pusieron primera quedaron seleccionados.
+- **El nivel subió con la PAES** (los avisos traen el del país por año). Compara sedes entre sí con la cifra de
+  la ventana, no una sede contra el país de un año.
 
 ### Cómo leer la sección 7, «En qué termina»
 

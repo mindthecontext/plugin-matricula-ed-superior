@@ -71,6 +71,15 @@ en ese tramo.
   dato sin explicar. Con `null` no hay dato de la sede para decirlo.
 - **Nada de comparar puntajes cruzando 2022/2023** — quiebre PSU→PAES.
 
+## La preferencia y la selección son cosas distintas
+
+`preferencias` y `ficha_sede` traen, junto a los convencidos, `convencidos_desde_lista_espera_pct`: de quienes
+pusieron la sede primera y se matricularon, cuántos entraron desde la lista de espera. Mide la presión por el
+cupo, no rechazo ni calidad, y el nivel subió con la PAES (`sobre_la_lista_de_espera` lo dice con las cifras
+del país por año). De quienes la pusieron primera y se matricularon en otra parte, cuántos y adónde está en
+`pierde_hacia` (`preferencias` con una institución); si quedaron en lista de espera o no alcanzaron el puntaje,
+estas herramientas no lo traen: dilo así, sin suponer la causa.
+
 ## Dos cifras que parecen contradictorias y no lo son
 
 La *permanencia territorial* («de los egresados de la región, cuántos estudian acá») y la

@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.30.0 · 2026-10-13
+
+Nueva cifra por sede: de quienes la pusieron como primera preferencia y se matricularon en ella, cuántos entraron desde la lista de espera, cuando otros seleccionados no se matricularon (en preferencias, ficha_sede y una figura nueva en la sección 6 del reporte, lista_espera). Mide la presión por el cupo, no rechazo ni calidad; en el país es 18,5%, y subió con la PAES: 14% en 2021–2022 y 20–23% desde 2023. Corrección: los convencidos se cuentan ahora por persona y no por vía de postulación. Quien postuló por varias vías contaba varias veces; el país pasa de 64,9% a 63,8%, ninguna sede se mueve más de 4 puntos, y dos sedes quedan bajo el mínimo de 150. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13-lab` · antes `2026-10-11b-lab`
+
 ## v0.29.0 · 2026-10-13
 
 Las herramientas regionales dicen, sede por sede, si su institución adhiere a la gratuidad (`adhiere_gratuidad` en acceso_equidad, panorama_region y vista_institucion, y en los grupos de la figura de gratuidad). Un 0% de gratuidad se explica como «no adhiere», en vez de quedar como un dato sin causa. Hay que actualizar el plugin.
