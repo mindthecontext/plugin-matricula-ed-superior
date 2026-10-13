@@ -222,7 +222,8 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 - **Equidad y PACE son de 2024–2025**, no de toda la ventana: antes no se registraba la vía.
 - **Gratuidad 0% no es un error ni una exclusión:** la institución no adhiere, y es una decisión de modelo
   de financiamiento. No escribas que «sus estudiantes no acceden a la gratuidad» como si fuera un juicio
-  sobre ellos.
+  sobre ellos. Quiénes no adhieren lo dicen los `groups` de la figura (`does_not_adhere`):
+  nómbralas desde ahí, y no escribas que «los datos no explican la causa».
 - **El arancel y la gratuidad son de un solo año, el último con entrantes** (hoy 2025; lo dice el subtítulo): el
   arancel es la mediana de quienes entraron ese año, en pesos de ese año, con lo informado en UF convertido con la
   UF del 1 de enero. Escribe el año («el arancel mediano de quienes entraron en 2025»), no «el arancel de hoy»; y no

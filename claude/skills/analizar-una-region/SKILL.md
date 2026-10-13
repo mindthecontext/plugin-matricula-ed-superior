@@ -65,6 +65,9 @@ en ese tramo.
 - **Cada eje trae su `n`, que es el de quienes tienen el dato**, no el de toda la sede. La cobertura de un
   eje en una sede es su `n` dividido por los entrantes de la sede, y se puede comparar entre sedes. No
   digas que «los datos no traen la cobertura»: la traen.
+- **Un 0% de gratuidad tiene causa, y viene en el dato.** Cada sede trae `adhiere_gratuidad`: con
+  `false`, la institución no adhiere a la gratuidad, y por eso el valor es 0 exacto. Dilo así, no como un
+  dato sin explicar. Con `null` no hay dato de la sede para decirlo.
 - **Nada de comparar puntajes cruzando 2022/2023** — quiebre PSU→PAES.
 
 ## Dos cifras que parecen contradictorias y no lo son

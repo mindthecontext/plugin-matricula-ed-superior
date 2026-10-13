@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.29.0 · 2026-10-13
+
+Las herramientas regionales dicen, sede por sede, si su institución adhiere a la gratuidad (`adhiere_gratuidad` en acceso_equidad, panorama_region y vista_institucion, y en los grupos de la figura de gratuidad). Un 0% de gratuidad se explica como «no adhiere», en vez de quedar como un dato sin causa. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-11b-lab`
+
 ## v0.28.0 · 2026-10-13
 
 Las figuras de matrícula y el panorama regional dicen que su serie es de matrícula total, no de primer año. Ante «la evolución de la matrícula de primer año» de una región, el agente dice que esa serie no está y ofrece la total o los entrantes 2021–2025; para una carrera usa la serie de primer año que sí existe (CNED, 2005–2025, en panorama_carrera). Hay que actualizar el plugin.
