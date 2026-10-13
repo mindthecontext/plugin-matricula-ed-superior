@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.32.0 · 2026-10-13
+
+Quién gana y quién pierde en una carrera: herramienta nueva participacion_primer_anio y su figura, figura_participacion. Dan la participación de cada institución (universidad, IP o CFT) en la matrícula de primer año del CNED, en el país o en una región, entre dos años, con las aperturas y cierres de sedes. Solo se calcula en años completos: si un año pedido tiene una sede que no reportó, se usa el año completo más cercano y se dice. Corrección: primer_anio decía los tipos de institución que pesan al menos el 15%, no todos los que trae la serie (Técnico en Enfermería decía «IP y CFT» y trae también universidades); ahora dice todos, con el peso de cada uno. Hay que actualizar el plugin.
+
+- Herramientas: `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `participacion_primer_anio`, `perfil_migrante`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `figura_participacion`, `participacion_primer_anio`
+- Skills: `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13-lab`
+
 ## v0.31.0 · 2026-10-13
 
 La matrícula de primer año de una carrera, 2005–2025, por sede y sumada en una región: herramienta nueva primer_anio y su figura, figura_primer_anio. Responde «la evolución de la matrícula de primer año de Enfermería en La Araucanía». La serie es la del CNED, que recibe el reporte de cada institución de forma voluntaria: un año que una sede no reportó no se rellena con otra fuente. Al sumar una región, si la sede que falta pesaba menos del 5% el año se suma sin ella y se dice; si no, queda sin total. La respuesta dice qué tipos de institución trae la serie, que no siempre son todos. Hay que actualizar el plugin.

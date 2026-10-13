@@ -10,7 +10,8 @@ description: Responde sobre una carrera en el sistema de educación superior chi
    universitaria, mixta o de IP y CFT — y eso **cambia cómo se lee todo lo demás**.
 2. Después, lo que la pregunta pida: `sedes_de_la_carrera`, `quien_entra`, `desenlaces_carrera`,
    `competencia_carrera`. Para la evolución de la matrícula de primer año —en el país o en una región—,
-   `primer_anio` y su figura, `figura_primer_anio`.
+   `primer_anio` y su figura, `figura_primer_anio`. Para quién gana y quién pierde en la carrera,
+   `participacion_primer_anio` y `figura_participacion`.
 3. Ante una duda de interpretación, `obtener_criterios()`. Ante una de alcance, `preguntas_abiertas()`.
 
 ## Empieza por el tipo de mercado, no por la cifra
@@ -95,11 +96,24 @@ carreras?»—, usa `presencia_institucional`. Sirve para universidades, IP y CF
 `primer_anio` trae la matrícula de primer año por sede, 2005–2025, del CNED. Tres cosas antes de leerla:
 
 - **Los tipos de institución los dice `tipos_de_institucion`**, y no siempre son todos: en Enfermería es
-  sólo universidades, en Técnico en Enfermería IP y CFT. Dilo junto a la cifra.
+  sólo universidades; en Técnico en Enfermería, IP, CFT y también universidades. `peso_por_tipo_…_pct` dice
+  cuánto pesa cada uno el último año. Dilo junto a la cifra.
 - **Un año que falta en una sede es un año que la institución no reportó** al CNED, que recibe ese reporte
   de forma voluntaria. No es un cero y no se rellena con otra fuente. En una región, `serie_region.incompletos`
   dice qué sede faltó y si el año se sumó sin ella o quedó sin total: nómbrala.
 - **Es un conteo por programa**, no por persona: no lo dividas por una cifra de otra herramienta sin decirlo.
+
+## Quién gana y quién pierde: participación en el primer año
+
+`participacion_primer_anio` da la participación de cada institución en el primer año de la carrera, en una
+región o en el país, entre dos años.
+
+- **Lee `periodo`**: si un año pedido estaba incompleto, se usó otro, y eso va en la respuesta («entre 2021 y
+  2025, porque 2019 y 2020 están incompletos»).
+- **Es participación, no tamaño**: una institución puede ganar puntos con menos alumnos si el total cae. Da
+  las dos cosas cuando la diferencia importa (`primer_anio` y `total_primer_anio`).
+- **Una apertura o un cierre explica un salto**: mira `aperturas` y `cierres` antes de leer un cambio grande.
+- **No digas por qué** una institución ganó o perdió: el dato no trae la causa.
 
 ## No inventes causas
 

@@ -11,7 +11,7 @@ gráfico, y nunca armes el spec a mano.**
 
 ## 1 · Elige la forma y pide el spec al servicio
 
-Hay **cuatro herramientas**, y responden preguntas distintas:
+Hay **cinco herramientas**, y responden preguntas distintas:
 
 | La pregunta | La herramienta | La figura |
 |---|---|---|
@@ -19,6 +19,7 @@ Hay **cuatro herramientas**, y responden preguntas distintas:
 | cómo evolucionó **la región entera** | `figura_matricula_region(region)` | el total, y una banda con lo que aportaban las sedes en retirada |
 | **una figura del reporte regional**, sola (la PAES por sede, el plano del precio, las preferencias…) | `figura_region(region, figura)` | la misma figura del reporte, con sus `groups`; un id que no existe trae la lista |
 | cómo evolucionó la matrícula de **primer año de una carrera**, en el país o en una región | `figura_primer_anio(carrera, region=None)` | la forma de la región entera, con un solo total: los años que una sede no reportó van huecos o cortados, y se dicen |
+| **quién gana y quién pierde** participación en una carrera, en el país o en una región | `figura_participacion(carrera, region=None, desde=None, hasta=None)` | una barra por institución con su participación el último año, y al lado la del primero y el cambio |
 
 `figura_matricula` sin `instituciones` trae todas las sedes de la región; con ellas, sólo esas
 (`["UFRO", "católica de temuco"]`). Las dos devuelven `spec` **listo para la receta**: las cifras, los
@@ -101,7 +102,7 @@ Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelv
 
 ## 5 · Entrega
 
-- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, las cuatro herramientas
+- **Si la figura ya aparece dibujada en la conversación** (en claude.ai y Claude Desktop, las cinco herramientas
   traen su propio widget, con sus notas), no la publiques de nuevo como página salvo que te lo pidan: escribe el texto que la
   acompaña. En los demás clientes la figura no aparece sola, y sigues como abajo.
 - **Si puedes publicar una página** (un Artifact), publica `figura.html` tal cual.

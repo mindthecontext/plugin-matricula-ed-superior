@@ -974,6 +974,11 @@ def main() -> int:
         print(f"serie regional · {len(spec['x'])} años · incompletos: {len(spec.get('incomplete') or [])} · "
               f"sedes en retirada: {len(spec.get('retreating_sites') or [])}")
         return 0
+    if spec["form"] != "matricula_series":
+        # una figura suelta de otra forma (MAT-49: barras de participación): el resumen es su forma y sus filas
+        filas = spec.get("bars") or spec.get("rows") or spec.get("points") or []
+        print(f"{spec['form']} · {len(filas)} filas · avisos: {len(spec.get('notices') or [])}")
+        return 0
     activas = [s for s in spec["series"] if not s.get("retreating")]
     print(f"series dibujadas: {len(activas)} de {len(spec['series'])} · "
           f"un panel{'' if len(activas) <= MAX_EN_UN_PANEL else ' con el nombre al final de cada línea'} · "
