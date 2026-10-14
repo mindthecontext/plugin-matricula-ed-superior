@@ -43,7 +43,7 @@ serie dice con palabras:
 | Clave | Qué es |
 |---|---|
 | `sites[].first`, `last`, `peak`, `low` | El primer y el último dato de cada sede, su máximo y su mínimo, con el año. |
-| `sites[].change_full`, `change_window` | Cuánto cambió en todo su período y en `window` (2019–2025): sentido (`up`, `down`), cantidad, porcentaje y `small_base` si partió de menos de 150 estudiantes (su porcentaje no se compara). |
+| `sites[].change_full`, `change_window` | Cuánto cambió en todo su período y en `window` (los últimos seis años de la serie): sentido (`up`, `down`), cantidad, porcentaje y `small_base` si partió de menos de 150 estudiantes (su porcentaje no se compara). |
 | `sites[].largest_rise`, `largest_fall` | Su mayor alza y su mayor caída de un año al siguiente. |
 | `sites[].runs` | Los tramos en que subió o bajó **todos** los años (tres pasos o más). |
 | `rank_change_full_amount`, `rank_change_full_pct`, `rank_change_window_amount`, `rank_change_window_pct` | Quién cambió más, en número y en porcentaje, en todo el período y en la ventana. |
@@ -144,7 +144,7 @@ publica. Un reporte no mejora con párrafos de relleno.
    una de estas frases tiene su clave, y si no está, no la escribas.
    - **«La que más creció» exige decir en qué:** en número (`..._amount`) o en porcentaje
      (`..._pct`), y en qué período. Rara vez es la misma sede: en La Araucanía, entre 2019 y 2025,
-     U. Autónoma de Chile sumó más estudiantes y U. Mayor creció más en porcentaje.
+     U. Autónoma de Chile sumó más estudiantes y U. Mayor creció más en porcentaje (con los datos hasta 2025).
    - **«Todos los años», «sin pausa» o «sostenido» sólo si hay un tramo en `runs`** que cubra esos
      años. Una sede que creció en el total pero bajó un año no creció «sin pausa».
    - Un cambio con `small_base` puede tener un porcentaje enorme por partir de muy poco: no lo pongas
@@ -161,8 +161,8 @@ publica. Un reporte no mejora con párrafos de relleno.
 7. **El universo son las universidades**, en pregrado. Si una lectura podría leerse como «todos los que
    estudian en la región», di que son universidades: los institutos profesionales y los CFT no están.
 8. **Cada cifra tiene su fuente y sus años, y no todas son iguales.** Cada figura dice al pie de qué base
-   sale y su subtítulo, qué años cubre: la matrícula es 2021–2025, la PAES 2023–2025, primera
-   generación 2021–2022, el 10% superior llega a egresos de 2023. Si en tu respuesta citas una cifra
+   sale y su subtítulo, qué años cubre: cada figura los dice en su subtítulo —los entrantes de la ventana, la PAES de sus
+   tres procesos, primera generación sólo 2021–2022—; cítalos de ahí, no de memoria. Si en tu respuesta citas una cifra
    fuera del reporte, di de qué base y de qué años es; no la presentes como «hoy».
 9. **Coma decimal y punto de miles**, como en Chile: 12,1% y 11.426. Si el nombre de la sede ya lleva
    paréntesis, no le agregues otro con la cifra: «U. de Los Lagos (Castro), con 567,3», no «U. de Los
@@ -194,7 +194,7 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 
 ### Cómo leer la sección 2, «Con qué llegan»
 
-- **La PAES describe sólo a quienes la rindieron**, y entraron entre 2023 y 2025. No es el alumnado
+- **La PAES describe sólo a quienes la rindieron**, y entraron en los procesos que dice su subtítulo. No es el alumnado
   completo de la sede: escribe «quienes rindieron la PAES», no «los estudiantes de la sede». Antes de
   2023 se rendía la PTU, que es otra escala: no la mezcles.
 - **El ancho cuenta tanto como el centro.** Dos sedes con la misma mediana pueden tener cajas muy
@@ -251,12 +251,14 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 
 - **Los ejes de la vía no se suman.** La vía centralizada incluye a la de equidad, y el PACE es una parte de
   la equidad. No escribas «el 88% entra por la vía centralizada y otro 4% por equidad».
-- **Equidad y PACE son de 2024–2025**, no de toda la ventana: antes no se registraba la vía.
+- **Equidad y PACE son desde el proceso 2024** (lo dice el subtítulo), no de toda la ventana: antes no se registraba
+  la vía.
 - **Gratuidad 0% no es un error ni una exclusión:** la institución no adhiere, y es una decisión de modelo
   de financiamiento. No escribas que «sus estudiantes no acceden a la gratuidad» como si fuera un juicio
   sobre ellos. Quiénes no adhieren lo dicen los `groups` de la figura (`does_not_adhere`):
   nómbralas desde ahí, y no escribas que «los datos no explican la causa».
-- **El arancel y la gratuidad son de un solo año, el último con entrantes** (hoy 2025; lo dice el subtítulo): el
+- **El arancel y la gratuidad son de un solo año, el año del precio** (hoy 2025, aunque los entrantes lleguen a 2026:
+  las asignaciones de gratuidad publicadas llegan a ese año; lo dice el subtítulo): el
   arancel es la mediana de quienes entraron ese año, en pesos de ese año, con lo informado en UF convertido con la
   UF del 1 de enero. Escribe el año («el arancel mediano de quienes entraron en 2025»), no «el arancel de hoy»; y no
   lo compares con cifras de otros años como si fueran la misma serie.
@@ -298,9 +300,9 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 - **Un cuadrante dice dónde cae una sede, no qué vale.** Usa el nombre descriptivo de `quadrant_labels` («más
   puntaje y más prioritarios que el país») y las sedes de `quadrants`. No escribas «la esquina más exigente», «la
   más meritoria» ni «la mejor»: una interpretación así, si hace falta, va en `compatible`.
-- **Los dos ejes de un plano no siempre son del mismo período.** La PAES es de 2023–2025; prioritarios y 10%
-  superior, de 2021–2025: no escribas que una sede «hoy» combina las dos cosas. El plano del precio sí tiene sus dos
-  ejes en el mismo año (arancel y gratuidad del último año), y ahí sí se leen juntos.
+- **Los dos ejes de un plano no siempre son del mismo período.** La PAES cubre sus tres procesos; prioritarios y 10%
+  superior, toda la ventana (lo dicen los subtítulos): no escribas que una sede «hoy» combina las dos cosas. El plano del precio sí tiene sus dos
+  ejes en el mismo año (arancel y gratuidad del año del precio), y ahí sí se leen juntos.
 - **El tamaño de la burbuja es el número de entrantes**, no un resultado: no digas que una sede «pesa más» en el
   plano por su posición.
 - **Si un plano no se dibujó** porque la región no tiene tres sedes con los dos ejes, la nota de la sección lo

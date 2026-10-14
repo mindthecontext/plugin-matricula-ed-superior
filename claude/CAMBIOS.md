@@ -4,6 +4,16 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.37.0 · 2026-10-14
+
+Los datos 2026. La puerta regional y la técnico-profesional se actualizan con la matrícula 2026 y los titulados 2025 del MINEDUC: los entrantes pasan a 2022–2026, la serie de matrícula a 2007–2026 y la PAES y la vía de ingreso a 2024–2026. Cambian todas las cifras de esas dos puertas. Lo que no se mueve, a propósito: el arancel y la gratuidad siguen siendo de los entrantes 2025, porque las asignaciones de gratuidad 2026 no están publicadas (el año del precio ahora sale del dato y pasará solo a 2026 cuando lo estén); primera generación sigue siendo de 2021–2022, los únicos procesos en que el DEMRE preguntó la educación de los padres; y las cohortes de titulación siguen en 2011–2016, ahora seguidas hasta 2026.
+
+Tres cambios de método, con su efecto. (1) El colegio de egreso sale del registro NEM, y su región y comuna, del directorio de establecimientos: el registro de egreso de 2023 no trae la dependencia del colegio, y la de los años anteriores mezclaba colegios de 1° a 4° medio. Colegio particular pagado baja en casi todas las sedes (en el país, de 17,2% a 15,6% de los entrantes universitarios, junto con la ventana nueva) y prioritario sube. (2) El CFT INACAP, que el IP INACAP absorbió desde 2026, se presenta como «IP INACAP · técnico» en todos los años, con un aviso, para que su serie y su participación se comparen entre años. (3) La retención regional de flujos toma el origen del colegio del que cada persona egresó: sube entre 1 y 6 puntos según la región, una parte por el método y otra por la ventana nueva. La serie de primer año por carrera (CNED) sigue llegando a 2025 y su crecimiento se mide 2019–2025; la capa por carrera se actualiza en una versión próxima. Hay que actualizar el plugin.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-14-lab` · antes `2026-10-13b-lab`
+
 ## v0.36.2 · 2026-10-14
 
 Dos correcciones de la prueba en qa de O'Higgins. Un CFT se llama igual en la portada y en el reporte técnico: la portada le agregaba «· técnico», que sobra porque un CFT sólo tiene nivel técnico (en un IP el nivel sí va, porque tiene los dos). Y el aviso del arancel del reporte técnico ya no pone de ejemplo a universidades que cobran en UF.

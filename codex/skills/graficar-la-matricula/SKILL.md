@@ -1,6 +1,6 @@
 ---
 name: graficar-la-matricula
-description: Dibuja cómo evolucionó la matrícula universitaria, 2007–2025, de una o varias sedes o de una región entera — «¿cómo ha evolucionado la matrícula de la UST en Temuco?», «grafícame la matrícula de las sedes de La Araucanía», «compara cómo crecieron estas sedes», «grafícame la matrícula de la región», «¿cuánto creció la región con y sin las sedes que cierran?». Produce una figura que se publica como página, con los huecos, los años incompletos y los valores inconsistentes declarados. NO dibuja carreras ni otros indicadores.
+description: Dibuja cómo evolucionó la matrícula universitaria, desde 2007, de una o varias sedes o de una región entera — «¿cómo ha evolucionado la matrícula de la UST en Temuco?», «grafícame la matrícula de las sedes de La Araucanía», «compara cómo crecieron estas sedes», «grafícame la matrícula de la región», «¿cuánto creció la región con y sin las sedes que cierran?». Produce una figura que se publica como página, con los huecos, los años incompletos y los valores inconsistentes declarados. NO dibuja carreras ni otros indicadores.
 ---
 
 # Graficar la matrícula
@@ -40,7 +40,7 @@ Si la herramienta responde con `error`, dilo: no armes el spec a mano.
 
 Las series de `figura_matricula` y `figura_matricula_region` cuentan la **matrícula total** de pregrado:
 todos los años de la carrera, no sólo quienes entran. De primer año, la puerta regional tiene los
-**entrantes acumulados de la ventana** (2021–2025), sin serie por año, y en `figura_region` ni `serie`
+**entrantes acumulados de la ventana** (los años los dice cada respuesta), sin serie por año, y en `figura_region` ni `serie`
 ni `entrantes` son una serie de primer año.
 
 Si piden «la evolución de la matrícula de primer año» de una región:
@@ -62,7 +62,7 @@ correctos; si los cambias, respeta sus roles:
 - **`title`** nombra la vista, no el hallazgo: «La matrícula de las sedes universitarias de La
   Araucanía», no «La UFRO lidera».
 - **`subtitle`** dice unidad, universo y ventana: «matrícula total de pregrado por sede, universidades,
-  2007–2025».
+  2007–2026».
 - **No agregues `source`**: la fuente se estampa sola desde `provenance`, y si la escribes, la figura
   se niega.
 
