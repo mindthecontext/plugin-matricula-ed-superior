@@ -13,6 +13,8 @@ description: Responde sobre el mercado técnico-profesional de una región chile
 3. Lo **no presencial**, con **`a_distancia_tecnico`**, aparte.
 4. Para graficar, **`figura_tecnico_region(region, figura)`** (skill graficar-la-matricula): no dibujes por
    tu cuenta.
+5. Si piden **el reporte** de los IP y CFT de la región, **`reporte_tecnico_region(region)`** (skill
+   reportar-una-region): se compone como el universitario.
 
 ## Una unidad es institución × ciudad × nivel
 

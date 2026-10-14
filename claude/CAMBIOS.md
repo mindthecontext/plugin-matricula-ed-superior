@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.35.0 · 2026-10-13
+
+Nuevo reporte técnico-profesional de una región (reporte_tecnico_region), con el mismo formato y el mismo compositor que el universitario. Esta primera parte trae la portada (las unidades de IP y CFT, por institución, ciudad y nivel, y las que están en retirada), la sección 1 «Quiénes son» (entrantes, matrícula en el tiempo, edad, mayores de 25, jornada, mujeres), la sección 2 «De dónde vienen» (directo del colegio, título previo, de su región, colegio pagado, prioritarios) y las notas de método. Con una petición que nombra los IP o los CFT, o una neutra en una región donde el técnico pesa más, el agente usa este reporte. figura_tecnico_region suma cinco figuras: edad mediana, mujeres, título previo, de su región y colegio pagado. Hay que actualizar el plugin.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `reporte_tecnico_region`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13b-lab`
+
 ## v0.34.1 · 2026-10-13
 
 Corrección: el control de cifras de los reportes rechazaba citar una caída («cayó 2,7%» o «−2,7%») aunque la cifra venía del servicio, porque comparaba sin el signo. Además, la portada común avisa que necesita el compositor de la versión 0.34 o posterior: con uno anterior salía «0 sedes universitarias». Hay que actualizar el plugin.

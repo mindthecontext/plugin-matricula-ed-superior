@@ -14,13 +14,13 @@ lecturas las escribes tú**, y esta skill dice cómo, porque es lo que hace que 
 CFT, que en cinco regiones pesan más que las universidades.
 
 - **Nombró las universidades:** sigue con este reporte.
-- **Nombró los IP, los CFT o el técnico:** este reporte no es; usa `panorama_tecnico_region` (skill
-  analizar-el-tecnico-de-una-region).
+- **Nombró los IP, los CFT o el técnico:** pide **`reporte_tecnico_region(region)`**, que tiene el mismo
+  formato que este reporte y se compone igual (abajo, «El reporte técnico-profesional»).
 - **No nombró un universo** («el reporte de la educación superior de…», «el reporte de la región»): pide
   primero **`portada_region(region)`**, redacta sus dos lecturas y entrégala **antes** del reporte. Después
   va este reporte y, al final, la oferta del técnico-profesional. `reporte_que_va_primero` dice cuál pesa
-  más en la región; si es «tecnico», dilo en la entrega: el reporte técnico completo está en preparación, y
-  mientras tanto el técnico se responde con `panorama_tecnico_region`.
+  más en la región: si es «tecnico», después de la portada va `reporte_tecnico_region` y al final se ofrece
+  este; si es «universitario», al revés.
 
     reporte_region(region)
 
@@ -83,6 +83,21 @@ Los planos de la sección 8 (una burbuja por sede, dos ejes contra el país) tra
 | `small_sample` | Las sedes con pocos entrantes. |
 
 **No toques la portada ni las figuras.** Tu trabajo son los bloques `reading`.
+
+### El reporte técnico-profesional
+
+    reporte_tecnico_region(region)
+
+El mismo spec, el mismo compositor y las mismas reglas editoriales que este reporte, para los IP y CFT
+presenciales de la región. Hoy trae la portada, 1 «Quiénes son» (entrantes, la matrícula en el tiempo,
+edad, mayores de 25, jornada, mujeres), 2 «De dónde vienen» (directo del colegio, título previo, de su
+región, colegio pagado, prioritarios) y las notas de método.
+
+- **Cada unidad es institución × ciudad × nivel.** En el IP, «profesional» y «técnico» son mercados
+  distintos: no los compares como si fueran uno.
+- **La referencia es «IP y CFT del país»,** no el país universitario.
+- **No hay PAES, preferencias ni titulación** en este reporte. Si la lectura las necesita, di que no aplican
+  o que no están en esta etapa, no que faltan.
 
 ## 2 · Escribe las lecturas
 
