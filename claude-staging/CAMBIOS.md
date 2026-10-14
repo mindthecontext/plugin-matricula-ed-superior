@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.36.2 · 2026-10-14
+
+Dos correcciones de la prueba en qa de O'Higgins. Un CFT se llama igual en la portada y en el reporte técnico: la portada le agregaba «· técnico», que sobra porque un CFT sólo tiene nivel técnico (en un IP el nivel sí va, porque tiene los dos). Y el aviso del arancel del reporte técnico ya no pone de ejemplo a universidades que cobran en UF.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13b-lab`
+
 ## v0.36.1 · 2026-10-13
 
 El reporte técnico-profesional queda completo. Se suman la síntesis, la sección 3 «Cómo entran y quién paga» (continuidad dentro de la institución o su grupo, gratuidad con quién no adhiere, arancel y el plano del precio), la sección 4 «El mercado» (quién tiene el mercado técnico y el profesional de la región, con su participación de 2019 al lado y el cambio de cada mercado) y una nota sobre los programas a distancia. Incluye las correcciones de la prueba en qa (la 0.36.0 no se publicó). Una unidad en retirada sin matrícula el último año se dice «sin matrícula en 2025», no «2025: 0». La serie de matrícula del reporte técnico trae sus órdenes calculados (quién creció más, sus tramos), como la universitaria. Y los reportes piden un compositor mínimo: el compositor dice su versión (--version) y se niega a componer un reporte que necesita uno más nuevo. En qa, un compositor viejo había armado la portada con «12 sedes universitarias». Hay que actualizar el plugin.
