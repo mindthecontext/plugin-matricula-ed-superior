@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.37.2 · 2026-10-14
+
+Correcciones de la prueba en qa de La Araucanía. Cuando el balance de captación universitaria está a menos de 2% de 1, la conclusión dice que el sistema local es «prácticamente del mismo tamaño» que lo que la región aporta, no «mayor» ni «menor». La portada y el reporte técnico ya no nombran herramientas en sus notas. Y el reporte universitario pide su compositor mínimo, como la portada y el técnico.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-14-lab`
+
 ## v0.37.1 · 2026-10-14
 
 Las descripciones de las herramientas de matrícula decían que la serie llega a 2025; ahora dicen el último año de los datos, 2026. Los ejemplos de la skill para graficar, también.
