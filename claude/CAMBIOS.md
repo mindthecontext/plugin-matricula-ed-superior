@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.37.1 · 2026-10-14
+
+Las descripciones de las herramientas de matrícula decían que la serie llega a 2025; ahora dicen el último año de los datos, 2026. Los ejemplos de la skill para graficar, también.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-14-lab`
+
 ## v0.37.0 · 2026-10-14
 
 Los datos 2026. La puerta regional y la técnico-profesional se actualizan con la matrícula 2026 y los titulados 2025 del MINEDUC: los entrantes pasan a 2022–2026, la serie de matrícula a 2007–2026 y la PAES y la vía de ingreso a 2024–2026. Cambian todas las cifras de esas dos puertas. Lo que no se mueve, a propósito: el arancel y la gratuidad siguen siendo de los entrantes 2025, porque las asignaciones de gratuidad 2026 no están publicadas (el año del precio ahora sale del dato y pasará solo a 2026 cuando lo estén); primera generación sigue siendo de 2021–2022, los únicos procesos en que el DEMRE preguntó la educación de los padres; y las cohortes de titulación siguen en 2011–2016, ahora seguidas hasta 2026.

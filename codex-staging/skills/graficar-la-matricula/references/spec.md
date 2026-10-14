@@ -10,7 +10,7 @@ inconsistente:
 {
   "form": "matricula_series",
   "title": "La matrícula de dos sedes universitarias de La Araucanía",
-  "subtitle": "matrícula total de pregrado por sede, universidades, 2007–2025",
+  "subtitle": "matrícula total de pregrado por sede, universidades, 2007–2026",
   "provenance": {
     "fuente_original": "<copiado de procedencia_matricula.fuente_original>",
     "universo": "<copiado de procedencia_matricula.universo>"
@@ -68,7 +68,7 @@ inconsistente:
 {
   "form": "matricula_region",
   "title": "La matrícula universitaria de La Araucanía",
-  "subtitle": "matrícula total de pregrado de la región, universidades, 2007–2025; con todas las sedes y sin las que están en retirada",
+  "subtitle": "matrícula total de pregrado de la región, universidades, 2007–2026; con todas las sedes y sin las que están en retirada",
   "provenance": { "fuente_original": "…", "universo": "…" },
   "x": [2007, "…", 2025],
   "total": [22271, "…", 36351],
