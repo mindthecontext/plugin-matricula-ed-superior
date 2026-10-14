@@ -26,6 +26,16 @@ import re
 import sys
 from pathlib import Path
 
+# LA VERSIÓN DEL COMPOSITOR (MAT-51, qa del 13-10). Dos veces un cliente compuso un reporte nuevo con un compositor
+# viejo —«0 sedes universitarias», «12 sedes universitarias» en un reporte de IP y CFT— aunque el servicio estaba al día:
+# el compositor viaja en el plugin y el plugin no se había actualizado. El spec dice qué compositor necesita
+# (`requires_composer`); este se niega si es más viejo, y `--version` le deja al agente comprobarlo antes.
+COMPOSITOR = "0.36.1"
+
+
+def _version(v: str) -> tuple:
+    return tuple(int(x) for x in str(v).split(".") if x.isdigit())
+
 ASSETS = Path(__file__).resolve().parent
 FACTOR_DE_SALTO = 3
 MAX_EN_UN_PANEL = 5
@@ -859,7 +869,9 @@ def componer_reporte(spec: dict, avisos: list) -> str:
         sobra = ciudad == spec.get("region") or str(x["label"]).endswith(f"({ciudad})")
         return e(x["label"]) + ("" if sobra else f" ({e(ciudad)})")
     sedes = "".join(f"<li>{con_ciudad(x)}</li>" for x in c.get("sites") or [])
-    retiradas = "; ".join(f"{x['label']} ({c.get('year_last')}: {_fmt_unidad(x['enrollment_last'] or 0, 'count')})"
+    # SIN DATO NO ES CERO (MAT-51): una unidad sin matrícula el último año se dice así, no «2025: 0»
+    retiradas = "; ".join(f"{x['label']} ({c.get('year_last')}: {_fmt_unidad(x['enrollment_last'], 'count')})"
+                          if x.get("enrollment_last") is not None else f"{x['label']} (sin matrícula en {c.get('year_last')})"
                           for x in c.get("retreating") or [])
     # LA PORTADA DICE QUÉ SE CUENTA (MAT-51): «sedes universitarias» era fijo; la portada común de la región y el
     # reporte técnico traen su propio rótulo (`sites_label`) o un párrafo de entrada (`lead`) en vez de la lista.
@@ -870,8 +882,11 @@ def componer_reporte(spec: dict, avisos: list) -> str:
         partes.append(f'<p>{len(c["sites"])} {e(c.get("sites_label") or "sedes universitarias en la región")}:</p>'
                       f'<ul class="sedes">{sedes}</ul>')
     if retiradas:
+        sin_matricula = any(x.get("enrollment_last") is None for x in c.get("retreating") or [])
+        cierre = ("Ya casi no reciben estudiantes nuevos; las que tienen cifra conservan matrícula."
+                  if sin_matricula else "Conservan matrícula, pero ya casi no reciben estudiantes nuevos.")
         partes.append(f'<p class="retirada"><b>En retirada</b>, y fuera del resto del reporte: {e(retiradas)}. '
-                      "Conservan matrícula, pero ya casi no reciben estudiantes nuevos.</p>")
+                      f"{cierre}</p>")
     partes.append(f'<p class="universo">Universo: {e(c.get("universe"))}.</p></header>')
     dibujables: dict = {}
     for sec in spec.get("sections") or []:
@@ -933,10 +948,21 @@ def componer(spec: dict) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--entrada", required=True, type=Path)
-    ap.add_argument("--salida", required=True, type=Path)
+    ap.add_argument("--entrada", type=Path)
+    ap.add_argument("--salida", type=Path)
+    ap.add_argument("--version", action="store_true", help="la versión de este compositor")
     a = ap.parse_args()
+    if a.version:
+        print(COMPOSITOR)
+        return 0
+    if not (a.entrada and a.salida):
+        ap.error("faltan --entrada y --salida")
     spec = json.loads(a.entrada.read_text(encoding="utf-8"))
+    pide = spec.get("requires_composer")
+    if pide and _version(pide) > _version(COMPOSITOR):
+        print(f"NO SE COMPONE: este spec necesita el compositor {pide} y éste es el {COMPOSITOR}. El plugin está "
+              "desactualizado: actualízalo y vuelve a componer; no publiques una página armada con otro.", file=sys.stderr)
+        return 2
 
     if spec.get("form") == "reporte_region":
         errores = validar_reporte(spec)

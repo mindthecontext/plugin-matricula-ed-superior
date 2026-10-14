@@ -89,9 +89,15 @@ Los planos de la sección 8 (una burbuja por sede, dos ejes contra el país) tra
     reporte_tecnico_region(region)
 
 El mismo spec, el mismo compositor y las mismas reglas editoriales que este reporte, para los IP y CFT
-presenciales de la región. Hoy trae la portada, 1 «Quiénes son» (entrantes, la matrícula en el tiempo,
-edad, mayores de 25, jornada, mujeres), 2 «De dónde vienen» (directo del colegio, título previo, de su
-región, colegio pagado, prioritarios) y las notas de método.
+presenciales de la región. Trae la portada, la síntesis (sus hechos en `findings`, como aquí), 1 «Quiénes
+son» (entrantes, la matrícula en el tiempo, edad, mayores de 25, jornada, mujeres), 2 «De dónde vienen»
+(directo del colegio, título previo, de su región, colegio pagado, prioritarios), 3 «Cómo entran y quién
+paga» (continuidad dentro del grupo, gratuidad con quién no adhiere, arancel y el plano del precio), 4 «El
+mercado» (quién tiene el mercado técnico y el profesional, con su participación de 2019 al lado) y las notas
+de método.
+
+- **La continuidad dentro del grupo es prosecución:** en el IP profesional, buena parte venía del técnico de
+  la misma institución o de su CFT. No es captación de afuera; escríbelo así.
 
 - **Cada unidad es institución × ciudad × nivel.** En el IP, «profesional» y «técnico» son mercados
   distintos: no los compares como si fueran uno.
@@ -301,6 +307,12 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
   dice: no hay lectura que escribir para él.
 
 ## 3 · Compón
+
+**Primero, comprueba el compositor:** `python3 construir_figura.py --version` tiene que responder la versión
+que pide el spec (`requires_composer`) o una mayor. Si no responde una versión, el compositor es anterior a
+esa comprobación: el plugin está desactualizado. Dilo, pide actualizarlo y **no publiques** la página, aunque
+se componga: un compositor viejo arma la portada de la portada común o del reporte técnico con rótulos
+equivocados («0 sedes universitarias»).
 
     python3 <carpeta de la skill graficar-la-matricula>/assets/construir_figura.py --entrada reporte.json --salida reporte.html
 

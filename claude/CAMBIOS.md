@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.36.1 · 2026-10-13
+
+El reporte técnico-profesional queda completo. Se suman la síntesis, la sección 3 «Cómo entran y quién paga» (continuidad dentro de la institución o su grupo, gratuidad con quién no adhiere, arancel y el plano del precio), la sección 4 «El mercado» (quién tiene el mercado técnico y el profesional de la región, con su participación de 2019 al lado y el cambio de cada mercado) y una nota sobre los programas a distancia. Incluye las correcciones de la prueba en qa (la 0.36.0 no se publicó). Una unidad en retirada sin matrícula el último año se dice «sin matrícula en 2025», no «2025: 0». La serie de matrícula del reporte técnico trae sus órdenes calculados (quién creció más, sus tramos), como la universitaria. Y los reportes piden un compositor mínimo: el compositor dice su versión (--version) y se niega a componer un reporte que necesita uno más nuevo. En qa, un compositor viejo había armado la portada con «12 sedes universitarias». Hay que actualizar el plugin.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-13b-lab`
+
 ## v0.35.0 · 2026-10-13
 
 Nuevo reporte técnico-profesional de una región (reporte_tecnico_region), con el mismo formato y el mismo compositor que el universitario. Esta primera parte trae la portada (las unidades de IP y CFT, por institución, ciudad y nivel, y las que están en retirada), la sección 1 «Quiénes son» (entrantes, matrícula en el tiempo, edad, mayores de 25, jornada, mujeres), la sección 2 «De dónde vienen» (directo del colegio, título previo, de su región, colegio pagado, prioritarios) y las notas de método. Con una petición que nombra los IP o los CFT, o una neutra en una región donde el técnico pesa más, el agente usa este reporte. figura_tecnico_region suma cinco figuras: edad mediana, mujeres, título previo, de su región y colegio pagado. Hay que actualizar el plugin.
