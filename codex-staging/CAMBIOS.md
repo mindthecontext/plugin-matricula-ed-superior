@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.40.1 · 2026-10-15
+
+Dos lecturas equivocadas de la qa del Biobío, corregidas en el dato. flujos_region dice cuántos egresados se quedan en las universidades de su región (`se_quedan`), no sólo el porcentaje, y explica cada cifra: una respuesta había atribuido a los que se quedan el total de los que entraron a una universidad. En la puerta de carrera, una sede que deja de tener primer año ya no se llama «cierre»: `dejan_de_tener_primer_anio`, con la advertencia de que no dice que la institución haya cerrado (una respuesta había dicho «cerraron tres universidades», y una sigue abierta). Una sede con ceros al final de la serie también se marca, y un año no reportado no cuenta como cero.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-15c-lab` · antes `2026-10-15b-lab`
+
 ## v0.40.0 · 2026-10-15
 
 Corrección: panorama_region y ficha_sede ya no traen `casa_central_en` ni `fuera_de_su_casa_central`. No venían de la fuente sino de la región con más estudiantes, y contradecían la casa central oficial de cuatro universidades (la Autónoma está en Temuco, la UDD en Concepción, la UAI en Valparaíso y la U. del Alba en Santiago). En su lugar, cada sede dice sus ciudades: `ciudad_de_la_sede` y `ciudades_de_la_sede`, con el porcentaje de entrantes de cada una. Las comunas de Santiago, Concepción y Valparaíso–Viña del Mar se leen como una ciudad, y una sede en varias ciudades las nombra a todas («Osorno, Puerto Montt y Castro»). El rótulo de las figuras agrega la ciudad a las instituciones con sedes en más de una región. Ninguna cifra cambia.

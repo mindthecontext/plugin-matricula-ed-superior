@@ -123,7 +123,12 @@ región o en el país, entre dos años.
   2025, porque 2019 y 2020 están incompletos»).
 - **Es participación, no tamaño**: una institución puede ganar puntos con menos alumnos si el total cae. Da
   las dos cosas cuando la diferencia importa (`primer_anio` y `total_primer_anio`).
-- **Una apertura o un cierre explica un salto**: mira `aperturas` y `cierres` antes de leer un cambio grande.
+- **Una sede que empieza o deja de tener primer año explica un salto**: mira `aperturas` y `dejan_de_tener_primer_anio`
+  antes de leer un cambio grande.
+- **Dejar de tener primer año no es cerrar.** `sin_primer_anio_desde` dice que esa sede dejó de recibir estudiantes
+  nuevos en ESTA carrera, en esa región; de la institución no dice nada. Bien: «la U. del Alba no tiene primer año de
+  Enfermería en el Biobío desde 2015». Mal: «cerraron tres universidades». Que una institución cerró sólo lo dice
+  `panorama_carrera` (`cierres.n_instituciones_cerradas`).
 - **No digas por qué** una institución ganó o perdió: el dato no trae la causa.
 
 ## No inventes causas
