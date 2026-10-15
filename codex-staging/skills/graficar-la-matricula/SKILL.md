@@ -28,7 +28,9 @@ Hay **seis herramientas**, y responden preguntas distintas:
 huecos y los valores inconsistentes declarados, las sedes en retirada marcadas y la procedencia propia
 de la matrícula. La regional trae además el crecimiento, con todas las sedes y sin las en retirada.
 
-- **Guarda `spec` tal cual** en un archivo JSON.
+- **Guarda `spec` tal cual** en un archivo JSON, completo: sin resumirlo, sin redondear y sin copiar sus
+  valores a un script. Viene firmado (`huella`) y el compositor comprueba que sea el que entregó el
+  servicio.
 - **Puedes cambiar `title` y `subtitle`** para que digan lo que la pregunta pide (por ejemplo, «Tres
   sedes que crecen en Temuco»). Respeta sus roles, abajo.
 - **No toques `series`, `annotations`, `notices` ni `provenance`.** Si algo no te parece bien, dilo en
@@ -101,6 +103,8 @@ Si alguna vez la receta se niega, es que el spec se tocó donde no debía: vuelv
 - **Si se niega (código 2)**, dice por qué e imprime **una tabla con los mismos datos**. Si tocaste el
   spec, vuelve a pedirlo y cambia sólo el encuadre. Si no, **entrega esa tabla** y di por qué no hay
   gráfico. No la reemplaces por un dibujo hecho de otra forma.
+- **Si dice que «el spec no es el que entregó el servicio»**, el archivo no es copia fiel: vuelve a pedir
+  la herramienta y guarda su `spec` tal cual. No lo corrijas a mano.
 
 ## 5 · Entrega
 

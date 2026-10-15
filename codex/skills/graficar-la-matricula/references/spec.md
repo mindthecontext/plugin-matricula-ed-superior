@@ -47,6 +47,7 @@ inconsistente:
 | `series[].retreating` | no | `true` para una sede con `en_retirada`: no se dibuja, se nombra al pie. |
 | `annotations` | según los datos | Una por hueco (`gap`) y una por valor inconsistente (`inconsistent`), con `series`, `year` y `note`. |
 | `notices` | no | Avisos que el lector necesita y no salen de los datos. |
+| `huella` | sí | La firma del servicio sobre todo lo que no es `title` ni `subtitle`. El compositor la recalcula y se niega si el spec cambió: un spec armado o copiado a mano no se compone. |
 
 **Prohibido:** `source`. La fuente se estampa desde `provenance`.
 

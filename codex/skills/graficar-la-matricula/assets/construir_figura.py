@@ -19,6 +19,7 @@ comprueba que las dos digan lo mismo sobre los mismos specs.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import math
@@ -30,7 +31,63 @@ from pathlib import Path
 # viejo —«0 sedes universitarias», «12 sedes universitarias» en un reporte de IP y CFT— aunque el servicio estaba al día:
 # el compositor viaja en el plugin y el plugin no se había actualizado. El spec dice qué compositor necesita
 # (`requires_composer`); este se niega si es más viejo, y `--version` le deja al agente comprobarlo antes.
-COMPOSITOR = "0.36.1"
+COMPOSITOR = "0.39.0"
+
+
+# LA HUELLA DEL SPEC (MAT-56, qa de O'Higgins del 14-10). El control de cifras revisa las lecturas contra el spec, pero
+# confiaba en el spec: un agente que copió la portada a mano a un script podía cambiar un número sin aviso. El servicio
+# firma cada spec que entrega (`huella`) y este compositor la recalcula: si no coincide, no compone y dice qué parte
+# cambió. Firma lo que el agente NO escribe: quedan fuera `title` y `subtitle` del spec (el encuadre es suyo) y el texto
+# de las lecturas (`text`, `compatible`). El servidor importa estas mismas funciones: hay una sola definición.
+DEL_AGENTE = ("title", "subtitle")
+_PARTES = {"cover": "la portada", "series": "las series", "facts": "las cifras de contexto",
+           "annotations": "las anotaciones", "provenance": "la procedencia", "bars": "las barras", "rows": "las filas",
+           "points": "los puntos"}
+
+
+def _canonico(v):
+    """La forma que se firma: sin huellas anidadas ni el texto de las lecturas, y 84.0 igual a 84 (un número reescrito
+    con otro formato es el mismo número)."""
+    if isinstance(v, float) and v.is_integer():
+        return int(v)
+    if isinstance(v, dict):
+        fuera = ("huella", "text", "compatible") if v.get("kind") == "reading" else ("huella",)
+        return {k: _canonico(x) for k, x in v.items() if k not in fuera}
+    if isinstance(v, list):
+        return [_canonico(x) for x in v]
+    return v
+
+
+def _hash(v) -> str:
+    texto = json.dumps(_canonico(v), sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(texto.encode("utf-8")).hexdigest()[:16]
+
+
+def huella(spec: dict) -> dict:
+    """`total` firma todo lo que no es del agente; `partes`, cada pieza, para poder decir cuál cambió."""
+    nucleo = {k: v for k, v in spec.items() if k not in DEL_AGENTE and k != "huella"}
+    partes = {}
+    for k, v in nucleo.items():
+        if k == "sections" and isinstance(v, list):
+            for i, sec in enumerate(v):
+                partes[f"la sección «{(sec or {}).get('title') or i + 1}»"] = _hash(sec)
+        else:
+            partes[_PARTES.get(k, f"«{k}»")] = _hash(v)
+    return {"total": _hash(nucleo), "partes": partes}
+
+
+def revisar_huella(spec: dict) -> list[str]:
+    """Vacío si el spec es el que entregó el servicio; si no, por qué."""
+    dada = spec.get("huella")
+    if not isinstance(dada, dict) or not dada.get("total"):
+        return ["el spec no trae su huella: no es el que entregó el servicio, o viene de una versión anterior"]
+    nueva = huella(spec)
+    if nueva["total"] == dada["total"]:
+        return []
+    antes = dada.get("partes") or {}
+    cambio = ([k for k, h in nueva["partes"].items() if antes.get(k) != h]
+              + [k for k in antes if k not in nueva["partes"]])
+    return [f"el spec no es el que entregó el servicio: cambió {', '.join(cambio) or 'su contenido'}"]
 
 
 def _version(v: str) -> tuple:
@@ -962,6 +1019,12 @@ def main() -> int:
     if pide and _version(pide) > _version(COMPOSITOR):
         print(f"NO SE COMPONE: este spec necesita el compositor {pide} y éste es el {COMPOSITOR}. El plugin está "
               "desactualizado: actualízalo y vuelve a componer; no publiques una página armada con otro.", file=sys.stderr)
+        return 2
+    copia = revisar_huella(spec)
+    if copia:
+        print(f"NO SE COMPONE: {copia[0]}. No lo corrijas a mano: vuelve a pedirlo a la herramienta y guarda su `spec` "
+              "en el archivo tal cual, sin reescribirlo ni copiar sus valores. Sólo el título, el subtítulo y el texto "
+              "de las lecturas son tuyos.", file=sys.stderr)
         return 2
 
     if spec.get("form") == "reporte_region":

@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.39.0 · 2026-10-15
+
+El compositor comprueba que el spec es el que entregó el servicio. Cada spec de figura, portada o reporte viene firmado (`huella`); si el archivo que se compone no es copia fiel —un número cambiado, una sección reescrita—, el compositor no compone y dice qué parte cambió. El título, el subtítulo y el texto de las lecturas siguen siendo del agente y no cuentan en la firma. Las skills piden guardar el spec tal cual y escribir las lecturas sobre ese mismo archivo. Hay que actualizar el plugin: el spec nuevo pide el compositor 0.39.0.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-15-lab`
+
 ## v0.38.3 · 2026-10-15
 
 Una sede universitaria fuera de la región de su casa central dice su ciudad: «Pontificia U. Católica de Chile (Villarrica)», «U. Mayor (Temuco)». Antes se leía como su campus principal. Va en las etiquetas de las figuras y del reporte, y panorama_region y ficha_sede traen `ciudad_de_la_sede` y `casa_central_en`. La ciudad es la comuna donde se matriculan sus entrantes; si el dato no la trae, se dice «sede regional». Sólo en la puerta regional universitaria: los IP y CFT tienen redes nacionales y no cambian. Ninguna cifra cambia.

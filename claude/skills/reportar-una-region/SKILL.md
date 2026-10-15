@@ -28,6 +28,12 @@ Devuelve `spec`: la portada (`cover`), la síntesis, las secciones con sus figur
 cada figura, un bloque `reading` vacío para su lectura, y al final las notas de método (sin lectura). Trae además `facts`: cifras de contexto que puedes citar
 (cuántas sedes activas, cuántas en retirada, los entrantes del período, la matrícula de la región).
 
+**Guarda `spec` tal cual en un archivo JSON**, completo, antes de escribir nada: sin resumirlo, sin redondear,
+sin reordenarlo y sin copiar sus valores a un script. Las lecturas se escriben después **en ese mismo archivo**,
+en los bloques `reading`. El spec viene firmado (`huella`) y el compositor comprueba que sea el que entregó el
+servicio: sólo `title`, `subtitle` y el texto de las lecturas son tuyos; cualquier otro cambio hace que se niegue.
+Vale igual para la portada (`portada_region`) y el reporte técnico.
+
 Cada figura de barras trae a su lado **`groups`**, con los órdenes y los grupos ya calculados:
 
 | Clave | Qué es |
@@ -331,11 +337,14 @@ El compositor está en la skill hermana `graficar-la-matricula`, junto a las rec
 
 - **Si responde con el nombre del archivo**, el reporte está listo. Dice cuántas figuras y lecturas
   lleva, y si alguna figura salió como tabla.
-- **Si se niega (código 2)**, dice qué lectura cita qué cifra que no está.
+- **Si se niega (código 2)**, dice qué lectura cita qué cifra que no está. Corrige esa lectura y vuelve
+  a componer. Si la negativa es por una sede en retirada en el cuerpo, el spec se tocó: pídelo de nuevo.
+- **Si dice que «el spec no es el que entregó el servicio»**, nombra la parte que cambió (la portada, una
+  sección): el archivo no es copia fiel del spec. No lo corrijas a mano: vuelve a pedir la herramienta,
+  guarda su `spec` tal cual y escribe las lecturas otra vez sobre él.
 - **Si dice que «esta versión del plugin no conoce la forma»**, el servicio es más nuevo que el plugin
   instalado. No publiques nada: dile a quien preguntó que actualice el plugin y vuelva a pedir el
-  reporte. Corrige esa lectura y vuelve
-  a componer. Si la negativa es por una sede en retirada en el cuerpo, el spec se tocó: pídelo de nuevo.
+  reporte.
 - **Una figura que no se puede dibujar sale como tabla** y el reporte sigue: dilo en tu respuesta.
 
 ## 4 · Entrega
