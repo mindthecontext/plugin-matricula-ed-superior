@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.40.3 · 2026-10-16
+
+Las cifras dicen su período y con qué se comparan. flujos_region y perfil_migrante traen `anios`: la ventana de entrada (2022–2026), el último año y los procesos PAES del perfil (2023–2026; antes un texto decía 2023–2025). Y el ±4,5% de la serie de primer año del CNED dice que se compara con el primer año de la matrícula SIES de la misma carrera, no con los flujos del colegio a la universidad, que miden otra cosa.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-16b-lab` · antes `2026-10-16-lab`
+
 ## v0.40.2 · 2026-10-16
 
 Corrección de datos en el perfil de quienes se van y se quedan. La PAES venía repetida, una vez por cada institución donde la persona tiene registro, y en perfil_migrante, en el bloque de la Metropolitana de flujos_region y en el origen escolar de la sección 4 del reporte multiplicaba a algunas personas: los conteos estaban entre 3% y 11% por encima. Ahora perfil_migrante cuenta los mismos que se quedan y se van que flujos_region (Biobío: 47.359 y 3.871), y el bloque de la Metropolitana, los mismos que los destinos (1.806). Las medianas PAES de esos bloques suben entre 1 y 4 puntos y los porcentajes se mueven menos de un punto. La retención, los destinos, los orígenes y el balance no cambian.
