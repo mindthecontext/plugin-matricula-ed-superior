@@ -4,6 +4,16 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.38.0 · 2026-10-14
+
+La puerta de carrera con los datos 2026. Las 69 carreras se actualizan con la matrícula 2026 y los titulados 2025: los entrantes pasan a 2022–2026 en todas sus cifras, la PAES y la vía de ingreso a 2024–2026, la gratuidad y el arancel por sede se miden en el año del precio (2025), y la serie de primer año del CNED llega a 2026. Las dos puertas, regional y de carrera, cambian de cohortes de titulación: 2012–2017 en vez de 2011–2016, con «sigue estudiando» medido en el mismo horizonte que los títulos (2025). Y en la puerta regional la continuidad interna ahora agrupa por grupo institucional: en la U. Santo Tomás, entre 8% y 19% de sus entrantes venían del CFT o del IP Santo Tomás. Cambian las cifras de la puerta de carrera y dos nombres de campo de presencia_institucional. Hay que actualizar el plugin.
+
+Cambios de método: el colegio de egreso sale del registro NEM, y su comuna y región, del directorio de establecimientos, como ya en la puerta regional; el CFT INACAP se cuenta como IP INACAP en todos los años (Res. Ex. 2.241 de 2026), salvo en el retorno laboral, que mifuturo publica para los titulados del CFT. La base nueva del CNED trae también el posgrado y se filtra a pregrado; el CNED revisó algunas cifras de su historia, casi todas por menos de 3% (la mayor, ingeniería en control de gestión, entre 5% y 18% menos en 2013–2023). Mortalidad institucional deja de aparecer en pedagogía en ciencias y terapia ocupacional: con las cohortes 2012–2017 su institución cerrada ya no llega al mínimo. En presencia_institucional, los campos sedes_con_entrantes_2021_2025 y sedes_con_cohortes_2011_2016 pasan a llamarse sedes_con_entrantes_ventana y sedes_con_cohortes; sus años van en periodos_de_sedes.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-14b-lab` · antes `2026-10-14-lab`
+
 ## v0.37.2 · 2026-10-14
 
 Correcciones de la prueba en qa de La Araucanía. Cuando el balance de captación universitaria está a menos de 2% de 1, la conclusión dice que el sistema local es «prácticamente del mismo tamaño» que lo que la región aporta, no «mayor» ni «menor». La portada y el reporte técnico ya no nombran herramientas en sus notas. Y el reporte universitario pide su compositor mínimo, como la portada y el técnico.

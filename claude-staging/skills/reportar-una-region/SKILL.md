@@ -286,7 +286,7 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 
 ### Cómo leer la sección 7, «En qué termina»
 
-- **Describe a quienes entraron hace una década** (cohortes 2011–2016), no a la sede de hoy. Escribe
+- **Describe a quienes entraron hace una década** (las cohortes que dice el subtítulo, hoy 2012–2017), no a la sede de hoy. Escribe
   «de quienes entraron entre 2011 y 2016», nunca «hoy se titula el X%».
 - **Los cuatro tramos suman 100% y el del medio importa:** titularse en otra carrera es cambiar de rumbo
   sin abandonar. No leas sólo «se tituló» contra «sin título».

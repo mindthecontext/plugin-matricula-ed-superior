@@ -49,7 +49,7 @@ Si piden «la evolución de la matrícula de primer año» de una región:
 - **Ofrece lo que hay:** la serie de matrícula total, rotulada como total (no le cambies el `subtitle` a
   «primer año»), o los entrantes de la ventana.
 - **Si la pregunta es por una carrera,** la serie de primer año sí existe, también en una región:
-  `figura_primer_anio(carrera, region)` (CNED, 2005–2025). Si la pregunta por la región admite leerse por una
+  `figura_primer_anio(carrera, region)` (CNED, desde 2005). Si la pregunta por la región admite leerse por una
   carrera, ofrécela.
 
 Cada respuesta de figura trae `sobre_primer_anio` con estas mismas palabras.

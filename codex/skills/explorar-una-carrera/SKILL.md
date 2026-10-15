@@ -83,18 +83,19 @@ carreras?»—, usa `presencia_institucional`. Sirve para universidades, IP y CF
 - **Cita sus cifras, no las de otra herramienta.** La titulación es el promedio de sus sedes ponderado por
   cohorte (`titulacion.metodo`): no la reemplaces por una mediana sacada de otra respuesta. Si la cohorte es
   chica (`n_cohortes` bajo 100), dilo junto a la cifra.
-- **Los dos conteos de sedes son de periodos distintos**: `sedes_con_entrantes_2021_2025` y
-  `sedes_con_cohortes_2011_2016`. Si difieren, es porque abrió o cerró sedes, no una inconsistencia.
+- **Los dos conteos de sedes son de periodos distintos**: `sedes_con_entrantes_ventana` y
+  `sedes_con_cohortes`, con sus años en `periodos_de_sedes`. Si difieren, es porque abrió o cerró sedes, no una
+  inconsistencia.
 - **`presencia: sólo en cohortes antiguas`** es una carrera que tuvo y ya no recibe entrantes: nómbrala
   aparte, no como parte de su oferta de hoy.
-- **La titulación es de las cohortes 2011–2016.** El retorno laboral de la institución se compara con **su
+- **La titulación es de las cohortes que dice `titulacion.cohortes`** (hoy 2012–2017). El retorno laboral de la institución se compara con **su
   propio tipo** (`retorno_laboral.su_tipo`: un CFT con los CFT, un IP con los IP), no con el tipo que domina
   la carrera, que va sólo de contexto: comparar un CFT con el promedio de los IP exagera la brecha. Una brecha —más titulación y menos empleabilidad, por ejemplo— se describe, no se
   explica: puede ser quién entra a cada una. Nunca la presentes como un juicio sobre la institución.
 
 ## La serie de primer año: lo que el CNED recibió
 
-`primer_anio` trae la matrícula de primer año por sede, 2005–2025, del CNED. Tres cosas antes de leerla:
+`primer_anio` trae la matrícula de primer año por sede, del CNED (los años vienen en `anios`). Tres cosas antes de leerla:
 
 - **Los tipos de institución los dice `tipos_de_institucion`**, y no siempre son todos: en Enfermería es
   sólo universidades; en Técnico en Enfermería, IP, CFT y también universidades. `peso_por_tipo_…_pct` dice
