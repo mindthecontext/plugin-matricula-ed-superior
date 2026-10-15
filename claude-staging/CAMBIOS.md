@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.38.1 · 2026-10-15
+
+Correcciones de la prueba en qa. En la puerta de carrera, cuando una respuesta nombra al IP INACAP —en la serie y la participación de primer año, en sus figuras y en la presencia de la institución— dice que incluye al CFT INACAP en todos los años, así que su cambio no es sólo crecimiento propio. Y en la puerta regional la continuidad interna dice qué cuenta desde la 0.38.0: venir de la misma institución o de una de su grupo, su CFT o su IP.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-14b-lab`
+
 ## v0.38.0 · 2026-10-14
 
 La puerta de carrera con los datos 2026. Las 69 carreras se actualizan con la matrícula 2026 y los titulados 2025: los entrantes pasan a 2022–2026 en todas sus cifras, la PAES y la vía de ingreso a 2024–2026, la gratuidad y el arancel por sede se miden en el año del precio (2025), y la serie de primer año del CNED llega a 2026. Las dos puertas, regional y de carrera, cambian de cohortes de titulación: 2012–2017 en vez de 2011–2016, con «sigue estudiando» medido en el mismo horizonte que los títulos (2025). Y en la puerta regional la continuidad interna ahora agrupa por grupo institucional: en la U. Santo Tomás, entre 8% y 19% de sus entrantes venían del CFT o del IP Santo Tomás. Cambian las cifras de la puerta de carrera y dos nombres de campo de presencia_institucional. Hay que actualizar el plugin.
