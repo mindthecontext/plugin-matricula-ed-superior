@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.38.3 · 2026-10-15
+
+Una sede universitaria fuera de la región de su casa central dice su ciudad: «Pontificia U. Católica de Chile (Villarrica)», «U. Mayor (Temuco)». Antes se leía como su campus principal. Va en las etiquetas de las figuras y del reporte, y panorama_region y ficha_sede traen `ciudad_de_la_sede` y `casa_central_en`. La ciudad es la comuna donde se matriculan sus entrantes; si el dato no la trae, se dice «sede regional». Sólo en la puerta regional universitaria: los IP y CFT tienen redes nacionales y no cambian. Ninguna cifra cambia.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-15-lab` · antes `2026-10-14b-lab`
+
 ## v0.38.2 · 2026-10-15
 
 El saber no proyecta, y ahora lo dice. Una proyección —«si sigue la tendencia», «pasará a»— sólo se escribe declarada como supuesto: qué ritmo, de qué años, y que no es un dato del saber. Está en un criterio nuevo (obtener_criterios("proyecciones")), en las instrucciones del servicio y en las skills de análisis y reporte, con un ejemplo bien y uno mal. Y una cifra de un solo año dice su año: la gratuidad y el arancel son de los entrantes 2025. Hay que actualizar el plugin.
