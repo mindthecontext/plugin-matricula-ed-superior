@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.40.2 · 2026-10-16
+
+Corrección de datos en el perfil de quienes se van y se quedan. La PAES venía repetida, una vez por cada institución donde la persona tiene registro, y en perfil_migrante, en el bloque de la Metropolitana de flujos_region y en el origen escolar de la sección 4 del reporte multiplicaba a algunas personas: los conteos estaban entre 3% y 11% por encima. Ahora perfil_migrante cuenta los mismos que se quedan y se van que flujos_region (Biobío: 47.359 y 3.871), y el bloque de la Metropolitana, los mismos que los destinos (1.806). Las medianas PAES de esos bloques suben entre 1 y 4 puntos y los porcentajes se mueven menos de un punto. La retención, los destinos, los orígenes y el balance no cambian.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-16-lab` · antes `2026-10-15c-lab`
+
 ## v0.40.1 · 2026-10-15
 
 Dos lecturas equivocadas de la qa del Biobío, corregidas en el dato. flujos_region dice cuántos egresados se quedan en las universidades de su región (`se_quedan`), no sólo el porcentaje, y explica cada cifra: una respuesta había atribuido a los que se quedan el total de los que entraron a una universidad. En la puerta de carrera, una sede que deja de tener primer año ya no se llama «cierre»: `dejan_de_tener_primer_anio`, con la advertencia de que no dice que la institución haya cerrado (una respuesta había dicho «cerraron tres universidades», y una sigue abierta). Una sede con ceros al final de la serie también se marca, y un año no reportado no cuenta como cero.
