@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.40.0 · 2026-10-15
+
+Corrección: panorama_region y ficha_sede ya no traen `casa_central_en` ni `fuera_de_su_casa_central`. No venían de la fuente sino de la región con más estudiantes, y contradecían la casa central oficial de cuatro universidades (la Autónoma está en Temuco, la UDD en Concepción, la UAI en Valparaíso y la U. del Alba en Santiago). En su lugar, cada sede dice sus ciudades: `ciudad_de_la_sede` y `ciudades_de_la_sede`, con el porcentaje de entrantes de cada una. Las comunas de Santiago, Concepción y Valparaíso–Viña del Mar se leen como una ciudad, y una sede en varias ciudades las nombra a todas («Osorno, Puerto Montt y Castro»). El rótulo de las figuras agrega la ciudad a las instituciones con sedes en más de una región. Ninguna cifra cambia.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-15b-lab` · antes `2026-10-15-lab`
+
 ## v0.39.1 · 2026-10-15
 
 panorama_region y ficha_sede dicen la ciudad y la región de la casa central de TODAS las sedes, con `fuera_de_su_casa_central`. Antes venían sólo en las sedes fuera de su casa central, y una tabla los dejaba en «—» para la U. de La Frontera y la U. Católica de Temuco, como si faltara el dato. El rótulo de las figuras no cambia: la ciudad se agrega sólo a la sede fuera de su casa central.
