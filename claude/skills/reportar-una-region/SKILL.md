@@ -308,6 +308,15 @@ La síntesis abre el reporte, pero **escríbela al final**, cuando ya escribiste
 - **Si un plano no se dibujó** porque la región no tiene tres sedes con los dos ejes, la nota de la sección lo
   dice: no hay lectura que escribir para él.
 
+## No proyectes como si fuera dato
+
+- **No proyectes como si fuera dato.** El saber describe lo registrado. «Si sigue la tendencia, X pasará a Y» sólo
+  va declarado como supuesto —qué ritmo, de qué años, y que no es un dato del saber—, nunca en el titular ni como
+  conclusión. Bien: «si siguiera el ritmo de 2021–2026 (un supuesto, no un dato), alcanzaría a Y en uno o dos años».
+  Mal: «todo indica que pasará a Y».
+- **Una cifra de un solo año dice su año.** La gratuidad y el arancel son del año del precio (hoy 2025): «el 75,5%
+  de los entrantes 2025 tiene gratuidad».
+
 ## 3 · Compón
 
 **Primero, comprueba el compositor:** `python3 construir_figura.py --version` tiene que responder la versión

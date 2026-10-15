@@ -60,6 +60,12 @@ en ese tramo.
 
 ## Las reglas duras del dominio
 
+- **No proyectes como si fuera dato.** El saber describe lo registrado. «Si sigue la tendencia, X pasará a Y» sólo
+  va declarado como supuesto —qué ritmo, de qué años, y que no es un dato del saber—, nunca en el titular ni como
+  conclusión. Bien: «si siguiera el ritmo de 2021–2026 (un supuesto, no un dato), alcanzaría a Y en uno o dos años».
+  Mal: «todo indica que pasará a Y».
+- **Una cifra de un solo año dice su año.** La gratuidad y el arancel son del año del precio (hoy 2025): «el 75,5%
+  de los entrantes 2025 tiene gratuidad».
 - **Los percentiles no se promedian entre sedes.** El PAES consolidado de una institución multi-sede
   llega como `no_derivable`: se entrega el rango y se explica por qué.
 - **Sin superlativos que no vengan del dato.** «La más inclusiva» exige haber comparado el eje

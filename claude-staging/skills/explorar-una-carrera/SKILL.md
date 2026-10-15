@@ -30,6 +30,15 @@ Cuando una respuesta traiga `_leer_primero` o una cobertura parcial, **el porcen
 
 Nunca la cifra sola. Un dato que describe al 3% no puede leerse igual que uno que describe al 81%.
 
+## No proyectes como si fuera dato
+
+- **No proyectes como si fuera dato.** El saber describe lo registrado. «Si sigue la tendencia, X pasará a Y» sólo
+  va declarado como supuesto —qué ritmo, de qué años, y que no es un dato del saber—, nunca en el titular ni como
+  conclusión. Bien: «si siguiera el ritmo de 2021–2026 (un supuesto, no un dato), alcanzaría a Y en uno o dos años».
+  Mal: «todo indica que pasará a Y».
+- **Una cifra de un solo año dice su año.** La gratuidad y el arancel son del año del precio (hoy 2025): «el 75,5%
+  de los entrantes 2025 tiene gratuidad».
+
 ## Lo que no aplica no es un vacío
 
 En IP y CFT no se entra por PAES: `selectividad` llega como `no_derivable` con su razón. **Eso es un
