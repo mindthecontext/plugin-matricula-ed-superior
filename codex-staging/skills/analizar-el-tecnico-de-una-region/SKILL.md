@@ -23,6 +23,14 @@ el profesional compite con las universidades, el técnico con los CFT. Por eso u
 «IP AIEP · profesional» e «IP AIEP · técnico». La participación de cada unidad es **en su mercado**
 (`participacion_en_su_mercado_pct`), no en la región entera: no sumes participaciones de mercados distintos.
 
+**«¿Quién lidera?» se responde por institución, no por unidad.** En una región partida, una institución tiene
+varias unidades (INACAP en Concepción, en Los Ángeles y en otras comunas). `por_institucion` trae, en cada
+mercado, la suma de todas sus unidades de la región, su participación y su `puesto`; `unidades`, cada sede.
+Di cuál de las dos lees, y **no sumes unidades a mano**: la suma ya viene, con las unidades en retirada
+incluidas y nombradas (`incluye_en_retirada`). Bien: «por institución, lidera IP INACAP con el 19,8% del
+técnico; por sede, el IP Virginio Gómez en Concepción». Mal: «sumando las unidades de la tabla, INACAP queda
+primero».
+
 ## Es otro estudiante: dilo
 
 La mitad de quienes entran a un IP tiene 25 años o más, un tercio estudia de noche y muchos llegan con
