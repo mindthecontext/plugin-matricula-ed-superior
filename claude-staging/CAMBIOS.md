@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.41.1 · 2026-10-16
+
+El crecimiento de las series del técnico dice entre qué años: `crecimiento_pct` viene como {"2020-2026": −17,6}, igual que en la puerta de carrera. Suelto, una respuesta lo leyó como «desde su máximo», y es la variación 2020→2026 (desde el máximo de 2017, la caída es mayor). Una prueba comprueba que ninguna herramienta entrega un crecimiento sin su período.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-16c-lab`
+
 ## v0.41.0 · 2026-10-16
 
 La puerta técnica responde «¿quién lidera?» desde el dato y dice dónde está cada unidad. panorama_tecnico_region trae `por_institucion`: en cada mercado, la suma de todas las unidades de cada institución en la región, su participación, su variación y su puesto, con las unidades en retirada incluidas y nombradas. En el Biobío, IP INACAP lidera el técnico con el 19,8%, aunque la unidad más grande sea la del IP Virginio Gómez en Concepción. Un criterio nuevo (`unidad_o_institucion`) y la skill del técnico dicen cuándo leer por unidad y cuándo por institución. Y la unidad que junta las demás comunas de una región partida, antes «(Biobío (otras))», dice cuáles son: «CFT LOTA-ARAUCO (Lota)», «IP DUOC UC · técnico (Arauco y Nacimiento)»; cada unidad trae `ciudad_de_la_sede` y `ciudades_de_la_sede`, con la misma definición que las universidades. Ninguna cifra cambia.
