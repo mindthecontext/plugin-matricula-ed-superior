@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.41.2 · 2026-10-16
+
+Sin cambios para quien lo usa: los packs de flujos y del técnico dan lo mismo en cada corrida. Los empates se resuelven siempre igual —dos universidades con el mismo número de estudiantes quedan en orden alfabético—, así que una cifra ya no puede cambiar de una actualización a otra sin que cambien los datos. Ninguna cifra cambia.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-16d-lab` · antes `2026-10-16c-lab`
+
 ## v0.41.1 · 2026-10-16
 
 El crecimiento de las series del técnico dice entre qué años: `crecimiento_pct` viene como {"2020-2026": −17,6}, igual que en la puerta de carrera. Suelto, una respuesta lo leyó como «desde su máximo», y es la variación 2020→2026 (desde el máximo de 2017, la caída es mayor). Una prueba comprueba que ninguna herramienta entrega un crecimiento sin su período.
