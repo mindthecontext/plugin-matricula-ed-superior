@@ -48,9 +48,16 @@ y ofrece el eje que sí aplica: quién capta a los primeros de su curso.
 
 ## La matriz de sustitución es lo que hay que lucir
 
-`competencia_carrera` trae, de quienes dejaron una institución, a cuál llegaron — con n y share de
-ambos lados. Es la respuesta a *«¿a quién le pierdo mis estudiantes?»* con nombre y apellido, y
-captura el flujo entre tipos de institución —de una universidad a un IP— que ninguna otra capa mide.
+`competencia_carrera` trae, de quienes pusieron 1ª a una institución en la admisión, en cuál se matricularon. Es
+la respuesta a *«¿a quién le pierdo mis estudiantes?»* con nombre y apellido, y captura el flujo entre tipos de
+institución —de una universidad a un IP— que ninguna otra capa mide.
+
+**Cada porcentaje tiene su base, y está en el nombre.** «Lo que una institución pierde» es
+`pct_de_los_que_fueron_a_otra`: de los que la pusieron 1ª y se matricularon en otra, cuántos fueron a cada destino.
+`pct_de_quienes_la_pusieron_1a` tiene otra base —todos los que la pusieron 1ª, también los que entraron— y es menor.
+Bien: «de los que pusieron 1ª a X y se matricularon en otra, la mitad fue a Y». Mal: «un tercio de lo que pierde X
+va a Y» citando el porcentaje de quienes la pusieron 1ª. Y no digas «los que la dejaron»: la 1ª preferencia no es
+una matrícula previa.
 
 Al presentarla, distingue el flujo **dentro del mismo tipo** del que **cruza tipos**: no es lo mismo
 perder alumnado hacia una universidad par que hacia un instituto profesional.

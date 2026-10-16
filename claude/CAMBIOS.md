@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.42.0 · 2026-10-16
+
+La matriz de sustitución dice la base de cada porcentaje. Cada flujo es «pusieron 1ª a X en la admisión y se matricularon en Y», no «dejaron X». Sus porcentajes se llaman ahora por su base: `pct_de_los_que_fueron_a_otra` (lo que X «pierde»: de los que la pusieron 1ª y se matricularon en otra), `pct_de_quienes_la_pusieron_1a` (de todos los que la pusieron 1ª) y `pct_de_lo_que_recibe_el_destino`, con sus n. Antes había dos, `share_del_origen` y `share_del_destino`, y el primero se leyó como «de lo que pierde»: la U. Bernardo O'Higgins no pierde un tercio hacia UDLA, pierde la mitad. Cambia el nombre de los campos.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-16f-lab` · antes `2026-10-16e-lab`
+
 ## v0.41.3 · 2026-10-16
 
 Corrección en la competencia por carrera. La matriz de sustitución contaba como una pérdida de una institución hacia sí misma a quien la puso primera y se matriculó en ella, cuando el registro de postulaciones y el de matrícula escriben su nombre distinto (con y sin tilde): en Enfermería, el flujo más grande del país era UDLA → UDLA (1.026). Había 53 flujos así en las matrices; ahora ninguno, y su lugar lo ocupan flujos reales que quedaban fuera del corte.
