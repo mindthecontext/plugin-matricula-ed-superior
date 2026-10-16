@@ -14,6 +14,10 @@ cómo, porque es lo que hace que el reporte se pueda creer.
 
 Si el nombre no calza con una carrera del saber, la herramienta devuelve los candidatos: pregunta cuál.
 
+La figura «Frente a otra carrera» compara el ritmo con una carrera de control: por defecto, la del mismo tipo de
+mercado con el primer año más parecido en 2019 (a Psicología le toca Derecho), y su subtítulo lo dice. Si la persona
+pide otra comparación, pásala en `comparar_con`.
+
 Devuelve `spec`: la portada (`cover`), la síntesis, las cinco secciones con sus figuras ya armadas y,
 junto a cada figura, un bloque `reading` vacío para su lectura, y al final las notas de método (sin
 lectura). Trae además `facts`: cifras de contexto que puedes citar (la matrícula de primer año del último
@@ -43,9 +47,10 @@ el reporte regional; aquí las filas son instituciones, grupos de instituciones,
 
 | Figura | Claves |
 |---|---|
-| Barras (`reparto`, `vias`, `origen_prioritario`, `origen_pagado`, `primera_gen`, `carreras_previas`, `reconversion`, `ingresos`, `retencion`) | `rank`; `above_reference`, `at_reference`, `below_reference` cuando hay valor nacional; `zero`, `no_data`, `small_sample`. |
-| Series (`primer_anio`, `dependencia`, `financiamiento`, `arancel`, `canales`) | `sites[]` (cada serie con `first`, `last`, `peak`, `low`, `change_full`, `change_window`, `largest_rise`, `largest_fall`, `runs`), `window`, `rank_change_*`, `rank_longest_run`. |
-| Partidas (`edad`, `desenlaces`) | `rank_<tramo>` (`rank_joven`, `rank_medio`, `rank_adulto_25_29`, `rank_mayor_30`; `rank_titula`, `rank_otra_carrera`, `rank_sigue`, `rank_sin_titulo`), `above_reference`, `below_reference`, `small_sample`. |
+| Barras (`reparto`, `vias`, `conviven`, `primera_gen`, `carreras_previas`, `reconversion`, `ingresos`, `retencion`) | `rank`; `above_reference`, `at_reference`, `below_reference` cuando hay valor nacional; `zero`, `no_data`, `small_sample`. |
+| Series (`primer_anio`, `ritmo`, `control`, `dependencia`, `financiamiento`, `arancel`, `canales`) | `sites[]` (cada serie con `first`, `last`, `peak`, `low`, `change_full`, `change_window`, `largest_rise`, `largest_fall`, `runs`), `window`, `rank_change_*`, `rank_longest_run`. |
+| Pares (`origen_social`: colegio pagado arriba, prioritario abajo) | `rank_a`, `rank_b`; `above_reference` y `below_reference`, cada uno con su lista para `a` y para `b`. |
+| Partidas (`genero`, `nivel_socioeconomico`, `edad`, `desenlaces`) | `rank_<tramo>` (`rank_mujeres`; `rank_joven`, `rank_medio`, `rank_adulto_25_29`, `rank_mayor_30`; `rank_titula`, `rank_otra_carrera`, `rank_sigue`, `rank_sin_titulo`), `above_reference`, `below_reference`, `small_sample`. En el nivel socioeconómico las filas son años. |
 | Rangos (`escalera`) | `rank_mid`, `rank_box_width`, `rank_upper_tail`, `not_robust`. |
 | Plano (`mapa_social`) | `quadrants` (las instituciones de cada cuadrante, de la más grande a la más chica; el nombre de cada uno en `quadrant_labels`), `on_reference`. |
 
@@ -117,6 +122,12 @@ Escríbela al final. Su bloque `findings` trae los hechos candidatos, cada uno c
   con una de la otra.
 - **El reparto es de toda la ventana** (lo dice el subtítulo), no del último año, y muestra sólo las
   mayores: el resto de las instituciones no está en la figura.
+- **Un índice dice ritmo, no tamaño.** «El ritmo frente al sistema» y «Frente a otra carrera» ponen a cada serie
+  en 100 el año base (lo dice el subtítulo): una curva más alta creció más en proporción, no tiene más
+  estudiantes. Cita los valores del índice tal como vienen («llegó a 255»); no escribas cuántas veces creció una
+  más que otra: es una razón que el spec no trae.
+- **La carrera de control no es una competidora:** es una vara del mismo contexto. Si las dos curvas se separan,
+  el crecimiento es propio de la carrera; por qué, va en `compatible`.
 - **Las vías son excluyentes:** cada entrante está en una sola, y por redondeo pueden sumar 99 o 101. «Ya
   titulados de otra carrera», «de otra carrera, misma institución» y «de otra institución» no vienen del
   colegio: no los cuentes como recién egresados.
@@ -125,6 +136,12 @@ Escríbela al final. Su bloque `findings` trae los hechos candidatos, cada uno c
 
 - **El plano dice dónde cae una institución, no qué vale.** Usa el nombre de `quadrant_labels` y las
   instituciones de `quadrants`. No escribas «la más exigente» ni «la mejor».
+- **«Cuántos entran a cada grupo» reparte a los entrantes de las instituciones agrupadas** (lo dice el
+  subtítulo); suma 100 entre los grupos y no incluye a las pocas instituciones sin grupo.
+- **«Origen social por grupo» pone dos cifras por fila:** arriba el % de colegio pagado, abajo el % prioritario.
+  Son dos porcentajes de los mismos entrantes, que no se suman ni se restan en la lectura.
+- **El nivel socioeconómico cubre sólo a los recién egresados**: quienes entraron el año siguiente a salir del
+  colegio, que son la parte de los entrantes que dice el subtítulo. Escríbelo así; no es el alumnado completo.
 - **El eje del origen social es una resta:** % de colegio pagado menos % prioritario, en puntos (pp). Un
   valor negativo dice que tiene más prioritarios que alumnos de colegio pagado, no que «es pobre».
 - **«Particular pagado» es una categoría administrativa**, no un nivel de ingreso. **Prioritario y primera

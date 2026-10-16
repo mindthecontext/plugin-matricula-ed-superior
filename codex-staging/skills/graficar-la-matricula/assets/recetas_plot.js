@@ -133,7 +133,17 @@ function validarSeries(spec, errores) {
     }
   }
   // LA UNIDAD DE UNA SERIE (MAT-76): matrícula por defecto; el reporte por carrera trae series en % y en pesos
-  if (!UNIDADES.includes(spec.unit === undefined ? "count" : spec.unit)) errores.push(`«unit» tiene que ser una de ${UNIDADES.join(", ")}`);
+  const unidadesSerie = [...UNIDADES, "idx"];
+  if (!unidadesSerie.includes(spec.unit === undefined ? "count" : spec.unit)) errores.push(`«unit» tiene que ser una de ${unidadesSerie.join(", ")}`);
+  // UN ÍNDICE DICE SU BASE (MAT-76, etapa 2): sin el año en que todas valen 100, dos curvas no se comparan.
+  if (spec.unit === "idx") {
+    const base = spec.base_year;
+    if (!x.includes(base)) errores.push("un índice trae «base_year», uno de los años de «x»");
+    else for (const serie of series) {
+      const p = (serie.points || []).find(q => q.year === base);
+      if (!p || p.value !== 100) errores.push(`«${serie.label}» no vale 100 en el año base ${base}`);
+    }
+  }
   if (series.length && series.every(s => s.retreating)) {
     errores.push("todas las series vienen en retirada: no queda nada que comparar");
   }
@@ -407,8 +417,45 @@ function validarDispersion(spec, errores) {
   return errores;
 }
 
+function validarPar(label, f, unidad, errores) {
+  for (const k of ["a", "b"]) {
+    const v = f[k];
+    const vacio = v === null || v === undefined;
+    if (!vacio && (typeof v !== "number" || !Number.isFinite(v) || v < 0)) errores.push(`«${label}»: «${k}» tiene que ser un número no negativo o null`);
+    else if (!vacio && unidad === "pct" && v > 100) errores.push(`«${label}»: un porcentaje no puede pasar de 100`);
+  }
+}
+
+/** `barras_pares` (MAT-76, etapa 2): dos barras por fila, A contra B (% de colegio pagado y % prioritario). */
+function validarPares(spec, errores) {
+  if (!UNIDADES.includes(spec.unit)) errores.push(`«unit» tiene que ser una de ${UNIDADES.join(", ")}`);
+  const par = spec.pair || {};
+  const a = String(par.a || "").trim(), b = String(par.b || "").trim();
+  if (!a || !b || a === b) errores.push("«pair» tiene que nombrar «a» y «b», distintos");
+  const filas = spec.rows || [];
+  if (!filas.length) errores.push("no hay filas");
+  const nombres = new Set();
+  const fuera = new Set(spec.excluded || []);
+  for (const f of filas) {
+    if (!String(f.label || "").trim()) errores.push("una fila no trae «label»");
+    if (nombres.has(f.label)) errores.push(`la fila «${f.label}» está repetida`);
+    nombres.add(f.label);
+    if (fuera.has(f.label)) errores.push(`«${f.label}» está en retirada y no puede aparecer en el cuerpo`);
+    validarPar(f.label, f, spec.unit, errores);
+    if (f.n !== null && f.n !== undefined && (!Number.isInteger(f.n) || f.n < 0)) errores.push(`«${f.label}»: «n» tiene que ser un entero no negativo`);
+  }
+  const ref = spec.reference;
+  if (ref !== null && ref !== undefined) {
+    const num = v => typeof v === "number" && Number.isFinite(v);
+    if (!String(ref.label || "").trim() || !num(ref.a) || !num(ref.b)) errores.push("«reference» tiene que traer «label», «a» y «b», o ser null");
+    else validarPar("reference", ref, spec.unit, errores);
+  }
+  return errores;
+}
+
 const VALIDADORES = { matricula_series: validarSeries, matricula_region: validarRegion, barras_sedes: validarBarras,
-                      rangos_sedes: validarRangos, barras_partidas: validarPartidas, dispersion_sedes: validarDispersion };
+                      rangos_sedes: validarRangos, barras_partidas: validarPartidas, dispersion_sedes: validarDispersion,
+                      barras_pares: validarPares };
 
 // ── el dibujo ───────────────────────────────────────────────────────────────────────────────────
 const tono = nombre => getComputedStyle(document.documentElement).getPropertyValue(nombre).trim();
@@ -458,6 +505,11 @@ function matriculaSeries(spec, Plot, ancho) {
       symbol: { domain: nombres, range: SIMBOLOS, legend: false },
       marks: [
         Plot.ruleY([0], { stroke: tono("--fig-regla") }),
+        // El índice: la línea del 100 es el año base, donde todas las series parten iguales.
+        ...(spec.unit === "idx" ? [Plot.ruleY([100], { stroke: tono("--texto-tenue"), strokeDasharray: "4 3" }),
+                                   // El rótulo va a la derecha: a la izquierda, todas las líneas pasan por el 100 y lo tapan.
+                                   Plot.text([spec.base_year], { x: () => hasta, y: () => 100, text: d => `${d} = 100`, dy: 9,
+                                                                 textAnchor: "end", fontSize: 10, fill: tono("--texto-tenue") })] : []),
         ...activas.map((serie, i) => Plot.line(linea.filter(d => d.serie === serie.label), {
           x: "year", y: "value", stroke: COLORES[i], strokeWidth: 2.2, strokeDasharray: TRAZOS[i],
         })),
@@ -563,7 +615,7 @@ function formatoUnidad(unidad, eje = false) {
   const dec = (v, n) => v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : n, maximumFractionDigits: n });
   if (unidad === "clp_m") return v => `$${dec(v, 2)} M`;
   if (unidad === "pct") return v => `${dec(v, 1)}%`;
-  if (unidad === "years") return v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
+  if (unidad === "years" || unidad === "idx") return v => v.toLocaleString("es-CL", { maximumFractionDigits: 1 });
   return v => Math.round(v).toLocaleString("es-CL");
 }
 
@@ -732,6 +784,51 @@ function barrasPartidas(spec, Plot, ancho) {
 }
 
 /**
+ * `barras_pares` (MAT-76, etapa 2): cada fila con dos barras, A arriba y B abajo, y la fila nacional
+ * separada al final. Los colores son los dos extremos de los tramos, y la leyenda dice cuál es cuál.
+ */
+function barrasPares(spec, Plot, ancho) {
+  const angosto = ancho < 520;
+  const fmt = formatoUnidad(spec.unit);
+  const ref = spec.reference;
+  const SEP = "\u2003";
+  const filas = [...spec.rows, ...(ref ? [{ label: SEP, a: null, b: null }, { ...ref, esRef: true }] : [])];
+  const barras = filas.flatMap(f => [["a", 4, 15], ["b", 15, 4]].filter(([k]) => f[k] !== null && f[k] !== undefined)
+    .map(([k, arriba, abajo]) => ({ label: f.label, k, v: f[k], arriba, abajo, esRef: !!f.esRef, n: f.n })));
+  const tope = Math.max(...barras.map(d => d.v), 0) * 1.15 || 1;
+  const margen = Math.min(angosto ? 150 : 210, Math.round(ancho * 0.42));
+  const color = { a: COLORES_TRAMOS[0], b: COLORES_TRAMOS[3] };
+  return Plot.plot({
+    width: ancho, height: 30 + filas.length * (angosto ? 34 : 36), marginLeft: margen, marginRight: 50, marginTop: 8, marginBottom: 26,
+    style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
+    x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: formatoUnidad(spec.unit, true) },
+    y: { label: null, domain: filas.map(f => f.label), tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
+    marks: [
+      ...["a", "b"].map(k => Plot.barX(barras.filter(d => d.k === k), {
+        x: "v", y: "label", fill: color[k], fillOpacity: d => (d.esRef ? 0.6 : 0.92),
+        insetTop: k === "a" ? 4 : 17, insetBottom: k === "a" ? 17 : 4,
+        tip: true, title: d => `${d.label}\n${spec.pair[k]}: ${fmt(d.v)}${d.n != null ? ` (n=${d.n.toLocaleString("es-CL")})` : ""}` })),
+      Plot.ruleX([0], { stroke: tono("--fig-regla") }),
+      ...["a", "b"].map(k => Plot.text(barras.filter(d => d.k === k), {
+        x: "v", y: "label", text: d => fmt(d.v), dx: 5, dy: k === "a" ? -6 : 6, textAnchor: "start", fontSize: angosto ? 9 : 9.5,
+        fill: tono("--texto"), stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" })),
+    ],
+  });
+}
+
+function leyendaPares(spec) {
+  const caja = document.createElement("div");
+  caja.className = "leyenda";
+  [["a", COLORES_TRAMOS[0], "arriba"], ["b", COLORES_TRAMOS[3], "abajo"]].forEach(([k, c, donde]) => {
+    const item = document.createElement("span");
+    item.innerHTML = `<svg width="14" height="12" aria-hidden="true"><rect x="0" y="1" width="14" height="10" fill="${c}"/></svg>`;
+    item.append(document.createTextNode(`${spec.pair[k]} (${donde})`));
+    caja.append(item);
+  });
+  return caja;
+}
+
+/**
  * `dispersion_sedes`: una burbuja por sede (área = entrantes), con las líneas del país partiendo el plano.
  *
  * SE ROTULAN HASTA 15 SEDES, LAS DE MÁS ENTRANTES (decisión del 09-10): con treinta en la Metropolitana los
@@ -797,6 +894,7 @@ function dispersionSedes(spec, Plot, ancho) {
 function leyenda(spec) {
   if (spec.form === "matricula_region") return leyendaRegion(spec);
   if (spec.form === "barras_partidas") return leyendaPartidas(spec);
+  if (spec.form === "barras_pares") return leyendaPares(spec);
   if (spec.form === "barras_sedes" || spec.form === "rangos_sedes" || spec.form === "dispersion_sedes") return null;
   const activas = (spec.series || []).filter(s => !s.retreating);
   if (activas.length < 2 || activas.length > MAX_EN_UN_PANEL) return null;
@@ -854,7 +952,8 @@ function leyendaRegion(spec) {
 }
 
 const FORMAS = { matricula_series: matriculaSeries, matricula_region: matriculaRegion, barras_sedes: barrasSedes,
-                 rangos_sedes: rangosSedes, barras_partidas: barrasPartidas, dispersion_sedes: dispersionSedes };
+                 rangos_sedes: rangosSedes, barras_partidas: barrasPartidas, dispersion_sedes: dispersionSedes,
+                 barras_pares: barrasPares };
 
 /** Dibuja una figura en el ancho dado, o se niega. */
 function dibujar(spec, ancho = 720) {

@@ -31,7 +31,7 @@ from pathlib import Path
 # viejo —«0 sedes universitarias», «12 sedes universitarias» en un reporte de IP y CFT— aunque el servicio estaba al día:
 # el compositor viaja en el plugin y el plugin no se había actualizado. El spec dice qué compositor necesita
 # (`requires_composer`); este se niega si es más viejo, y `--version` le deja al agente comprobarlo antes.
-COMPOSITOR = "0.43.1"
+COMPOSITOR = "0.44.0"
 
 
 # LA HUELLA DEL SPEC (MAT-56, qa de O'Higgins del 14-10). El control de cifras revisa las lecturas contra el spec, pero
@@ -220,8 +220,18 @@ def validar_series(spec: dict, errores: list[str]) -> list[str]:
             elif v is not None and spec.get("unit") == "pct" and v > 100:
                 errores.append(f"«{label}» {p.get('year')}: un porcentaje no puede pasar de 100")
     # LA UNIDAD DE UNA SERIE (MAT-76): matrícula por defecto; el reporte por carrera trae series en % y en pesos
-    if spec.get("unit", "count") not in UNIDADES:
-        errores.append(f"«unit» tiene que ser una de {', '.join(UNIDADES)}")
+    if spec.get("unit", "count") not in UNIDADES + ("idx",):
+        errores.append(f"«unit» tiene que ser una de {', '.join(UNIDADES + ('idx',))}")
+    # UN ÍNDICE DICE SU BASE (MAT-76, etapa 2): sin el año en que todas valen 100, dos curvas no se comparan.
+    if spec.get("unit") == "idx":
+        base = spec.get("base_year")
+        if base not in x:
+            errores.append("un índice trae «base_year», uno de los años de «x»")
+        else:
+            for serie in series:
+                v = next((p.get("value") for p in serie.get("points") or [] if p.get("year") == base), None)
+                if v != 100:
+                    errores.append(f"«{serie.get('label')}» no vale 100 en el año base {base}")
     if series and all(s.get("retreating") for s in series):
         errores.append("todas las series vienen en retirada: no queda nada que comparar")
     notas = {f"{a.get('kind')}|{a.get('series')}|{a.get('year')}": a.get("note") for a in spec.get("annotations") or []}
@@ -494,9 +504,53 @@ def validar_dispersion(spec: dict, errores: list[str]) -> list[str]:
     return errores
 
 
+def _validar_par(label: str, f: dict, unidad: str, errores: list[str]) -> None:
+    for k in ("a", "b"):
+        v = f.get(k)
+        if v is not None and (not _numero(v) or v < 0):
+            errores.append(f"«{label}»: «{k}» tiene que ser un número no negativo o null")
+        elif v is not None and unidad == "pct" and v > 100:
+            errores.append(f"«{label}»: un porcentaje no puede pasar de 100")
+
+
+def validar_pares(spec: dict, errores: list[str]) -> list[str]:
+    """`barras_pares` (MAT-76, etapa 2): dos barras por fila, A contra B (% de colegio pagado y % prioritario)."""
+    if spec.get("unit") not in UNIDADES:
+        errores.append(f"«unit» tiene que ser una de {', '.join(UNIDADES)}")
+    par = spec.get("pair") or {}
+    a, b = str(par.get("a") or "").strip(), str(par.get("b") or "").strip()
+    if not a or not b or a == b:
+        errores.append("«pair» tiene que nombrar «a» y «b», distintos")
+    filas = spec.get("rows") or []
+    if not filas:
+        errores.append("no hay filas")
+    nombres, fuera = set(), set(spec.get("excluded") or [])
+    for f in filas:
+        label = f.get("label")
+        if not str(label or "").strip():
+            errores.append("una fila no trae «label»")
+        if label in nombres:
+            errores.append(f"la fila «{label}» está repetida")
+        nombres.add(label)
+        if label in fuera:
+            errores.append(f"«{label}» está en retirada y no puede aparecer en el cuerpo")
+        _validar_par(label, f, spec.get("unit"), errores)
+        n = f.get("n")
+        if n is not None and (not isinstance(n, int) or isinstance(n, bool) or n < 0):
+            errores.append(f"«{label}»: «n» tiene que ser un entero no negativo")
+    ref = spec.get("reference")
+    if ref is not None:
+        if not str(ref.get("label") or "").strip() or not _numero(ref.get("a")) or not _numero(ref.get("b")):
+            errores.append("«reference» tiene que traer «label», «a» y «b», o ser null")
+        else:
+            _validar_par("reference", ref, spec.get("unit"), errores)
+    return errores
+
+
 VALIDADORES = {"matricula_series": validar_series, "matricula_region": validar_region,
                "barras_sedes": validar_barras, "rangos_sedes": validar_rangos,
-               "barras_partidas": validar_partidas, "dispersion_sedes": validar_dispersion}
+               "barras_partidas": validar_partidas, "dispersion_sedes": validar_dispersion,
+               "barras_pares": validar_pares}
 
 
 def barras_visibles(spec: dict) -> tuple[list, int]:
@@ -513,7 +567,7 @@ def _fmt_unidad(v, unidad: str) -> str:
         return "$" + f"{v:.2f}".replace(".", ",") + " M"
     if unidad == "pct":
         return f"{v:.1f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
-    if unidad == "years":
+    if unidad in ("years", "idx"):
         return f"{v:.1f}".rstrip("0").rstrip(".").replace(".", ",")
     return f"{v:,.0f}".replace(",", ".")
 
@@ -562,6 +616,15 @@ def tabla(spec: dict) -> str:
             filas.append(f"| {f.get('label')} | " + " | ".join(celdas)
                          + f" | {'' if f.get('n') is None else f['n']} | {f.get('detail') or ''} |")
         return "\n".join(filas)
+    if spec.get("form") == "barras_pares":
+        par = spec.get("pair") or {}
+        filas = [f"| Fila | {par.get('a')} | {par.get('b')} | n |", "|---|---:|---:|---:|"]
+        ref = spec.get("reference")
+        for f in (spec.get("rows") or []) + ([ref] if ref else []):
+            celda = lambda v: _fmt_unidad(v, spec.get("unit")) if _numero(v) else "sin dato"
+            filas.append(f"| {f.get('label')} | {celda(f.get('a'))} | {celda(f.get('b'))} | "
+                         f"{'' if f.get('n') is None else f['n']} |")
+        return "\n".join(filas)
     if spec.get("form") == "matricula_region":
         if not spec.get("retreating_sites"):
             # sin sedes en retirada, una sola columna (MAT-48): la segunda repetiría la primera
@@ -581,7 +644,7 @@ def tabla(spec: dict) -> str:
         celdas = []
         for s in series:
             v = next((p.get("value") for p in s.get("points") or [] if p.get("year") == a), None)
-            celdas.append("sin dato" if v is None else f"{v:,.0f}".replace(",", "."))
+            celdas.append("sin dato" if v is None else _fmt_unidad(v, spec.get("unit") or "count"))
         filas.append(f"| {a} | " + " | ".join(celdas) + " |")
     return "\n".join([cab, sep, *filas])
 
@@ -678,6 +741,17 @@ def notas_partidas(spec: dict) -> str:
     return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
 
 
+def notas_pares(spec: dict) -> str:
+    items = []
+    ref = spec.get("reference")
+    if ref:
+        items.append(f"<li>La última fila, separada, es el {e(ref['label'])}: calculada sobre todos los estudiantes "
+                     "del país, no como promedio de las filas.</li>")
+    for aviso in spec.get("notices") or []:
+        items.append(f"<li>{e(aviso)}</li>")
+    return f'<div class="notas"><ul>{"".join(items)}</ul></div>' if items else ""
+
+
 def notas_dispersion(spec: dict) -> str:
     q = spec.get("quadrant_labels") or {}
     items = ["<li>Los cuadrantes: arriba a la derecha, " + e(q.get("x_above_y_above")) + "; arriba a la izquierda, "
@@ -698,6 +772,8 @@ def notas_html(spec: dict) -> str:
         return notas_dispersion(spec)
     if spec.get("form") == "barras_partidas":
         return notas_partidas(spec)
+    if spec.get("form") == "barras_pares":
+        return notas_pares(spec)
     if spec.get("form") == "barras_sedes":
         return notas_barras(spec)
     if spec.get("form") == "rangos_sedes":
@@ -783,7 +859,7 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
         for k, v in nodo.items():
             # Una serie en % (MAT-76 qa): sus puntos son porcentajes; sin "series" y "points" aquí, el control
             # rechazaba «el 59% con gratuidad en 2025», que es un punto de la figura.
-            hijo_pct = en_pct and k in ("bars", "value", "reference", "rows", "series", "points") \
+            hijo_pct = en_pct and k in ("bars", "value", "reference", "rows", "series", "points", "a", "b") \
                 or k in CLAVES_PORCENTAJE \
                 or str(k).endswith("_pct") \
                 or k == "growth" or (es_pct and k in ("total", "active"))
