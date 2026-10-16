@@ -31,7 +31,7 @@ from pathlib import Path
 # viejo —«0 sedes universitarias», «12 sedes universitarias» en un reporte de IP y CFT— aunque el servicio estaba al día:
 # el compositor viaja en el plugin y el plugin no se había actualizado. El spec dice qué compositor necesita
 # (`requires_composer`); este se niega si es más viejo, y `--version` le deja al agente comprobarlo antes.
-COMPOSITOR = "0.39.0"
+COMPOSITOR = "0.43.0"
 
 
 # LA HUELLA DEL SPEC (MAT-56, qa de O'Higgins del 14-10). El control de cifras revisa las lecturas contra el spec, pero
@@ -217,6 +217,11 @@ def validar_series(spec: dict, errores: list[str]) -> list[str]:
             v = p.get("value")
             if v is not None and (not isinstance(v, (int, float)) or isinstance(v, bool) or v < 0):
                 errores.append(f"«{label}» {p.get('year')}: el valor tiene que ser un número no negativo o null")
+            elif v is not None and spec.get("unit") == "pct" and v > 100:
+                errores.append(f"«{label}» {p.get('year')}: un porcentaje no puede pasar de 100")
+    # LA UNIDAD DE UNA SERIE (MAT-76): matrícula por defecto; el reporte por carrera trae series en % y en pesos
+    if spec.get("unit", "count") not in UNIDADES:
+        errores.append(f"«unit» tiene que ser una de {', '.join(UNIDADES)}")
     if series and all(s.get("retreating") for s in series):
         errores.append("todas las series vienen en retirada: no queda nada que comparar")
     notas = {f"{a.get('kind')}|{a.get('series')}|{a.get('year')}": a.get("note") for a in spec.get("annotations") or []}
@@ -444,7 +449,9 @@ def validar_partidas(spec: dict, errores: list[str]) -> list[str]:
 COLORES_TRAMOS = ("#0072B2", "#56B4E9", "#E69F00", "#D55E00")
 
 # MAT-24: los ejes de una dispersión, los cuadrantes que nombra y lo mínimo para que un plano diga algo.
-UNIDADES_EJE = ("score", "pct", "clp_m")
+# «pp»: puntos porcentuales, una diferencia entre dos porcentajes (el mapa social: % pagado − % prioritario, MAT-76);
+# es el único eje que admite negativos, entre −100 y 100.
+UNIDADES_EJE = ("score", "pct", "clp_m", "pp")
 CUADRANTES = ("x_above_y_above", "x_above_y_below", "x_below_y_above", "x_below_y_below")
 MIN_EN_PLANO = 3
 
@@ -470,7 +477,10 @@ def validar_dispersion(spec: dict, errores: list[str]) -> list[str]:
             errores.append(f"«{label}» está en retirada y no puede aparecer en el cuerpo")
         for eje in ("x", "y"):
             v = p.get(eje)
-            if not _numero(v) or v < 0:
+            if (spec.get(eje) or {}).get("unit") == "pp":
+                if not _numero(v) or not -100 <= v <= 100:
+                    errores.append(f"«{label}»: «{eje}» tiene que ser un número entre −100 y 100")
+            elif not _numero(v) or v < 0:
                 errores.append(f"«{label}»: «{eje}» tiene que ser un número no negativo")
             elif (spec.get(eje) or {}).get("unit") == "pct" and v > 100:
                 errores.append(f"«{label}»: un porcentaje no puede pasar de 100")
@@ -1003,6 +1013,10 @@ def componer(spec: dict) -> str:
     return _pagina(spec["title"], cuerpo, {"figura": spec})
 
 
+# El reporte de una región y el de una carrera (MAT-76) son la misma forma: portada, secciones con figuras y lecturas.
+FORMAS_REPORTE = ("reporte_region", "reporte_carrera")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--entrada", type=Path)
@@ -1027,7 +1041,7 @@ def main() -> int:
               "de las lecturas son tuyos.", file=sys.stderr)
         return 2
 
-    if spec.get("form") == "reporte_region":
+    if spec.get("form") in FORMAS_REPORTE:
         errores = validar_reporte(spec)
         if errores:
             print("NO SE COMPONE EL REPORTE:", file=sys.stderr)

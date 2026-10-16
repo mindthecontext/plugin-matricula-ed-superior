@@ -22,7 +22,8 @@ los que salen, quién llega convencido y quién desplazado.
 
 **Por carrera** — dónde se estudia algo en el sistema completo, incluidos institutos profesionales y
 CFT: quién la dicta y con qué participación, quién entra, en qué termina la cohorte, qué
-empleabilidad tiene, y **de quienes pusieron 1ª a una institución, en cuál se matricularon**.
+empleabilidad tiene, y **de quienes pusieron 1ª a una institución, en cuál se matricularon**. Y el
+reporte nacional de la carrera, como una página con sus figuras y lecturas.
 
 ## Di la frontera en la primera respuesta
 

@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.43.0 · 2026-10-16
+
+El reporte nacional de una carrera. `reporte_carrera` arma, para cualquiera de las carreras del saber, una página con su portada, una síntesis y cinco secciones —el mercado, quién entra, quién paga, en qué termina, territorio y acceso— con sus figuras ya armadas y las notas de método, y la skill reportar-una-carrera dice cómo escribir sus lecturas. Las instituciones se comparan en grupos por puntaje y origen social, contra el valor nacional de la carrera, y las lecturas pasan por el mismo control de cifras que el reporte regional. Requiere el compositor 0.43.0, que agrega la unidad a las series (porcentaje, millones de pesos) y el eje en puntos porcentuales.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion` · aparece `reporte_carrera`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region` · aparece `reportar-una-carrera`
+- Datos: `2026-10-16f-lab`
+
 ## v0.42.0 · 2026-10-16
 
 La matriz de sustitución dice la base de cada porcentaje. Cada flujo es «pusieron 1ª a X en la admisión y se matricularon en Y», no «dejaron X». Sus porcentajes se llaman ahora por su base: `pct_de_los_que_fueron_a_otra` (lo que X «pierde»: de los que la pusieron 1ª y se matricularon en otra), `pct_de_quienes_la_pusieron_1a` (de todos los que la pusieron 1ª) y `pct_de_lo_que_recibe_el_destino`, con sus n. Antes había dos, `share_del_origen` y `share_del_destino`, y el primero se leyó como «de lo que pierde»: la U. Bernardo O'Higgins no pierde un tercio hacia UDLA, pierde la mitad. Cambia el nombre de los campos.

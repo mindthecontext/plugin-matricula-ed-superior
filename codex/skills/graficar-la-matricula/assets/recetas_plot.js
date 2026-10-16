@@ -127,9 +127,13 @@ function validarSeries(spec, errores) {
       const vacio = p.value === null || p.value === undefined;
       if (!vacio && (typeof p.value !== "number" || p.value < 0)) {
         errores.push(`«${serie.label}» ${p.year}: el valor tiene que ser un número no negativo o null`);
+      } else if (!vacio && spec.unit === "pct" && p.value > 100) {
+        errores.push(`«${serie.label}» ${p.year}: un porcentaje no puede pasar de 100`);
       }
     }
   }
+  // LA UNIDAD DE UNA SERIE (MAT-76): matrícula por defecto; el reporte por carrera trae series en % y en pesos
+  if (!UNIDADES.includes(spec.unit === undefined ? "count" : spec.unit)) errores.push(`«unit» tiene que ser una de ${UNIDADES.join(", ")}`);
   if (series.length && series.every(s => s.retreating)) {
     errores.push("todas las series vienen en retirada: no queda nada que comparar");
   }
@@ -359,7 +363,8 @@ function validarPartidas(spec, errores) {
 }
 
 // MAT-24: los ejes de una dispersión, los cuadrantes que nombra y lo mínimo para que un plano diga algo.
-const UNIDADES_EJE = ["score", "pct", "clp_m"];
+// «pp»: puntos porcentuales (el mapa social, MAT-76); el único eje que admite negativos, entre −100 y 100.
+const UNIDADES_EJE = ["score", "pct", "clp_m", "pp"];
 const CUADRANTES = ["x_above_y_above", "x_above_y_below", "x_below_y_above", "x_below_y_below"];
 const MIN_EN_PLANO = 3;
 
@@ -384,7 +389,9 @@ function validarDispersion(spec, errores) {
     if (fuera.has(p.label)) errores.push(`«${p.label}» está en retirada y no puede aparecer en el cuerpo`);
     for (const eje of ["x", "y"]) {
       const v = p[eje];
-      if (!num(v) || v < 0) errores.push(`«${p.label}»: «${eje}» tiene que ser un número no negativo`);
+      if ((spec[eje] || {}).unit === "pp") {
+        if (!num(v) || v < -100 || v > 100) errores.push(`«${p.label}»: «${eje}» tiene que ser un número entre −100 y 100`);
+      } else if (!num(v) || v < 0) errores.push(`«${p.label}»: «${eje}» tiene que ser un número no negativo`);
       else if ((spec[eje] || {}).unit === "pct" && v > 100) errores.push(`«${p.label}»: un porcentaje no puede pasar de 100`);
     }
     if (!Number.isInteger(p.size) || p.size < 0) errores.push(`«${p.label}»: «size» tiene que ser un entero no negativo`);
@@ -433,7 +440,7 @@ function matriculaSeries(spec, Plot, ancho) {
              fontFamily: tono("--sans") },
     x: { label: null, domain: [desde, hasta], ticks, tickFormat: v => String(v), inset: 8 },
     // Base en cero: un eje recortado por abajo convierte una variación chica en un derrumbe.
-    y: { label: null, zero: true, grid: true, nice: true, tickFormat: v => Math.round(v).toLocaleString("es-CL") },
+    y: { label: null, zero: true, grid: true, nice: true, tickFormat: formatoUnidad(spec.unit || "count", true) },
   };
   const salto = (seleccion, extra = {}) => [
     // El valor inconsistente se dibuja (se declara, no se omite) y se rodea para que no pase por dato firme.
@@ -455,7 +462,7 @@ function matriculaSeries(spec, Plot, ancho) {
           x: "year", y: "value", stroke: COLORES[i], strokeWidth: 2.2, strokeDasharray: TRAZOS[i],
         })),
         Plot.dot(conDato, { x: "year", y: "value", fill: "serie", symbol: "serie", r: angosto ? 2.8 : 3.4,
-                            tip: true, title: d => `${d.serie} · ${d.year}: ${d.value.toLocaleString("es-CL")}` }),
+                            tip: true, title: d => `${d.serie} · ${d.year}: ${formatoUnidad(spec.unit || "count")(d.value)}` }),
         ...salto(marcados),
       ],
     });
@@ -500,7 +507,7 @@ function matriculaSeries(spec, Plot, ancho) {
         fill: tono("--superficie") })),
       // Puntos invisibles con su cifra: al pasar el cursor por cualquier año, la sede y el valor.
       Plot.dot(conDato, { x: "year", y: "value", r: 4, fill: "transparent",
-                          tip: true, title: d => `${d.serie} · ${d.year}: ${d.value.toLocaleString("es-CL")}` }),
+                          tip: true, title: d => `${d.serie} · ${d.year}: ${formatoUnidad(spec.unit || "count")(d.value)}` }),
       Plot.link(rotulos.filter(r => Math.abs(r.ym - r.value) > gap / 2), {
         x1: "year", y1: "value", x2: "year", y2: "ym", stroke: tono("--texto-tenue"), strokeWidth: 0.7 }),
       Plot.text(rotulos, { x: "year", y: "ym", text: r => corta(r.serie), dx: 8, textAnchor: "start",
@@ -735,6 +742,7 @@ function dispersionSedes(spec, Plot, ancho) {
   const angosto = ancho < 520;
   const fmtDe = (u, eje) => v => (u === "clp_m" ? `$${v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : 2, maximumFractionDigits: 2 })} M`
     : u === "pct" ? `${v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : 1, maximumFractionDigits: 1 })}%`
+    : u === "pp" ? `${v > 0 ? "+" : ""}${v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : 1, maximumFractionDigits: 1 })} pp`
     : v.toLocaleString("es-CL", { minimumFractionDigits: eje ? 0 : 1, maximumFractionDigits: 1 }));
   const fx = fmtDe(spec.x.unit), fy = fmtDe(spec.y.unit);
   const ref = spec.reference;
