@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.46.0 · 2026-10-16
+
+La lente institucional completa, como el reporte del laboratorio: 12 de sus 13 figuras. Además del área de captación y el campo de batalla, la lente trae la matrícula de primer año de la institución y su ritmo frente a la carrera; el mapa social y la escalera de puntaje con la institución marcada; género, origen social y desenlaces con su grupo marcado; de qué comunas vienen sus entrantes; por qué vías entran, frente a la carrera; y su empleabilidad. Falta «adónde va el estudiante que podría captar». Datos 2026-10-16h. Requiere el compositor 0.46.0, que marca una fila o una burbuja con «▸».
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-16h-lab` · antes `2026-10-16g-lab`
+
 ## v0.45.0 · 2026-10-16
 
 La lente institucional de una carrera. `reporte_carrera` con `institucion` (y `area` si tiene varias) arma la carrera vista desde una institución en su área de captación: de qué regiones vienen sus entrantes, adónde van los egresados de cada región del área, y el campo de batalla por los colegios de origen, colegio por colegio y, para los colegios con menos de 30 entrantes, por comuna, frente a la institución que más capta de cada uno. Hay 1.614 lentes en 69 carreras: toda institución con al menos 50 entrantes al año en un área. Datos 2026-10-16g. Requiere el compositor 0.45.0, que nombra al rival de cada fila.

@@ -31,7 +31,7 @@ from pathlib import Path
 # viejo —«0 sedes universitarias», «12 sedes universitarias» en un reporte de IP y CFT— aunque el servicio estaba al día:
 # el compositor viaja en el plugin y el plugin no se había actualizado. El spec dice qué compositor necesita
 # (`requires_composer`); este se niega si es más viejo, y `--version` le deja al agente comprobarlo antes.
-COMPOSITOR = "0.45.0"
+COMPOSITOR = "0.46.0"
 
 
 # LA HUELLA DEL SPEC (MAT-56, qa de O'Higgins del 14-10). El control de cifras revisa las lecturas contra el spec, pero
@@ -171,7 +171,26 @@ def validar(spec: dict) -> list[str]:
                 "el servicio es más nuevo que el plugin instalado; actualiza el plugin y vuelve a componer"]
     errores: list[str] = []
     encabezado(spec, errores)
-    return VALIDADORES[forma](spec, errores)
+    VALIDADORES[forma](spec, errores)
+    marca_valida(spec, errores)
+    return errores
+
+
+# LA MARCA DE UNA FILA (MAT-83): la lente marca su institución, o su grupo, en las figuras que comparte con el reporte
+# nacional. `highlight` es el rótulo de una fila (o de una burbuja) que existe en la figura.
+FORMAS_CON_MARCA = ("barras_sedes", "rangos_sedes", "barras_partidas", "dispersion_sedes", "barras_pares")
+
+
+def marca_valida(spec: dict, errores: list[str]) -> None:
+    h = spec.get("highlight")
+    if h is None:
+        return
+    if spec.get("form") not in FORMAS_CON_MARCA:
+        errores.append(f"«highlight» no se usa en la forma «{spec.get('form')}»")
+        return
+    rotulos = [f.get("label") for f in (spec.get("bars") or []) + (spec.get("rows") or []) + (spec.get("points") or [])]
+    if not isinstance(h, str) or h not in rotulos:
+        errores.append("«highlight» tiene que ser el rótulo de una fila de la figura")
 
 
 def encabezado(spec: dict, errores: list[str]) -> None:
@@ -770,6 +789,14 @@ def notas_dispersion(spec: dict) -> str:
 
 def notas_html(spec: dict) -> str:
     """Lo que el lector tiene que saber para no leer mal la figura, derivado de los datos."""
+    html_ = _notas_html(spec)
+    if not spec.get("highlight"):
+        return html_
+    li = f"<li>La fila marcada con «▸» es {e(spec['highlight'])}.</li>"
+    return html_.replace("<ul>", "<ul>" + li, 1) if html_ else f'<div class="notas"><ul>{li}</ul></div>'
+
+
+def _notas_html(spec: dict) -> str:
     if spec.get("form") == "dispersion_sedes":
         return notas_dispersion(spec)
     if spec.get("form") == "barras_partidas":

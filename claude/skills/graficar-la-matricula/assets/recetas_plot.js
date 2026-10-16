@@ -83,8 +83,22 @@ function validar(spec) {
   }
   const errores = [];
   encabezado(spec, errores);
-  return VALIDADORES[forma](spec, errores);
+  VALIDADORES[forma](spec, errores);
+  marcaValida(spec, errores);
+  return errores;
 }
+
+// LA MARCA DE UNA FILA (MAT-83): la lente marca su institución, o su grupo, en las figuras que comparte con el reporte
+// nacional. `highlight` es el rótulo de una fila (o de una burbuja) que existe en la figura.
+const FORMAS_CON_MARCA = ["barras_sedes", "rangos_sedes", "barras_partidas", "dispersion_sedes", "barras_pares"];
+function marcaValida(spec, errores) {
+  const h = spec.highlight;
+  if (h === null || h === undefined) return;
+  if (!FORMAS_CON_MARCA.includes(spec.form)) { errores.push(`«highlight» no se usa en la forma «${spec.form}»`); return; }
+  const rotulos = [...(spec.bars || []), ...(spec.rows || []), ...(spec.points || [])].map(f => f.label);
+  if (typeof h !== "string" || !rotulos.includes(h)) errores.push("«highlight» tiene que ser el rótulo de una fila de la figura");
+}
+const conMarca = (spec, recorte) => t => (spec.highlight && t === spec.highlight ? "▸ " : "") + recorte(t);
 
 /** Lo que toda forma exige: los tres textos con sus roles, la procedencia y los años. */
 function encabezado(spec, errores) {
@@ -649,9 +663,9 @@ function barrasSedes(spec, Plot, ancho) {
     marginTop: ref ? 22 : 8, marginBottom: 24,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
     x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: fmtEje },
-    y: { label: null, domain: filas.map(f => f.label), tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
+    y: { label: null, domain: filas.map(f => f.label), tickFormat: conMarca(spec, t => (t.length > 34 ? t.slice(0, 33) + "…" : t)) },
     marks: [
-      Plot.barX(filas, { x: "value", y: "label", fill: COLORES[0], fillOpacity: 0.85, insetTop: 4, insetBottom: 4,
+      Plot.barX(filas, { x: "value", y: "label", fill: f => (f.label === spec.highlight ? COLORES[1] : COLORES[0]), fillOpacity: 0.85, insetTop: 4, insetBottom: 4,
                          tip: true, title: f => `${f.label}: ${fmt(f.value)}${f.n != null ? ` (n=${f.n.toLocaleString("es-CL")})` : ""}` }),
       Plot.ruleX([0], { stroke: tono("--fig-regla") }),
       ...(conDetalle ? [Plot.text(filas.filter(f => f.detail), { x: tope, y: "label", text: "detail", textAnchor: "start", dx: 10,
@@ -711,7 +725,8 @@ function rangosSedes(spec, Plot, ancho) {
     marginTop: ref ? 24 : 10, marginBottom: 24,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
     x: { label: null, domain: [bajo - 20, alto + 20], grid: true, ticks: angosto ? 3 : 6, tickFormat: fmtEje },
-    y: { label: null, domain: filas.map(f => f.eti), tickFormat: acorta },
+    y: { label: null, domain: filas.map(f => f.eti),
+         tickFormat: t => ((filas.find(f => f.eti === t) || {}).label === spec.highlight && spec.highlight ? "▸ " : "") + acorta(t) },
     marks: [
       // DOS BIGOTES, NO UNA LÍNEA QUE CRUZA LA CAJA (el reporte local lo corrigió dos veces).
       Plot.ruleY(robustas, { y: "eti", x1: "low", x2: "q1", stroke: color, strokeWidth: 1.5 }),
@@ -767,7 +782,7 @@ function barrasPartidas(spec, Plot, ancho) {
     marginRight: conDetalle && !angosto ? 200 : 16, marginTop: arriba ? 16 : 8, marginBottom: 26,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
     x: { label: null, domain: [0, 100], grid: true, ticks: angosto ? 3 : 5, tickFormat: v => `${v}%` },
-    y: { label: null, domain: dominio, tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
+    y: { label: null, domain: dominio, tickFormat: conMarca(spec, t => (t.length > 34 ? t.slice(0, 33) + "…" : t)) },
     color: { domain: orden, range: indicesTramos(tramos.length).map(i => COLORES_TRAMOS[i]) },
     marks: [
       Plot.barX(apilado, { y: "label", x: "v", fill: "tramo", order: orden, insetTop: arriba ? 10 : 4, insetBottom: arriba ? 4 : 4,
@@ -808,7 +823,7 @@ function barrasPares(spec, Plot, ancho) {
     marginRight: conDetalle && !angosto ? 190 : 50, marginTop: arriba ? 16 : 8, marginBottom: 26,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
     x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: formatoUnidad(spec.unit, true) },
-    y: { label: null, domain: filas.map(f => f.label), tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
+    y: { label: null, domain: filas.map(f => f.label), tickFormat: conMarca(spec, t => (t.length > 34 ? t.slice(0, 33) + "…" : t)) },
     marks: [
       ...["a", "b"].map(k => Plot.barX(barras.filter(d => d.k === k), {
         x: "v", y: "label", fill: color[k], fillOpacity: d => (d.esRef ? 0.6 : 0.92),
@@ -891,8 +906,13 @@ function dispersionSedes(spec, Plot, ancho) {
         channels: { sede: "label", [spec.x.label]: d => fx(d.x), [spec.y.label]: d => fy(d.y),
                     [spec.size_label || "tamaño"]: d => d.size.toLocaleString("es-CL") },
         tip: { format: { x: false, y: false, r: false } } }),
-      Plot.text(puntos.filter(p => rotuladas.has(p.label)), { x: "x", y: "y", text: corto,
+      Plot.text(puntos.filter(p => rotuladas.has(p.label) && p.label !== spec.highlight), { x: "x", y: "y", text: corto,
         dy: -12, fontSize: letra, fill: tono("--texto"), ...halo }),
+      // LA MARCADA (MAT-83): un anillo y su nombre siempre, aunque tape a otra; la lente se busca primero.
+      ...(spec.highlight ? [
+        Plot.dot(puntos.filter(p => p.label === spec.highlight), { x: "x", y: "y", r: "size", fill: "none", stroke: COLORES[1], strokeWidth: 2.6 }),
+        Plot.text(puntos.filter(p => p.label === spec.highlight), { x: "x", y: "y", text: p => "▸ " + corto(p), dy: -14,
+          fontSize: letra + 0.5, fontWeight: "bold", fill: tono("--marca-cuadro"), ...halo })] : []),
     ],
   });
 }

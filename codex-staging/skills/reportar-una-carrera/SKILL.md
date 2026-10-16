@@ -192,13 +192,24 @@ Una institución con varias sedes tiene una lente por área; si no dices `area` 
 lista: pregunta cuál. Si la institución no tiene lente en la carrera, la herramienta dice por qué (recibe menos
 de 50 entrantes al año en un área) y lista las que sí tienen.
 
-Trae la portada, la síntesis, 1 «Su área de captación» (de qué regiones vienen sus entrantes, y adónde van los
-egresados de cada región del área), 2 «El campo de batalla» (colegio por colegio, y los colegios chicos por comuna)
-y las notas de método.
+Trae la portada, la síntesis, 1 «Su tamaño» (su matrícula de primer año y su ritmo frente a la carrera), 2 «Dónde
+se ubica en la carrera» (el mapa social y la escalera de puntaje con la institución marcada; género, origen social y
+desenlaces con su grupo marcado), 3 «Su área de captación» (de qué regiones y comunas vienen sus entrantes, y adónde
+van los egresados de cada región del área), 4 «El campo de batalla» (colegio por colegio, y los colegios chicos por
+comuna), 5 «Por dónde entran y qué pasa después» (vías de ingreso y empleabilidad, frente a la carrera) y las notas
+de método.
+
+- **«▸» marca la institución o su grupo.** Las figuras de la sección 2 son las del reporte nacional, con una fila
+  marcada (`highlight`, también en `groups.highlighted`). En el mapa y la escalera es la institución; en género,
+  origen social y desenlaces es **su grupo**, y lo que dice esa fila es del grupo, no de la institución: escribe
+  «su grupo, la selectiva de origen amplio, …», nunca «la UdeC titula el 74%».
+- **La serie propia es del CNED, por región de la sede.** En una región que se parte en ciudades (Biobío, Maule,
+  Valparaíso, Los Lagos), junta todas sus sedes de la región, y el subtítulo lo dice: repítelo.
+- **La empleabilidad es por institución, todas sus sedes** (mifuturo no la publica por sede).
 
 - **El área de captación sale del dato:** las regiones del colegio de egreso de sus entrantes que suman el 80%. Di
   cuánto cubre (`facts`); no la llames «su región».
-- **«Adónde van los egresados de…» es una figura por región del área**, y la fila «esta lente» es la institución.
+- **«Adónde van los egresados de…» es una figura por región del área**, y la fila marcada con «▸» es la institución.
   Su puesto y su % están en la figura y en la síntesis: cópialos de ahí.
 - **El campo de batalla son diez cohortes de entrantes.** Cada fila es un colegio (o una comuna, para los colegios
   con menos de 30): arriba lo que capta la institución, abajo lo que capta **su mayor rival en ese colegio**, que
