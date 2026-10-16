@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.41.3 · 2026-10-16
+
+Corrección en la competencia por carrera. La matriz de sustitución contaba como una pérdida de una institución hacia sí misma a quien la puso primera y se matriculó en ella, cuando el registro de postulaciones y el de matrícula escriben su nombre distinto (con y sin tilde): en Enfermería, el flujo más grande del país era UDLA → UDLA (1.026). Había 53 flujos así en las matrices; ahora ninguno, y su lugar lo ocupan flujos reales que quedaban fuera del corte.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-region`
+- Datos: `2026-10-16e-lab` · antes `2026-10-16d-lab`
+
 ## v0.41.2 · 2026-10-16
 
 Sin cambios para quien lo usa: los packs de flujos y del técnico dan lo mismo en cada corrida. Los empates se resuelven siempre igual —dos universidades con el mismo número de estudiantes quedan en orden alfabético—, así que una cifra ya no puede cambiar de una actualización a otra sin que cambien los datos. Ninguna cifra cambia.
