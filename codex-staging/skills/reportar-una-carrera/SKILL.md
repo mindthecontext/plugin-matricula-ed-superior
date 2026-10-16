@@ -1,6 +1,6 @@
 ---
 name: reportar-una-carrera
-description: Arma el reporte nacional de una carrera —portada, secciones con sus figuras y las lecturas que las acompañan— y lo entrega como una página. «Hazme el reporte de Psicología», «un informe de Enfermería en Chile», «quiero el reporte de Kinesiología», «arma un documento sobre quién estudia Derecho». Cubre la portada y las secciones 1, «El mercado», 2, «Quién entra», 3, «Quién paga», 4, «En qué termina», y 5, «Territorio y acceso», con una síntesis al principio y las notas de método al final. Se entrega como la página HTML que arma su compositor, publicada tal cual. Para una pregunta puntual sobre la carrera, usa explorar-una-carrera; para el reporte de una región, reportar-una-region; para una sola figura, graficar-la-matricula.
+description: Arma el reporte nacional de una carrera —o su lente en una institución—  con portada, secciones, figuras y las lecturas que las acompañan, y lo entrega como una página. Para la lente: «la Psicología de la UdeC», «Enfermería en la Santo Tomás de Temuco», «¿de qué colegios capta la UFRO en Psicología?». «Hazme el reporte de Psicología», «un informe de Enfermería en Chile», «quiero el reporte de Kinesiología», «arma un documento sobre quién estudia Derecho». Cubre la portada y las secciones 1, «El mercado», 2, «Quién entra», 3, «Quién paga», 4, «En qué termina», y 5, «Territorio y acceso», con una síntesis al principio y las notas de método al final. Se entrega como la página HTML que arma su compositor, publicada tal cual. Para una pregunta puntual sobre la carrera, usa explorar-una-carrera; para el reporte de una región, reportar-una-region; para una sola figura, graficar-la-matricula.
 ---
 
 # Reportar una carrera
@@ -182,6 +182,33 @@ Escríbela al final. Su bloque `findings` trae los hechos candidatos, cada uno c
   cuántos la estudian en su región. Una retención baja puede ser falta de oferta en la región; los datos
   no dicen cuál es la causa.
 - **Los canales suman 100% cada año**: un canal que sube le quita peso a otro, aunque no pierda estudiantes.
+
+## La lente de una institución
+
+    reporte_carrera(carrera, institucion="U. de Concepción", area="Concepción")
+
+La lente es la carrera vista desde una institución **en un área**: la UdeC en Concepción, la UST en La Araucanía.
+Una institución con varias sedes tiene una lente por área; si no dices `area` y tiene varias, la herramienta las
+lista: pregunta cuál. Si la institución no tiene lente en la carrera, la herramienta dice por qué (recibe menos
+de 50 entrantes al año en un área) y lista las que sí tienen.
+
+Trae la portada, la síntesis, 1 «Su área de captación» (de qué regiones vienen sus entrantes, y adónde van los
+egresados de cada región del área), 2 «El campo de batalla» (colegio por colegio, y los colegios chicos por comuna)
+y las notas de método.
+
+- **El área de captación sale del dato:** las regiones del colegio de egreso de sus entrantes que suman el 80%. Di
+  cuánto cubre (`facts`); no la llames «su región».
+- **«Adónde van los egresados de…» es una figura por región del área**, y la fila «esta lente» es la institución.
+  Su puesto y su % están en la figura y en la síntesis: cópialos de ahí.
+- **El campo de batalla son diez cohortes de entrantes.** Cada fila es un colegio (o una comuna, para los colegios
+  con menos de 30): arriba lo que capta la institución, abajo lo que capta **su mayor rival en ese colegio**, que
+  cambia de fila a fila (lo dice el detalle). No escribas «su rival» como si fuera uno solo.
+- **Quién lidera cada fila se copia de `groups`:** `lens_leads`, `rival_leads`, `tied`. «Capta más que su rival
+  en 4 de los 15 colegios» sale de contar esas listas, que ya vienen contadas en la síntesis.
+- **Es dónde capta cada una, no a quién le quita a quién.** Un colegio donde el rival capta más no es un colegio
+  «perdido»: la disputa en la admisión está en la matriz de sustitución (`competencia_carrera`), fuera de la lente.
+- **Un colegio nombrado tiene al menos 30 entrantes a la carrera en la ventana**; por debajo, se suma en su comuna.
+  Es una regla de base estadística: no nombres un colegio que no esté en la figura.
 
 ## No proyectes como si fuera dato
 

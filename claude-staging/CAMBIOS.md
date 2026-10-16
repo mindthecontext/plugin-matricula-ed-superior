@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.45.0 · 2026-10-16
+
+La lente institucional de una carrera. `reporte_carrera` con `institucion` (y `area` si tiene varias) arma la carrera vista desde una institución en su área de captación: de qué regiones vienen sus entrantes, adónde van los egresados de cada región del área, y el campo de batalla por los colegios de origen, colegio por colegio y, para los colegios con menos de 30 entrantes, por comuna, frente a la institución que más capta de cada uno. Hay 1.614 lentes en 69 carreras: toda institución con al menos 50 entrantes al año en un área. Datos 2026-10-16g. Requiere el compositor 0.45.0, que nombra al rival de cada fila.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-16g-lab` · antes `2026-10-16f-lab`
+
 ## v0.44.0 · 2026-10-16
 
 El reporte de una carrera llega a las 22 figuras del reporte nacional del laboratorio. Suma el ritmo de la carrera frente a toda la educación superior y frente a una carrera de control, en índice base 100 (por defecto, la del mismo tipo de mercado con el primer año más parecido en 2019; `comparar_con` elige otra); cuántos entran a cada grupo de instituciones; mujeres y hombres por grupo; el nivel socioeconómico de los recién egresados, por año; y el origen social por grupo como pares, colegio pagado contra prioritario en una sola figura (reemplaza a las dos figuras de barras anteriores). Requiere el compositor 0.44.0, que trae las formas `barras_pares` y la serie en índice.

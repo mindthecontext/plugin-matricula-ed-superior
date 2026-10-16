@@ -31,7 +31,7 @@ from pathlib import Path
 # viejo —«0 sedes universitarias», «12 sedes universitarias» en un reporte de IP y CFT— aunque el servicio estaba al día:
 # el compositor viaja en el plugin y el plugin no se había actualizado. El spec dice qué compositor necesita
 # (`requires_composer`); este se niega si es más viejo, y `--version` le deja al agente comprobarlo antes.
-COMPOSITOR = "0.44.0"
+COMPOSITOR = "0.45.0"
 
 
 # LA HUELLA DEL SPEC (MAT-56, qa de O'Higgins del 14-10). El control de cifras revisa las lecturas contra el spec, pero
@@ -535,6 +535,8 @@ def validar_pares(spec: dict, errores: list[str]) -> list[str]:
         if label in fuera:
             errores.append(f"«{label}» está en retirada y no puede aparecer en el cuerpo")
         _validar_par(label, f, spec.get("unit"), errores)
+        if f.get("detail") is not None and not isinstance(f.get("detail"), str):
+            errores.append(f"«{label}»: «detail» tiene que ser un texto o null")
         n = f.get("n")
         if n is not None and (not isinstance(n, int) or isinstance(n, bool) or n < 0):
             errores.append(f"«{label}»: «n» tiene que ser un entero no negativo")
@@ -618,12 +620,12 @@ def tabla(spec: dict) -> str:
         return "\n".join(filas)
     if spec.get("form") == "barras_pares":
         par = spec.get("pair") or {}
-        filas = [f"| Fila | {par.get('a')} | {par.get('b')} | n |", "|---|---:|---:|---:|"]
+        filas = [f"| Fila | {par.get('a')} | {par.get('b')} | n | Detalle |", "|---|---:|---:|---:|---|"]
         ref = spec.get("reference")
         for f in (spec.get("rows") or []) + ([ref] if ref else []):
             celda = lambda v: _fmt_unidad(v, spec.get("unit")) if _numero(v) else "sin dato"
             filas.append(f"| {f.get('label')} | {celda(f.get('a'))} | {celda(f.get('b'))} | "
-                         f"{'' if f.get('n') is None else f['n']} |")
+                         f"{'' if f.get('n') is None else f['n']} | {f.get('detail') or ''} |")
         return "\n".join(filas)
     if spec.get("form") == "matricula_region":
         if not spec.get("retreating_sites"):

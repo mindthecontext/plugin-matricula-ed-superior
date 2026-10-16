@@ -442,6 +442,7 @@ function validarPares(spec, errores) {
     nombres.add(f.label);
     if (fuera.has(f.label)) errores.push(`«${f.label}» está en retirada y no puede aparecer en el cuerpo`);
     validarPar(f.label, f, spec.unit, errores);
+    if (f.detail !== null && f.detail !== undefined && typeof f.detail !== "string") errores.push(`«${f.label}»: «detail» tiene que ser un texto o null`);
     if (f.n !== null && f.n !== undefined && (!Number.isInteger(f.n) || f.n < 0)) errores.push(`«${f.label}»: «n» tiene que ser un entero no negativo`);
   }
   const ref = spec.reference;
@@ -798,8 +799,13 @@ function barrasPares(spec, Plot, ancho) {
   const tope = Math.max(...barras.map(d => d.v), 0) * 1.15 || 1;
   const margen = Math.min(angosto ? 150 : 210, Math.round(ancho * 0.42));
   const color = { a: COLORES_TRAMOS[0], b: COLORES_TRAMOS[3] };
+  // EL DETALLE (el rival de cada colegio, MAT-77) va a la derecha en escritorio y sobre la fila en pantalla angosta,
+  // como en barras_partidas: a la derecha no cabe.
+  const conDetalle = spec.rows.some(f => f.detail);
+  const arriba = conDetalle && angosto;
   return Plot.plot({
-    width: ancho, height: 30 + filas.length * (angosto ? 34 : 36), marginLeft: margen, marginRight: 50, marginTop: 8, marginBottom: 26,
+    width: ancho, height: 30 + filas.length * (arriba ? 46 : angosto ? 34 : 36), marginLeft: margen,
+    marginRight: conDetalle && !angosto ? 190 : 50, marginTop: arriba ? 16 : 8, marginBottom: 26,
     style: { background: "transparent", color: tono("--texto-suave"), fontSize: angosto ? "10px" : "11px", fontFamily: tono("--sans") },
     x: { label: null, domain: [0, tope], grid: true, ticks: angosto ? 3 : 5, tickFormat: formatoUnidad(spec.unit, true) },
     y: { label: null, domain: filas.map(f => f.label), tickFormat: t => (t.length > 34 ? t.slice(0, 33) + "…" : t) },
@@ -809,6 +815,9 @@ function barrasPares(spec, Plot, ancho) {
         insetTop: k === "a" ? 4 : 17, insetBottom: k === "a" ? 17 : 4,
         tip: true, title: d => `${d.label}\n${spec.pair[k]}: ${fmt(d.v)}${d.n != null ? ` (n=${d.n.toLocaleString("es-CL")})` : ""}` })),
       Plot.ruleX([0], { stroke: tono("--fig-regla") }),
+      ...(conDetalle ? [Plot.text(spec.rows.filter(f => f.detail), arriba
+        ? { y: "label", x: () => 0, text: "detail", dy: -20, textAnchor: "start", fontSize: 8.5, fill: tono("--texto-tenue") }
+        : { y: "label", x: () => tope, text: "detail", dx: 30, textAnchor: "start", fontSize: 9, fill: tono("--texto-tenue") })] : []),
       ...["a", "b"].map(k => Plot.text(barras.filter(d => d.k === k), {
         x: "v", y: "label", text: d => fmt(d.v), dx: 5, dy: k === "a" ? -6 : 6, textAnchor: "start", fontSize: angosto ? 9 : 9.5,
         fill: tono("--texto"), stroke: tono("--superficie"), strokeWidth: 3, paintOrder: "stroke" })),
