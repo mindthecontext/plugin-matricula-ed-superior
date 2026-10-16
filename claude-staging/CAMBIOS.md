@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.43.1 · 2026-10-16
+
+Correcciones del reporte de una carrera tras su primera prueba. El control de cifras acepta los valores de las series en porcentaje (antes rechazaba, por ejemplo, el porcentaje con gratuidad de un año) y rechaza un decimal escrito con punto («1.32 millones»), que antes se colaba. Los subtítulos escriben sus decimales con coma, y «Quién recibe a los ya titulados» ya no repite un conteo que no cuadraba con «Por dónde entran». Requiere el compositor 0.43.1.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-16f-lab`
+
 ## v0.43.0 · 2026-10-16
 
 El reporte nacional de una carrera. `reporte_carrera` arma, para cualquiera de las carreras del saber, una página con su portada, una síntesis y cinco secciones —el mercado, quién entra, quién paga, en qué termina, territorio y acceso— con sus figuras ya armadas y las notas de método, y la skill reportar-una-carrera dice cómo escribir sus lecturas. Las instituciones se comparan en grupos por puntaje y origen social, contra el valor nacional de la carrera, y las lecturas pasan por el mismo control de cifras que el reporte regional. Requiere el compositor 0.43.0, que agrega la unidad a las series (porcentaje, millones de pesos) y el eje en puntos porcentuales.

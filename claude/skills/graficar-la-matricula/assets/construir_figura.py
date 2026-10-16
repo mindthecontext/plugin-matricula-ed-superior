@@ -31,7 +31,7 @@ from pathlib import Path
 # viejo —«0 sedes universitarias», «12 sedes universitarias» en un reporte de IP y CFT— aunque el servicio estaba al día:
 # el compositor viaja en el plugin y el plugin no se había actualizado. El spec dice qué compositor necesita
 # (`requires_composer`); este se niega si es más viejo, y `--version` le deja al agente comprobarlo antes.
-COMPOSITOR = "0.43.0"
+COMPOSITOR = "0.43.1"
 
 
 # LA HUELLA DEL SPEC (MAT-56, qa de O'Higgins del 14-10). El control de cifras revisa las lecturas contra el spec, pero
@@ -744,6 +744,8 @@ def notas_html(spec: dict) -> str:
 # Las lecturas las redacta el agente. Lo que se protege son las CIFRAS: todo número de un texto tiene
 # que estar en lo que entregó el servicio —portada, figuras, cifras de contexto—, entero o redondeado
 # a un decimal. Un número que no está, se inventó o se calculó por fuera, y el reporte se niega.
+# Un decimal escrito con punto («1.32 millones»): NUMERO lo lee como dos números y el «1» pasaba el control.
+PUNTO_DECIMAL = re.compile(r"(?<![\w.,])\d+\.\d{1,2}(?!\w|[.,]\d)")
 NUMERO = re.compile(r"(?<![\w.,])\d{1,3}(?:\.\d{3})+(?:,\d+)?(?![\w])|(?<![\w.,])\d+(?:,\d+)?(?![\w])")
 
 
@@ -779,7 +781,10 @@ def numeros_del_spec(nodo, acc=None, pct=None, es_pct=False):
     if isinstance(nodo, dict):
         en_pct = es_pct or nodo.get("unit") == "pct"
         for k, v in nodo.items():
-            hijo_pct = en_pct and k in ("bars", "value", "reference", "rows") or k in CLAVES_PORCENTAJE \
+            # Una serie en % (MAT-76 qa): sus puntos son porcentajes; sin "series" y "points" aquí, el control
+            # rechazaba «el 59% con gratuidad en 2025», que es un punto de la figura.
+            hijo_pct = en_pct and k in ("bars", "value", "reference", "rows", "series", "points") \
+                or k in CLAVES_PORCENTAJE \
                 or str(k).endswith("_pct") \
                 or k == "growth" or (es_pct and k in ("total", "active"))
             if k == "blocks" and isinstance(v, list):
@@ -866,6 +871,9 @@ def validar_reporte(spec: dict) -> list[str]:
     for sec, b in lecturas(spec):
         for campo in ("text", "compatible"):
             texto = str(b.get(campo) or "")
+            for m in re.finditer(PUNTO_DECIMAL, texto):
+                errores.append(f"la lectura de «{b.get('for')}» ({campo}) escribe {m.group()} con punto decimal: en "
+                               f"Chile el decimal va con coma ({m.group().replace('.', ',')})")
             for m in re.finditer(NUMERO, texto):
                 valor, es_pct = _a_float(m.group()), texto[m.end():m.end() + 2].lstrip().startswith("%")
                 if es_pct and valor not in porcentajes:

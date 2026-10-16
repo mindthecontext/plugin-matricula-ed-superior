@@ -135,6 +135,8 @@ Escríbela al final. Su bloque `findings` trae los hechos candidatos, cada uno c
 - **Una asociación no es un mecanismo:** que un grupo tenga más prioritarios y menos puntaje no dice por
   qué. Si quieres proponer una razón, va en `compatible`.
 - **Las cuatro dependencias de «De qué colegios vienen» no suman 100%**: faltan las de menos peso y los colegios sin dato. No completes la diferencia ni la atribuyas a una de ellas.
+- **Cuántos entran ya titulados lo dice «Por dónde entran»**; «Quién recibe a los ya titulados» sólo los
+  reparte entre instituciones. No compares sus cifras: se calculan con ventanas y registros distintos.
 - **«De qué carreras vienen» cuenta personas**, no porcentajes: compara las carreras entre sí, no con otra figura.
 
 ### Cómo leer la sección 3, «Quién paga»
@@ -150,6 +152,8 @@ Escríbela al final. Su bloque `findings` trae los hechos candidatos, cada uno c
 - **Los desenlaces describen a quienes entraron hace una década** (las cohortes del subtítulo). Escribe
   «de quienes entraron entre…», nunca «hoy se titula el X%». **Titularse en otra carrera** es cambiar de
   rumbo sin abandonar: no lo leas como fracaso.
+- **Todos los grupos pueden quedar sobre el país (o bajo él).** El valor nacional cuenta a todos los
+  estudiantes, también a los de instituciones que no caen en ningún grupo: no es el promedio de las filas.
 - **Una titulación baja no prueba una admisión menos selectiva**: también son compatibles las carreras
   más largas, el trabajo en paralelo y el cambio de institución. Eso va en `compatible`.
 - **Los ingresos son de mifuturo**, un promedio de quienes se titularon de la carrera en el tipo de
