@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.46.2 · 2026-10-17
+
+El reporte regional dice qué región queda fuera del orden de la migración por falta de dato. Antes decía «la más alta de las 14 regiones fuera de la Metropolitana», que se leía como un error porque son 15; ahora dice «de las 14 regiones con dato fuera de la Metropolitana (Aysén no tiene)».
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-16h-lab`
+
 ## v0.46.1 · 2026-10-16
 
 Correcciones de la lente tras su prueba con la UdeC. La síntesis apunta a las secciones que sostienen cada hecho (el reparto en la sección 3, el campo de batalla en la 4; decía 1 y 2), y el control de cifras acepta los porcentajes de la lente que antes rechazaba: cuánto cubre el área, cuántos entrantes tienen colegio conocido y cuántos vienen de colegios nombrados.
