@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.46.1 · 2026-10-16
+
+Correcciones de la lente tras su prueba con la UdeC. La síntesis apunta a las secciones que sostienen cada hecho (el reparto en la sección 3, el campo de batalla en la 4; decía 1 y 2), y el control de cifras acepta los porcentajes de la lente que antes rechazaba: cuánto cubre el área, cuántos entrantes tienen colegio conocido y cuántos vienen de colegios nombrados.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-16h-lab`
+
 ## v0.46.0 · 2026-10-16
 
 La lente institucional completa, como el reporte del laboratorio: 12 de sus 13 figuras. Además del área de captación y el campo de batalla, la lente trae la matrícula de primer año de la institución y su ritmo frente a la carrera; el mapa social y la escalera de puntaje con la institución marcada; género, origen social y desenlaces con su grupo marcado; de qué comunas vienen sus entrantes; por qué vías entran, frente a la carrera; y su empleabilidad. Falta «adónde va el estudiante que podría captar». Datos 2026-10-16h. Requiere el compositor 0.46.0, que marca una fila o una burbuja con «▸».
