@@ -196,8 +196,8 @@ Trae la portada, la síntesis, 1 «Su tamaño» (su matrícula de primer año y 
 se ubica en la carrera» (el mapa social y la escalera de puntaje con la institución marcada; género, origen social y
 desenlaces con su grupo marcado), 3 «Su área de captación» (de qué regiones y comunas vienen sus entrantes, y adónde
 van los egresados de cada región del área), 4 «El campo de batalla» (colegio por colegio, y los colegios chicos por
-comuna), 5 «Por dónde entran y qué pasa después» (vías de ingreso y empleabilidad, frente a la carrera) y las notas
-de método.
+comuna), 5 «El estudiante que podría captar» (el pool de cada región del área), 6 «Por dónde entran y qué pasa
+después» (vías de ingreso y empleabilidad, frente a la carrera) y las notas de método.
 
 - **«▸» marca la institución o su grupo.** Las figuras de la sección 2 son las del reporte nacional, con una fila
   marcada (`highlight`, también en `groups.highlighted`). En el mapa y la escalera es la institución; en género,
@@ -220,6 +220,22 @@ de método.
   «perdido»: la disputa en la admisión está en la matriz de sustitución (`competencia_carrera`), fuera de la lente.
 - **Un colegio nombrado tiene al menos 30 entrantes a la carrera en la ventana**; por debajo, se suma en su comuna.
   Es una regla de base estadística: no nombres un colegio que no esté en la figura.
+
+### Cómo leer «El estudiante que podría captar»
+
+- **El pool son estudiantes como los suyos que estudian la carrera en otra institución:** egresados de esa región del
+  área, con PAES dentro de su banda (del 10% más bajo al 10% más alto de sus propios entrantes por admisión regular),
+  que entraron por admisión regular en otra institución. La banda y los años están en el bloque de cifras y en el
+  subtítulo: cítalos de ahí.
+- **Es disponibilidad, no capturabilidad.** Escribe «hay N estudiantes con un puntaje como el de sus entrantes que
+  estudian la carrera en otra institución», nunca «podría captar a N» ni «pierde a N». Si propones por qué se fueron
+  o si se podrían atraer, va en `compatible`.
+- **«Adónde va el pool»** reparte el pool entre las instituciones que lo reciben; es otra base que el reparto de la
+  sección 3, que cuenta a todos los egresados de la región. No las compares.
+- **Los colegios del pool se nombran desde 10 personas** (cuenta personas, no compara proporciones como el campo de
+  batalla); los demás se suman por comuna. Si no hay colegios nombrados, la figura de colegios no aparece: dilo.
+- **Una lente sin pool** trae una nota que dice por qué (pocos entrantes con PAES, o una carrera sin admisión
+  regular): no hay lectura que escribir.
 
 ## No proyectes como si fuera dato
 
