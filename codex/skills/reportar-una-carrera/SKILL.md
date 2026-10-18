@@ -91,6 +91,9 @@ pasa por el control de cifras del compositor, y el título no promete algo que l
    porcentaje) y en qué período.
 4. **Muestras chicas, sin lecturas fuertes.** Una fila en `small_sample` o con «~» (`not_robust`) se puede
    nombrar, pero no sostiene el relato.
+   Sólo es muestra chica lo que dice `small_sample`: no lo deduzcas del tamaño de una barra. En un reparto (la
+   figura trae `groups.base`: de qué comunas vienen, adónde van, quién recibe a los titulados) cada barra es una
+   parte de esa base, y una comuna con 30 de 450 entrantes no es una muestra chica.
 5. **La referencia es el país**, no el promedio de las filas.
 6. **El universo es la carrera en todas las instituciones que la dictan.** Una figura que sólo cuenta a
    quienes rindieron la PAES o entraron por la admisión centralizada lo dice en su subtítulo: repítelo en
