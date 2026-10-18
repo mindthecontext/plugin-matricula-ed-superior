@@ -192,16 +192,18 @@ lista: pregunta cuál. Si la institución no tiene lente en la carrera, la herra
 de 50 entrantes al año en un área) y lista las que sí tienen.
 
 Trae la portada, la síntesis, 1 «Su tamaño» (su matrícula de primer año y su ritmo frente a la carrera), 2 «Dónde
-se ubica en la carrera» (el mapa social y la escalera de puntaje con la institución marcada; género, origen social y
-desenlaces con su grupo marcado), 3 «Su área de captación» (de qué regiones y comunas vienen sus entrantes, y adónde
+se ubica en la carrera» (el mapa social y la escalera de puntaje de las sedes de su área, con la suya marcada; género,
+origen social y desenlaces con su grupo marcado), 3 «Su área de captación» (de qué regiones y comunas vienen sus entrantes, y adónde
 van los egresados de cada región del área), 4 «El campo de batalla» (colegio por colegio, y los colegios chicos por
 comuna), 5 «El estudiante que podría captar» (el pool de cada región del área), 6 «Por dónde entran y qué pasa
 después» (vías de ingreso y empleabilidad, frente a la carrera) y las notas de método.
 
-- **«▸» marca la institución o su grupo.** Las figuras de la sección 2 son las del reporte nacional, con una fila
-  marcada (`highlight`, también en `groups.highlighted`). En el mapa y la escalera es la institución; en género,
-  origen social y desenlaces es **su grupo**, y lo que dice esa fila es del grupo, no de la institución: escribe
-  «su grupo, la selectiva de origen amplio, …», nunca «la UdeC titula el 74%».
+- **El mapa y la escalera son de SU SEDE frente a las sedes de su área** (las de las regiones de su área de
+  captación), con su sede marcada con «▸»: no la institución con todas sus sedes. Su puesto entre todas las sedes del
+  país está en `facts`: cítalo de ahí («puesto 38 de 68»). Si su sede no tiene PAES (un IP o un CFT, o pocos
+  entrantes con puntaje), la figura lo avisa: dilo, no la busques.
+- **En género, origen social y desenlaces, «▸» marca SU GRUPO**, y lo que dice esa fila es del grupo, no de la
+  institución: escribe «su grupo, la selectiva de origen amplio, …», nunca «la UdeC titula el 74%».
 - **La serie propia es del CNED, por región de la sede.** En una región que se parte en ciudades (Biobío, Maule,
   Valparaíso, Los Lagos), junta todas sus sedes de la región, y el subtítulo lo dice: repítelo.
 - **La empleabilidad es por institución, todas sus sedes** (mifuturo no la publica por sede).
