@@ -235,6 +235,8 @@ después» (vías de ingreso y empleabilidad, frente a la carrera) y las notas d
 - **Es disponibilidad, no capturabilidad.** Escribe «hay N estudiantes con un puntaje como el de sus entrantes que
   estudian la carrera en otra institución», nunca «podría captar a N» ni «pierde a N». Si propones por qué se fueron
   o si se podrían atraer, va en `compatible`.
+- **La banda del pool y la escalera de la sección 2 cubren años distintos** (lo dicen sus subtítulos: la escalera, un
+  proceso; la banda, tres): por eso los rangos de la misma sede no coinciden. No los compares ni los mezcles.
 - **«Adónde va el pool»** reparte el pool entre las instituciones que lo reciben; es otra base que el reparto de la
   sección 3, que cuenta a todos los egresados de la región. No las compares.
 - **Los colegios del pool se nombran desde 10 personas** (cuenta personas, no compara proporciones como el campo de

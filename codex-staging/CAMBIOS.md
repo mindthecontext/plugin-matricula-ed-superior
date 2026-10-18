@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.48.1 · 2026-10-18
+
+La escalera de puntaje dice de qué proceso de admisión es (hoy, 2026), en el reporte de una carrera y en la lente; y la banda del pool dice de qué sede y de qué años es («la banda de U. Santo Tomás en Talca … de sus entrantes por admisión regular 2024–2026»). La misma sede mostraba dos rangos distintos —un proceso en la escalera, tres en la banda— sin que nada lo explicara.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-17a-lab`
+
 ## v0.48.0 · 2026-10-18
 
 En la lente, el puntaje es el de la sede, no el de la institución con todas sus sedes. La escalera de puntaje y el mapa social muestran las sedes de las regiones de su área de captación, con la suya marcada: en Enfermería, la U. Santo Tomás de Talca (611) frente a las otras cuatro sedes del Maule, en vez de la U. Santo Tomás nacional (618, doce sedes). Las cifras de la lente suman la mediana PAES de su sede y su puesto entre todas las sedes de la carrera en el país. Si su sede no tiene PAES, la figura lo dice.
