@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.49.0 · 2026-10-18
+
+Más instituciones tienen lente: basta con 30 entrantes al año a la carrera (antes 50), y el campo de batalla nombra los colegios desde 10 entrantes (antes 30). De 1.614 a 2.293 lentes; entran, por ejemplo, la U. Santo Tomás en La Araucanía y la U. de La Serena en Enfermería. En una fila del campo donde quien más capta tiene menos de 5 entrantes no se dice quién capta más: va en `too_few` y la síntesis la cuenta aparte.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-18a-lab` · antes `2026-10-17a-lab`
+
 ## v0.48.2 · 2026-10-18
 
 La nota de la escalera de puntaje de la lente dice «la mediana de la carrera en el país»; decía «la mediana la carrera en el país».

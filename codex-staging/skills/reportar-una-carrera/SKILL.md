@@ -190,7 +190,8 @@ Escríbela al final. Su bloque `findings` trae los hechos candidatos, cada uno c
 La lente es la carrera vista desde una institución **en un área**: la UdeC en Concepción, la UST en La Araucanía.
 Una institución con varias sedes tiene una lente por área; si no dices `area` y tiene varias, la herramienta las
 lista: pregunta cuál. Si la institución no tiene lente en la carrera, la herramienta dice por qué (recibe menos
-de 50 entrantes al año en un área) y lista las que sí tienen.
+entrantes al año en un área que el umbral, que viene en la respuesta) y lista las que sí tienen. Di el umbral
+como lo trae la respuesta; no lo escribas de memoria.
 
 Trae la portada, la síntesis, 1 «Su tamaño» (su matrícula de primer año y su ritmo frente a la carrera), 2 «Dónde
 se ubica en la carrera» (el mapa social y la escalera de puntaje de las sedes de su área, con la suya marcada; género,
@@ -214,17 +215,21 @@ después» (vías de ingreso y empleabilidad, frente a la carrera) y las notas d
 - **«Adónde van los egresados de…» es una figura por región del área**, y la fila marcada con «▸» es la institución.
   Su puesto y su % están en la figura y en la síntesis: cópialos de ahí.
 - **El campo de batalla son diez cohortes de entrantes.** Cada fila es un colegio (o una comuna, para los colegios
-  con menos de 30): arriba lo que capta la institución, abajo lo que capta **su mayor rival en ese colegio**, que
+  bajo el mínimo): arriba lo que capta la institución, abajo lo que capta **su mayor rival en ese colegio**, que
   cambia de fila a fila (lo dice el detalle). No escribas «su rival» como si fuera uno solo.
 - **El % de sus entrantes que viene de colegios con el mínimo** (`schools_reaching_minimum` en la síntesis) se
-  calcula sobre **todos** los colegios del área que llegan a 30, cuántos son lo dice `n_schools` (y el subtítulo de
-  la figura), no sobre los 15 que la figura muestra. Escribe «los N colegios del área con al menos 30 entrantes
-  reúnen el X% de sus entrantes», nunca «esos 15 colegios reúnen…».
-- **Quién lidera cada fila se copia de `groups`:** `lens_leads`, `rival_leads`, `tied`. «Capta más que su rival
-  en 4 de los 15 colegios» sale de contar esas listas, que ya vienen contadas en la síntesis.
+  calcula sobre **todos** los colegios del área que llegan al mínimo, cuántos son lo dice `n_schools` (y el
+  subtítulo de la figura, que dice también el mínimo), no sobre los 15 que la figura muestra. Escribe «los N
+  colegios del área con al menos M entrantes reúnen el X% de sus entrantes», nunca «esos 15 colegios reúnen…».
+- **Quién lidera cada fila se copia de `groups`:** `lens_leads`, `rival_leads`, `tied` y `too_few`. «Capta más que
+  su rival en 4 de los 15 colegios» sale de contar esas listas, que ya vienen contadas en la síntesis. Las filas de
+  `too_few` no tienen ganador: quien más capta tiene menos de 5 entrantes, y la diferencia es de una o dos personas.
+  No las cuentes como ganadas ni perdidas; si las nombras, di «en N colegios la cifra es demasiado chica para decir
+  quién capta más».
 - **Es dónde capta cada una, no a quién le quita a quién.** Un colegio donde el rival capta más no es un colegio
   «perdido»: la disputa en la admisión está en la matriz de sustitución (`competencia_carrera`), fuera de la lente.
-- **Un colegio nombrado tiene al menos 30 entrantes a la carrera en la ventana**; por debajo, se suma en su comuna.
+- **Un colegio nombrado llega al mínimo de entrantes a la carrera en la ventana** (lo dice el subtítulo); por
+  debajo, se suma en su comuna.
   Es una regla de base estadística: no nombres un colegio que no esté en la figura.
 
 ### Cómo leer «El estudiante que podría captar»
