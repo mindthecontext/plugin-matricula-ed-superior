@@ -214,6 +214,10 @@ después» (vías de ingreso y empleabilidad, frente a la carrera) y las notas d
 - **El campo de batalla son diez cohortes de entrantes.** Cada fila es un colegio (o una comuna, para los colegios
   con menos de 30): arriba lo que capta la institución, abajo lo que capta **su mayor rival en ese colegio**, que
   cambia de fila a fila (lo dice el detalle). No escribas «su rival» como si fuera uno solo.
+- **El % de sus entrantes que viene de colegios con el mínimo** (`schools_reaching_minimum` en la síntesis) se
+  calcula sobre **todos** los colegios del área que llegan a 30, cuántos son lo dice `n_schools` (y el subtítulo de
+  la figura), no sobre los 15 que la figura muestra. Escribe «los N colegios del área con al menos 30 entrantes
+  reúnen el X% de sus entrantes», nunca «esos 15 colegios reúnen…».
 - **Quién lidera cada fila se copia de `groups`:** `lens_leads`, `rival_leads`, `tied`. «Capta más que su rival
   en 4 de los 15 colegios» sale de contar esas listas, que ya vienen contadas en la síntesis.
 - **Es dónde capta cada una, no a quién le quita a quién.** Un colegio donde el rival capta más no es un colegio

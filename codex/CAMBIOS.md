@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.47.1 · 2026-10-18
+
+La síntesis de la lente dice sobre cuántos colegios se calcula el porcentaje de sus entrantes que viene de colegios con al menos 30 entrantes a la carrera: todos los del área que llegan a ese mínimo (32 en la U. del Bío-Bío en Psicología), no sólo los 15 que muestra la figura. Antes el dato no decía su base y se leía como «esos 15 colegios reúnen el X%».
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-17a-lab`
+
 ## v0.47.0 · 2026-10-17
 
 La lente institucional queda completa: suma «El estudiante que podría captar», la figura que le faltaba frente al reporte del laboratorio. Por cada región del área de captación, los egresados con un puntaje PAES como el de los entrantes de la institución (del 10% más bajo al 10% más alto de su admisión regular, 2024–2026) que estudian la carrera en otra institución: cuántos son, su puntaje y cuántos fueron prioritarios, adónde van, y de qué colegios (desde 10 personas) y comunas salen. Es disponibilidad, no capturabilidad. 928 de las 1.614 lentes tienen pool; las demás dicen por qué no. Datos 2026-10-17a.
