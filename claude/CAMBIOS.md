@@ -4,6 +4,14 @@
 
 Qué cambia para quien usa este saber, versión por versión. Lo que corre de verdad el servicio lo dice su herramienta `ver_cambios`; esto es la copia del paquete.
 
+## v0.49.2 · 2026-11-11
+
+Sin cambios en lo que responde. El paquete trae una carpeta nueva que se instala igual en Claude y en un espacio de trabajo de ChatGPT, desde una sola entrada del catálogo: antes el espacio de trabajo de ChatGPT rechazaba la versión de Claude porque sus skills no declaraban su nombre.
+
+- Herramientas: `a_distancia_tecnico`, `acceso_equidad`, `carreras_tope`, `competencia_carrera`, `desenlaces_carrera`, `ficha_sede`, `ficha_sede_tecnica`, `figura_matricula`, `figura_matricula_region`, `figura_participacion`, `figura_primer_anio`, `figura_region`, `figura_tecnico_region`, `flujos_region`, `listar_carreras`, `listar_cobertura`, `obtener_criterios`, `panorama_carrera`, `panorama_region`, `panorama_tecnico_region`, `participacion_primer_anio`, `perfil_migrante`, `portada_region`, `preferencias`, `preguntas_abiertas`, `presencia_institucional`, `primer_anio`, `quien_entra`, `reporte_carrera`, `reporte_region`, `reporte_tecnico_region`, `sedes_de_la_carrera`, `ver_cambios`, `vista_institucion`
+- Skills: `analizar-el-tecnico-de-una-region`, `analizar-una-region`, `empezar-aqui`, `explorar-una-carrera`, `graficar-la-matricula`, `reportar-una-carrera`, `reportar-una-region`
+- Datos: `2026-10-18a-lab`
+
 ## v0.49.1 · 2026-10-18
 
 En las figuras que reparten un total —de qué comunas vienen los entrantes de una lente, adónde van los egresados de su región, adónde va su pool, por qué vías se entra y quién recibe a los titulados— la muestra chica se mide sobre ese total, que la figura declara en `groups.base`, y no sobre cada barra. Antes una comuna con 30 de 450 entrantes salía como muestra chica.

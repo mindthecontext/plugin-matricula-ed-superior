@@ -1,6 +1,6 @@
 ---
 name: explorar-una-carrera
-description: Responde sobre una carrera en el sistema de educación superior chileno — «¿cómo está Enfermería?», «¿quién dicta Psicología y con qué selectividad?», «¿dónde se estudia Kinesiología?», «¿qué empleabilidad tiene?», «¿a quién le pierde estudiantes esta universidad en esta carrera?». Cubre universidades, institutos profesionales y CFT. NO responde sobre el mercado de una región completa: para eso está analizar-una-region.
+description: "Responde sobre una carrera en el sistema de educación superior chileno — «¿cómo está Enfermería?», «¿quién dicta Psicología y con qué selectividad?», «¿dónde se estudia Kinesiología?», «¿qué empleabilidad tiene?», «¿a quién le pierde estudiantes esta universidad en esta carrera?». Cubre universidades, institutos profesionales y CFT. NO responde sobre el mercado de una región completa: para eso está analizar-una-region."
 ---
 
 # Explorar una carrera

@@ -1,5 +1,5 @@
 ---
-description: Responde sobre el mercado universitario de una región chilena — «¿cómo está el mercado en La Araucanía?», «¿quién crece y quién se estanca?», «¿cuántos egresados se quedan a estudiar acá?», «¿hacia dónde se van los que salen?», «¿cómo le va a esta universidad frente a sus competidores?». Cubre universidades. Para los IP y CFT de una región, analizar-el-tecnico-de-una-region. NO responde sobre una carrera específica en el sistema completo: para eso está explorar-una-carrera.
+description: "Responde sobre el mercado universitario de una región chilena — «¿cómo está el mercado en La Araucanía?», «¿quién crece y quién se estanca?», «¿cuántos egresados se quedan a estudiar acá?», «¿hacia dónde se van los que salen?», «¿cómo le va a esta universidad frente a sus competidores?». Cubre universidades. Para los IP y CFT de una región, analizar-el-tecnico-de-una-region. NO responde sobre una carrera específica en el sistema completo: para eso está explorar-una-carrera."
 ---
 
 # Analizar una región

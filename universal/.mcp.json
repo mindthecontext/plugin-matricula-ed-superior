@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "matricula-ed-superior": {
+      "type": "http",
+      "url": "https://matricula-ed-superior.mcp.mindthecontext.ai/mcp"
+    }
+  }
+}
